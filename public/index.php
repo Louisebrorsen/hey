@@ -30,7 +30,8 @@ if (!$view) {
 // Gør data-keys til variabler: $movies, $movie, $screenings osv.
 extract($data);
 
-// Layout: header → view → footer
-require __DIR__ . '/../app/views/partials/header.php';
-require $view;
-require __DIR__ . '/../app/views/partials/footer.php';
+// Gem view-stien i en variabel layoutet kan bruge
+$contentView = $view;
+
+// Kald layoutet (som selv inkluderer header, footer og contentView)
+require __DIR__ . '/../app/views/layout.php';

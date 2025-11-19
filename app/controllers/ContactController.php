@@ -15,7 +15,21 @@ class ContactController
         $message = cleanInput($_POST['message']);
         $fax = cleanInput($_POST['fax']);
 
-         /* $_SESSION['contact_error'] = "Der opstod en fejl. Prøv igen senere."; */
+        if (!empty($fax)) {
+            $db = Database::connect();
+            $stmt = $db->prepare("INSERT INTO contact_spam (name, email, subject, message) VALUES (:name, :email, :subject, :message)");
+            $stmt->execute([
+                'name'    => $name,
+                'email'   => $email,
+                'subject' => $subject,
+                'message' => $message,
+            ]);
+
+            $_SESSION['contact_success'] = "Din besked er sendt. Tak for din henvendelse!";
+            header('Location: /hey/public/#contact');
+            exit();
+        }
+        
         $error = [];
 
         if (empty($name) || strlen($name) < 2) {
@@ -36,10 +50,10 @@ class ContactController
 
 
         if (!empty($error)) {
-        $_SESSION['contact_error'] = implode("<br>", $error); 
-        header('Location: /hey/public/#contact');
-        exit;
-}
+            $_SESSION['contact_error'] = implode("<br>", $error);
+            header('Location: /hey/public/#contact');
+            exit();
+        }
 
         $db = Database::connect();
         $stmt = $db->prepare("INSERT INTO contact_messages (name, email, subject, message) VALUES (:name, :email, :subject, :message)");
@@ -49,7 +63,6 @@ class ContactController
             'subject' => $subject,
             'message' => $message,
         ]);
-        
 
         $_SESSION['contact_success'] = "Din besked er sendt. Tak for din henvendelse!";
         header('Location: /hey/public/#contact');
@@ -58,5 +71,3 @@ class ContactController
 }
 
 
-
-/* contact_messages database navn til contactform */

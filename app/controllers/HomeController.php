@@ -7,6 +7,14 @@ class HomeController {
         $nowPlaying = Movie::nowPlaying();
         $coming     = Movie::comingSoon();
 
-        require_once __DIR__ . '/../views/home.php';
+
+        return [
+            'view' => __DIR__ . '/../views/home.php',
+            'data' => [
+                'movies'     => Movie::all(),
+                'nowPlaying' => $nowPlaying,
+                'comingSoon'     => $coming,
+            ],
+        ];
     }
 }

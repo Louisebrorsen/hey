@@ -1,16 +1,3 @@
-<?php
-?>
-<!DOCTYPE html>
-<html lang="da">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Cinema – Biograf</title>
-  <meta name="description" content="Biografbeskrivelse" />
-  <link rel="stylesheet" href="assets/style.css">
-</head>
-
-<body>
   <header>
     <div class="container nav">
       <a href="/" class="brand" aria-label="Forside">
