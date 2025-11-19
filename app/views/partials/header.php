@@ -20,9 +20,8 @@
 
       <nav aria-label="Hovednavigation" class="menu">
         <a href="/">I biografen</a>
-        <a href="#today">Dagens tider</a>
-        <a href="#coming">Kommende</a>
-        <a href="#about">Om os</a>
+        <a href="#today">Dagens forestillinger</a>
+        <a href="#coming">Kommende film</a>
         <a href="#contact">Kontakt</a>
         <a href="/login">Login</a>
       </nav>
@@ -34,9 +33,8 @@
 
         <div class="drawer" role="menu">
           <a role="menuitem" href="/">I biografen</a>
-          <a role="menuitem" href="#today">Dagens tider</a>
-          <a role="menuitem" href="#coming">Kommende</a>
-          <a role="menuitem" href="#about">Om os</a>
+          <a role="menuitem" href="#today">Dagens forestillinger</a>
+          <a role="menuitem" href="#coming">Kommende film</a>
           <a role="menuitem" href="#contact">Kontakt</a>
           <a role="menuitem" href="/login">Login</a>
         </div>

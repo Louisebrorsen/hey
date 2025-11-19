@@ -214,6 +214,10 @@
   color: inherit;
 }
 
+.hp .form__group {
+  display: none !important;
+}
+
 
 /* ===== Profile page scoped styles (uses global tokens) ===== */
     .profile { padding: 40px 20px; }

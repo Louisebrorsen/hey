@@ -133,7 +133,19 @@
         Udfyld formularen nedenfor, så vender vi tilbage hurtigst muligt.
       </p>
 
-      <form action="/contact/send" method="POST" class="contact__form">
+      <?php if (!empty($_SESSION['contact_success'])): ?>
+        <div class="contact_success">
+          <?= e($_SESSION['contact_success']) ?>
+        </div>
+      <?php unset($_SESSION['contact_success']); endif; ?>
+
+      <?php if (!empty($_SESSION['contact_error'])): ?>
+        <div class="contact_error">
+          <?= e($_SESSION['contact_error']) ?>
+        </div>
+      <?php unset($_SESSION['contact_error']); endif; ?>
+
+      <form action="contact/send" method="POST" class="contact__form">
         <div class="form__group">
           <label for="name">Navn</label>
           <input type="text" id="name" name="name" placeholder="Dit fulde navn" required>
@@ -152,6 +164,11 @@
         <div class="form__group">
           <label for="message">Besked</label>
           <textarea id="message" name="message" rows="5" placeholder="Skriv din besked her..." required></textarea>
+        </div>
+
+        <div class="hp form__group">
+          <label for="fax">faxnummer</label>
+          <input type="text" id="fax" name="fax" placeholder="Dit faxnummer">
         </div>
 
         <button type="submit" name="submit" class="btn btn--primary">Send besked</button>

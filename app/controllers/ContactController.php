@@ -14,6 +14,32 @@ class ContactController
         $subject = cleanInput($_POST['subject']);
         $message = cleanInput($_POST['message']);
 
+         /* $_SESSION['contact_error'] = "Der opstod en fejl. Prøv igen senere."; */
+        $error = [];
+
+        if (empty($name) || strlen($name) < 2) {
+            $error[] = "Udfyld venligst dit navn.";
+        }
+
+        if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $error[] = "Udfyld venligst en gyldig email.";
+        }
+
+        if (empty($subject) || strlen($subject) < 5) {
+            $error[] = "Emnet skal være mindst 5 tegn langt.";
+        }  
+
+        if (empty($message) || strlen($message) < 10) {
+            $error[] = "Beskeden skal være mindst 10 tegn langt.";
+        }
+
+
+        if (!empty($error)) {
+        $_SESSION['contact_error'] = implode("<br>", $error); 
+        header('Location: /hey/public/#contact');
+        exit;
+}
+
         $db = Database::connect();
         $stmt = $db->prepare("INSERT INTO contact_messages (name, email, subject, message) VALUES (:name, :email, :subject, :message)");
         $stmt->execute([
@@ -23,8 +49,11 @@ class ContactController
             'message' => $message,
         ]);
 
+
+       
+
         $_SESSION['contact_success'] = "Din besked er sendt. Tak for din henvendelse!";
-        header('Location: /');
+        header('Location: /hey/public/#contact');
         exit();
     }
 }
