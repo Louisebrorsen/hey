@@ -13,6 +13,7 @@ class ContactController
         $email = cleanInput($_POST['email']);
         $subject = cleanInput($_POST['subject']);
         $message = cleanInput($_POST['message']);
+        $fax = cleanInput($_POST['fax']);
 
          /* $_SESSION['contact_error'] = "Der opstod en fejl. Prøv igen senere."; */
         $error = [];
@@ -48,9 +49,7 @@ class ContactController
             'subject' => $subject,
             'message' => $message,
         ]);
-
-
-       
+        
 
         $_SESSION['contact_success'] = "Din besked er sendt. Tak for din henvendelse!";
         header('Location: /hey/public/#contact');

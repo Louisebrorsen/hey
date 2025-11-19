@@ -2,21 +2,7 @@
 
 class MovieController
 {
-    public function index(): array
-    {
-        // HENT DE SORTEREDE FILM HER
-        $nowPlaying = Movie::nowPlaying();   // Film der er udgivet
-        $comingSoon = Movie::comingSoon();   // Film der endnu ikke er udgivet
-
-        return [
-            'view' => __DIR__ . '/../views/home.php',
-            'data' => [
-                'nowPlaying' => $nowPlaying,
-                'comingSoon' => $comingSoon,
-            ],
-        ];
-    }
-
+    
     public function show(): array
     {
         $id = $_GET['id'] ?? null;
@@ -30,7 +16,7 @@ class MovieController
         $screenings = Screening::findByMovie((int)$id);
 
         return [
-            'view' => __DIR__ . '/../views/home.php',
+            'view' => __DIR__ . '/../views/movie.php',
             'data' => [
                 'movie' => $movie,
                 'screenings' => $screenings,

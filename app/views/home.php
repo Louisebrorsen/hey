@@ -166,7 +166,7 @@
           <textarea id="message" name="message" rows="5" placeholder="Skriv din besked her..." required></textarea>
         </div>
 
-        <div class="hp form__group">
+        <div class="hp">
           <label for="fax">faxnummer</label>
           <input type="text" id="fax" name="fax" placeholder="Dit faxnummer">
         </div>

@@ -15,3 +15,4 @@ function cleanInput(string $data): string {
     $data = htmlspecialchars($data, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
     return $data;
 }
+

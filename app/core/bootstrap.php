@@ -5,6 +5,7 @@ require_once __DIR__ . '/Database.php';
 require_once __DIR__ . '/helpers.php';  
 
 // Controllers
+require_once __DIR__ . '/../controllers/HomeController.php';
 require_once __DIR__ . '/../controllers/MovieController.php';
 require_once __DIR__ . '/../controllers/AdminController.php';
 require_once __DIR__ . '/../controllers/ContactController.php';
