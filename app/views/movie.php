@@ -1,1 +1,0 @@
-her kommer detalje side om de enkelte film til at vises

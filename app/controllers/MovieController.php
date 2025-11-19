@@ -2,7 +2,18 @@
 
 class MovieController
 {
-    
+    public function index(): array
+    {
+        $movies = Movie::all();
+
+        return [
+            'view' => __DIR__ . '/../views/movie.php',
+            'data' => [
+                'movies' => $movies,
+            ],
+        ];
+    }
+
     public function show(): array
     {
         $id = $_GET['id'] ?? null;

@@ -12,7 +12,7 @@ class Movie
 
     public static function movies_all(): array
     {
-        return self::all(); // eller brug din egen SQL
+        return self::all(); 
     }
 
     public static function find(int $id): ?array
@@ -26,7 +26,7 @@ class Movie
         return $movie ?: null;
     }
 
-    public static function nowPlaying(): array
+    public static function nowPlaying(int $limit): array
     {
         $db = Database::connect();
 
@@ -34,20 +34,30 @@ class Movie
                 FROM movie 
                 WHERE released <= CURDATE()
                 AND released >= DATE_SUB(CURDATE(), INTERVAL 30 DAY)
-                ORDER BY released DESC";
+                ORDER BY released DESC
+                LIMIT :limit";
 
-        return $db->query($sql)->fetchAll();
+            $stmt = $db->prepare($sql);
+            $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+            $stmt->execute();
+
+            return $stmt->fetchAll();
     }
 
-    public static function comingSoon(): array
+    public static function comingSoon(int $limit): array
     {
         $db = Database::connect();
 
         $sql = "SELECT * 
                 FROM movie 
                 WHERE released > CURDATE()
-                ORDER BY released ASC";
+                ORDER BY released ASC
+                LIMIT :limit";
 
-        return $db->query($sql)->fetchAll();
+            $stmt = $db->prepare($sql);
+            $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+            $stmt->execute();
+
+            return $stmt->fetchAll();
     }
 }
