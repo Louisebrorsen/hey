@@ -92,8 +92,9 @@
           <h2 class="section__title">Kommende film</h2>
           <p class="section__sub">Forpremierer og næste måneds highlights</p>
         </div>
-        <a class="btn btn--ghost" href="#">Se kalender</a>
-      </div>
+<a class="btn btn--ghost" href="<?= url('movies') ?>#coming">
+  Se kommende film
+</a>      </div>
 
       <div class="grid">
         <?php foreach ($comingSoon as $cs): ?>

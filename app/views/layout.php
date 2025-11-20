@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Cinema – Biograf</title>
   <meta name="description" content="Biografbeskrivelse" />
-  <link rel="stylesheet" href="/hey/public/assets/style.css">
+  <link rel="stylesheet" href="<?= asset('style.css') ?>">
 </head>
 <body>
  <?php require __DIR__ . '/partials/header.php'; ?>

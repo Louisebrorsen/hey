@@ -1,4 +1,4 @@
-<div class="main">
+<main>
   <section>
     <h2>Nu i biografen</h2>
      <div class="grid">
@@ -27,7 +27,8 @@
         </article>
         <?php endforeach; ?>
       </div>
-
+</section>
+<section id="coming">
     <h2>Kommende</h2>
    <div class="grid">
         <?php foreach ($comingSoon as $cs): ?>
@@ -56,4 +57,4 @@
         <?php endforeach; ?>
       </div>
 </section>
-</div>
+</main>

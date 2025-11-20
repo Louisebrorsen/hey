@@ -10,6 +10,12 @@ function url(string $route, array $params = []): string
     return 'index.php?' . $query;
 }
 
+function asset(string $path): string
+{
+   //gør assets mappen tilgængelig både lokalt og på simply
+    return 'assets/' . ltrim($path, '/');
+}
+
 function cleanInput(string $data): string {
     $data = trim($data);
     $data = htmlspecialchars($data, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
