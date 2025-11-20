@@ -26,38 +26,50 @@ class Movie
         return $movie ?: null;
     }
 
-    public static function nowPlaying(int $limit): array
+    public static function nowPlaying(?int $limit = null): array
     {
         $db = Database::connect();
 
-        $sql = "SELECT * 
-                FROM movie 
+        $sql = "SELECT *
+                FROM movie
                 WHERE released <= CURDATE()
                 AND released >= DATE_SUB(CURDATE(), INTERVAL 30 DAY)
-                ORDER BY released DESC
-                LIMIT :limit";
+                ORDER BY released DESC";
 
-            $stmt = $db->prepare($sql);
+        if ($limit !== null) {
+            $sql .= " LIMIT :limit";
+        }
+
+        $stmt = $db->prepare($sql);
+
+        if ($limit !== null) {
             $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
-            $stmt->execute();
+        }
 
-            return $stmt->fetchAll();
+        $stmt->execute();
+        return $stmt->fetchAll();
     }
 
-    public static function comingSoon(int $limit): array
+    public static function comingSoon(?int $limit = null): array
     {
         $db = Database::connect();
 
-        $sql = "SELECT * 
-                FROM movie 
+        $sql = "SELECT *
+                FROM movie
                 WHERE released > CURDATE()
-                ORDER BY released ASC
-                LIMIT :limit";
+                ORDER BY released ASC";
 
-            $stmt = $db->prepare($sql);
+        if ($limit !== null) {
+            $sql .= " LIMIT :limit";
+        }
+
+        $stmt = $db->prepare($sql);
+
+        if ($limit !== null) {
             $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
-            $stmt->execute();
+        }
 
-            return $stmt->fetchAll();
+        $stmt->execute();
+        return $stmt->fetchAll();
     }
 }

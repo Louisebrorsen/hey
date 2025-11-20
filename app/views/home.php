@@ -25,7 +25,7 @@
           <h2 class="section__title">I biografen nu</h2>
           <p class="section__sub">Aktuelle titler du kan se i denne uge</p>
         </div>
-        <a class="btn btn--ghost" href="#">Alle film</a>
+        <a class="btn btn--ghost" href="<?= url('movies') ?>">Alle film</a>
       </div>
 
       <div class="grid">
@@ -49,7 +49,7 @@
 
           <div class="card__actions">
             <a class="btn btn--primary" href="#today">Billetter</a>
-            <a class="btn btn--ghost" href="#">Detaljer</a>
+            <a class="btn btn--ghost" href="<?= url('movie?id=' . $np['id']) ?>">Detaljer</a>
           </div>
         </article>
         <?php endforeach; ?>
@@ -116,7 +116,7 @@
 
           <div class="card__actions">
             <a class="btn btn--primary" href="#today">Billetter</a>
-            <a class="btn btn--ghost" href="#">Detaljer</a>
+            <a class="btn btn--ghost" href="<?= url('movie?id=' . $cs['id']) ?>">Detaljer</a>
           </div>
         </article>
         <?php endforeach; ?>
@@ -145,7 +145,7 @@
         </div>
       <?php unset($_SESSION['contact_error']); endif; ?>
 
-      <form action="contact/send" method="POST" class="contact__form">
+      <form action="<?= url('contact/send') ?>" method="POST" class="contact__form">
         <div class="form__group">
           <label for="name">Navn</label>
           <input type="text" id="name" name="name" placeholder="Dit fulde navn" required>

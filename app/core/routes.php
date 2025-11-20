@@ -6,4 +6,4 @@ $router->get('movies', 'MovieController@index');
 $router->get('admin','AdminController@index');
 $router->post('contact/send', 'ContactController@send');
 // Detalje-side for én film
-$router->get('movie', 'MovieController@show');
+$router->get('movieDetail', 'MovieController@show');

@@ -265,3 +265,208 @@
     /* Empty state */
     .empty { padding: 16px; border-radius: 12px; background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.08); color: var(--muted); }
   
+
+    /* Movie detail side css */
+    .movie-detail {
+  padding: 40px 20px 60px;
+}
+
+.movie-detail__layout {
+  display: grid;
+  grid-template-columns: minmax(0, 320px) minmax(0, 1fr);
+  gap: 32px;
+  align-items: flex-start;
+}
+
+.movie-detail__poster img {
+  width: 100%;
+  max-width: 360px;
+  display: block;
+  border-radius: 18px;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.5);
+  object-fit: cover;
+}
+
+.movie-detail__poster--placeholder {
+  width: 100%;
+  max-width: 360px;
+  aspect-ratio: 2 / 3;
+  border-radius: 18px;
+  border: 1px dashed rgba(255, 255, 255, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+  opacity: 0.7;
+}
+
+.movie-detail__content {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.movie-detail__backlink {
+  font-size: 0.9rem;
+  opacity: 0.8;
+  text-decoration: none;
+  margin-bottom: 4px;
+}
+
+.movie-detail__backlink:hover {
+  text-decoration: underline;
+}
+
+.movie-detail__title {
+  font-size: clamp(1.8rem, 2vw + 1rem, 2.4rem);
+  margin: 0;
+}
+
+.movie-detail__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  font-size: 0.9rem;
+  opacity: 0.85;
+}
+
+.movie-detail__meta span::before {
+  content: "•";
+  margin: 0 6px 0 0;
+}
+
+.movie-detail__meta span:first-child::before {
+  content: "";
+  margin: 0;
+}
+
+.movie-detail__description {
+  margin-top: 8px;
+  line-height: 1.6;
+  max-width: 60ch;
+}
+
+.movie-detail__cta {
+  margin-top: 16px;
+}
+
+.movie-detail__showtimes {
+  margin-top: 48px;
+}
+
+.movie-detail__showtimes h2 {
+  font-size: 1.4rem;
+  margin-bottom: 16px;
+}
+
+.movie-detail__no-showtimes {
+  opacity: 0.8;
+  font-size: 0.95rem;
+}
+
+/* Showtimes cards */
+
+.showtimes-list {
+  display: grid;
+  gap: 12px;
+}
+
+.showtime-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 16px;
+  border-radius: 14px;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(6px);
+  gap: 16px;
+}
+
+.showtime-card__main {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.showtime-card__time {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  font-size: 0.9rem;
+}
+
+.showtime-card__date {
+  font-weight: 600;
+}
+
+.showtime-card__clock {
+  opacity: 0.85;
+}
+
+.showtime-card__info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 0.95rem;
+}
+
+.showtime-card__room {
+  font-weight: 500;
+}
+
+.showtime-card__format {
+  font-size: 0.85rem;
+  opacity: 0.85;
+}
+
+.showtime-card__actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.showtime-card__price {
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+/* Reuse existing .btn styles – extra small variant */
+.btn--small {
+  padding: 6px 12px;
+  font-size: 0.85rem;
+}
+
+/* Error state */
+.movie-detail__error {
+  padding: 40px 0;
+  text-align: center;
+}
+
+.movie-detail__error h1 {
+  margin-bottom: 8px;
+}
+
+/* Responsive */
+
+@media (max-width: 768px) {
+  .movie-detail__layout {
+    grid-template-columns: 1fr;
+  }
+
+  .movie-detail__poster img,
+  .movie-detail__poster--placeholder {
+    max-width: 280px;
+    margin: 0 auto;
+  }
+
+  .showtime-card {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .showtime-card__actions {
+    width: 100%;
+    justify-content: space-between;
+  }
+}

@@ -5,11 +5,16 @@ class MovieController
     public function index(): array
     {
         $movies = Movie::all();
+        $nowPlaying = Movie::nowPlaying();
+        $coming     = Movie::comingSoon(); 
+
 
         return [
-            'view' => __DIR__ . '/../views/movie.php',
+            'view' => __DIR__ . '/../views/movies.php',
             'data' => [
                 'movies' => $movies,
+                'nowPlaying' => $nowPlaying,
+                'comingSoon'     => $coming,
             ],
         ];
     }
@@ -27,7 +32,7 @@ class MovieController
         $screenings = Screening::findByMovie((int)$id);
 
         return [
-            'view' => __DIR__ . '/../views/movie.php',
+            'view' => __DIR__ . '/../views/movieDetail.php',
             'data' => [
                 'movie' => $movie,
                 'screenings' => $screenings,
