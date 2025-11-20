@@ -16,16 +16,13 @@
     <section class="movie-detail__layout">
 
       <div class="movie-detail__poster">
-        <?php if (!empty($movie['poster_url'])): ?>
-          <img 
-            src="<?= url($movie['poster_url']) ?>" 
-            alt="Plakat for <?= e($movie['title']) ?>"
-          >
-        <?php else: ?>
-          <div class="movie-detail__poster--placeholder">
-            <span>Ingen plakat</span>
-          </div>
-        <?php endif; ?>
+       <?php if (!empty($movie['poster_url'])): ?>
+            <img class="card__media" src="<?= e($movie['poster_url']) ?>" alt="Plakat for <?= e($movie['title']) ?>">
+          <?php else: ?>
+            <div class="card__media" aria-hidden="true"></div>
+          <?php endif; ?>
+
+        
       </div>
 
       <div class="movie-detail__content">

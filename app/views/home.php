@@ -49,7 +49,7 @@
 
           <div class="card__actions">
             <a class="btn btn--primary" href="#today">Billetter</a>
-            <a class="btn btn--ghost" href="<?= url('movie?id=' . $np['id']) ?>">Detaljer</a>
+            <a class="btn btn--ghost" href="<?= url('movieDetail', ['id'=>(int)$np['movieID']]) ?>">Detaljer</a>
           </div>
         </article>
         <?php endforeach; ?>
@@ -116,7 +116,7 @@
 
           <div class="card__actions">
             <a class="btn btn--primary" href="#today">Billetter</a>
-            <a class="btn btn--ghost" href="<?= url('movie?id=' . $cs['id']) ?>">Detaljer</a>
+            <a class="btn btn--ghost" href="<?= url('movieDetail', ['id'=>(int)$cs['movieID']]) ?>">Detaljer</a>
           </div>
         </article>
         <?php endforeach; ?>

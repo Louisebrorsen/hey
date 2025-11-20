@@ -1,6 +1,5 @@
 <?php
 
-require_once __DIR__ . '/../core/Database.php';
 
 class Screening
 {
@@ -12,7 +11,7 @@ class Screening
             SELECT * 
             FROM screening 
             WHERE movieid = :movie
-            ORDER BY starttime ASC
+            ORDER BY screening_time ASC
         ";
 
         $stmt = $db->prepare($sql);

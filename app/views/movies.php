@@ -1,4 +1,5 @@
-<section>
+<div class="main">
+  <section>
     <h2>Nu i biografen</h2>
      <div class="grid">
         <?php foreach ($nowPlaying as $np): ?>
@@ -21,7 +22,7 @@
 
           <div class="card__actions">
             <a class="btn btn--primary" href="#today">Billetter</a>
-            <a class="btn btn--ghost" href="#">Detaljer</a>
+            <a class="btn btn--ghost" href="<?= url('movieDetail', ['id'=>(int)$np['movieID']]) ?>">Detaljer</a>
           </div>
         </article>
         <?php endforeach; ?>
@@ -49,9 +50,10 @@
 
           <div class="card__actions">
             <a class="btn btn--primary" href="#today">Billetter</a>
-            <a class="btn btn--ghost" href="#">Detaljer</a>
+            <a class="btn btn--ghost" href="<?= url('movieDetail', ['id'=>(int)$cs['movieID']]) ?>">Detaljer</a>
           </div>
         </article>
         <?php endforeach; ?>
       </div>
 </section>
+</div>
