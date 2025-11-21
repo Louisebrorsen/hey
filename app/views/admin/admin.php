@@ -1,5 +1,5 @@
 <?php
-// fra routeren får du: $data['tab'], $data['movies'] osv.
+
 $tab = $data['tab'] ?? 'movies';
 $base = __DIR__ . '/';
 ?>
