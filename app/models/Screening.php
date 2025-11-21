@@ -7,11 +7,11 @@ class Screening
     {
         $db = Database::connect();
 
-        $sql = "
-            SELECT * 
-            FROM screening 
-            WHERE movieid = :movie
-            ORDER BY screening_time ASC
+       $sql = "
+        SELECT * 
+        FROM screening 
+        WHERE movieID = :movie
+        ORDER BY screening_time ASC
         ";
 
         $stmt = $db->prepare($sql);

@@ -1,42 +1,51 @@
 <?php
-
+require_once __DIR__ . '/../core/bootstrap.php';
 class MovieController
 {
+    private MovieRepository $movieRepository;
+    private ScreeningRepository $screeningRepository;
+
+    public function __construct()
+    {
+        $db = Database::connect(); // din Database singleton
+
+        $this->movieRepository     = new MovieRepository($db);
+        $this->screeningRepository = new ScreeningRepository($db);
+    }
+
     public function index(): array
-    {
-        $movies = Movie::all();
-        $nowPlaying = Movie::nowPlaying();
-        $coming     = Movie::comingSoon(); 
+{
+    $movies     = $this->movieRepository->getAll();
+    $nowPlaying = $this->movieRepository->getNowPlaying();
+    $coming     = $this->movieRepository->getComingSoon();
 
+    return [
+        'view' => __DIR__ . '/../views/movies.php',
+        'data' => [
+            'movies'     => $movies,
+            'nowPlaying' => $nowPlaying,
+            'comingSoon' => $coming,
+        ],
+    ];
+}
+public function show(): array
+{
+    $id = $_GET['id'] ?? null;
 
-        return [
-            'view' => __DIR__ . '/../views/movies.php',
-            'data' => [
-                'movies' => $movies,
-                'nowPlaying' => $nowPlaying,
-                'comingSoon'     => $coming,
-            ],
-        ];
+    if (!$id) {
+        http_response_code(400);
+        die('Missing movie ID.');
     }
 
-    public function show(): array
-    {
-        $id = $_GET['id'] ?? null;
+    $movie      = $this->movieRepository->getById((int)$id);
+    $screenings = $this->screeningRepository->getByMovie((int)$id);
 
-        if (!$id) {
-            http_response_code(400);
-            die('Missing movie ID.');
-        }
-
-        $movie = Movie::find((int)$id);
-        $screenings = Screening::findByMovie((int)$id);
-
-        return [
-            'view' => __DIR__ . '/../views/movieDetail.php',
-            'data' => [
-                'movie' => $movie,
-                'screenings' => $screenings,
-            ],
-        ];
-    }
+    return [
+        'view' => __DIR__ . '/../views/movieDetail.php',
+        'data' => [
+            'movie'      => $movie,
+            'screenings' => $screenings,
+        ],
+    ];
+}
 }
