@@ -5,7 +5,7 @@ session_start();
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-// Loader alt (Router, Database, Controllers, Models)
+
 require_once __DIR__ . '/../app/core/bootstrap.php';
 
 $router = new Router();

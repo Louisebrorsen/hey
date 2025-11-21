@@ -34,4 +34,19 @@ class AuthService{
 
         return true;
     }
+
+    public function logout()
+    {
+        session_unset();
+        session_destroy();
+    }
+
+    public function isLoggedIn(): bool
+    {
+        return isset($_SESSION['user']);
+    }
+    public function isAdmin(): bool
+    {
+        return $this->isLoggedIn() && ($_SESSION['user']['role'] ?? '') === 'admin';
+    }
 }
