@@ -147,6 +147,7 @@
       <?php unset($_SESSION['contact_error']); endif; ?>
 
       <form action="<?= url('contact/send') ?>" method="POST" class="contact__form">
+         <?= csrf_input() ?>
         <div class="form__group">
           <label for="name">Navn</label>
           <input type="text" id="name" name="name" placeholder="Dit fulde navn" required>

@@ -22,3 +22,14 @@ function cleanInput(string $data): string {
     return $data;
 }
 
+function generateCSRFToken() 
+{ if (empty($_SESSION['csrf_token'])) 
+    { 
+        $_SESSION['csrf_token'] = bin2hex(random_bytes(32)); 
+    } 
+    return $_SESSION['csrf_token']; 
+}
+
+function csrf_input() {
+    return '<input type="hidden" name="csrf_token" value="' . e(generateCSRFToken()) . '">';
+}
