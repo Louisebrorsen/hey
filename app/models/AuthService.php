@@ -24,7 +24,7 @@ class AuthService{
 
         // Login lykkedes: gem bruger-info i session
         $_SESSION['user'] = [
-            'id'    => $user['id'],
+            'userID'    => $user['userID'],
             'email' => $user['email'],
             'role'  => $user['role'] ?? 'user',
         ];
