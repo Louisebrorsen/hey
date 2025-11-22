@@ -1,4 +1,3 @@
-
 <main class="container" style="max-width:520px;margin:auto;padding:24px;">
   <h1>Opret bruger</h1>
   <form method="post" style="display:grid;gap:12px;">

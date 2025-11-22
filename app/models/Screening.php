@@ -1,6 +1,5 @@
 <?php
 
-
 class Screening
 {
     public static function findByMovie(int $movieId): array

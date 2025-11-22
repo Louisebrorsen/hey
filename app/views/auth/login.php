@@ -1,4 +1,3 @@
-
 <main class="container" style="padding:40px 20px; max-width:480px; margin:auto; text-align:left;">
     
   <h1>Login</h1>
