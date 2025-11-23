@@ -26,7 +26,7 @@ class ContactController
             ]);
 
             $_SESSION['contact_success'] = "Din besked er sendt. Tak for din henvendelse!";
-            header('Location: /hey/public/#contact');
+            header('Location: #contact');
             exit();
         }
         
@@ -51,7 +51,7 @@ class ContactController
 
         if (!empty($error)) {
             $_SESSION['contact_error'] = implode("<br>", $error);
-            header('Location: /hey/public/#contact');
+            header('Location: ?url=#contact');
             exit();
         }
 
@@ -65,8 +65,10 @@ class ContactController
         ]);
 
         $_SESSION['contact_success'] = "Din besked er sendt. Tak for din henvendelse!";
-        header('Location: /hey/public/#contact');
+        header('Location: ?url=#contact');
         exit();
+
+        
     }
 }
 

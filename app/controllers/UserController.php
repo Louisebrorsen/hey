@@ -1,5 +1,4 @@
 <?php
-  
 class UserController
 {
     private AuthService $auth;
@@ -32,6 +31,8 @@ class UserController
             ],
         ];
     }
+
+
 }
  
 

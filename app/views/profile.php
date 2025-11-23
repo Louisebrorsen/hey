@@ -1,6 +1,6 @@
 <?php
 $user = $data['user'] ?? [];
-
+$role=$user['role'] ?? '';
 $firstName = $user['firstName'] ?? '';
 $lastName  = $user['lastName'] ?? '';
 $name      = trim($firstName . ' ' . $lastName);
