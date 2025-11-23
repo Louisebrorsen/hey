@@ -15,5 +15,7 @@ $router->get('logout', 'AuthController@logout');
 $router->get('register', 'AuthController@showRegister');
 $router->post('register', 'AuthController@register');
 
+$router->get('profile', 'UserController@profile');
+
 //admin router 
 $router->get('admin', 'AdminController@index');

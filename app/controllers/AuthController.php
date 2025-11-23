@@ -116,7 +116,6 @@ class AuthController
                 $errors['confirm'] = 'Adgangskoderne matcher ikke.';
             }
 
-            // Hvis ingen valideringsfejl, forsøg at oprette bruger
             if (!$errors) {
                 $pdo = Database::connect();
 
@@ -156,6 +155,19 @@ class AuthController
                 'errors' => $errors,
                 'result' => $result,
             ],
+        ];
+    }
+
+    public function profile(): array
+    {
+        if (!$this->auth->isLoggedIn()) {
+            header("Location: ?url=login");
+            exit;
+        }
+
+        return [
+            'view' => __DIR__ . '/../views/profile.php',
+            'data' => []
         ];
     }
 }

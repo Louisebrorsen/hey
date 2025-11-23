@@ -8,7 +8,12 @@ class AuthService{
 
     public function login(string $email, string $password)
     {
-        $stmt = $this->pdo->prepare("SELECT * FROM user WHERE email = :email");
+        $stmt = $this->pdo->prepare("
+            SELECT userID, firstName, lastName, email, password
+            FROM user
+            WHERE email = :email
+            LIMIT 1
+        ");
         $stmt->execute(['email' => $email]);
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -24,13 +29,17 @@ class AuthService{
 
         // Login lykkedes: gem bruger-info i session
         $_SESSION['user'] = [
-            'userID'    => $user['userID'],
-            'email' => $user['email'],
-            'role'  => $user['role'] ?? 'user',
+            'userID'    => (int) $user['userID'],
+            'firstName' => $user['firstName'] ?? '',
+            'lastName'  => $user['lastName'] ?? '',
+            'email'     => $user['email'] ?? '',
+            'role'      => $user['role'] ?? 'user',
         ];
 
         // For ekstra sikkerhed: giv session nyt id efter login
-        session_regenerate_id(true);
+        if (session_status() === PHP_SESSION_ACTIVE) {
+            session_regenerate_id(true);
+        }
 
         return true;
     }
