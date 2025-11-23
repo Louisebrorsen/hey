@@ -5,12 +5,12 @@ $firstName = $user['firstName'] ?? '';
 $lastName  = $user['lastName'] ?? '';
 $name      = trim($firstName . ' ' . $lastName);
 $email     = $user['email'] ?? '';
+var_dump($_SESSION['user']);
 ?>
 
 <main class="profile">
   <div class="wrap">
     <section class="p-grid">
-      <!-- Left column: Account + Bookings -->
       <div class="stack" style="display:grid; gap:18px;">
         <article class="p-card">
           <div class="p-card__body">
