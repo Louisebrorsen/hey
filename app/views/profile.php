@@ -5,7 +5,6 @@ $firstName = $user['firstName'] ?? '';
 $lastName  = $user['lastName'] ?? '';
 $name      = trim($firstName . ' ' . $lastName);
 $email     = $user['email'] ?? '';
-var_dump($_SESSION['user']);
 ?>
 
 <main class="profile">

@@ -72,4 +72,6 @@ class Movie
         $stmt->execute();
         return $stmt->fetchAll();
     }
+
+   
 }

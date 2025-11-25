@@ -31,10 +31,10 @@ class MovieRepository
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    // Henter kommende film
+   
     public function getComingSoon(): array
     {
-        // TODO: skriv din egen logik/WHERE
+        
         $sql = "SELECT * FROM movie WHERE released>CURDATE()"; 
 
         $stmt = $this->pdo->prepare($sql);
@@ -43,10 +43,10 @@ class MovieRepository
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    // Hent en enkelt film via id (til detaljesiden)
+   
     public function getById(int $id): ?array
     {
-        $sql = "SELECT * FROM movie WHERE movieID = :id"; // TILPAS kolonnenavn!
+        $sql = "SELECT * FROM movie WHERE movieID = :id"; 
 
         $stmt = $this->pdo->prepare($sql);
         $stmt->bindValue(':id', $id, PDO::PARAM_INT);
@@ -55,5 +55,31 @@ class MovieRepository
         $movie = $stmt->fetch(PDO::FETCH_ASSOC);
 
         return $movie ?: null;
+    }
+
+    public function create(array $data): int
+    {
+        $title = trim($data['title'] ?? '');
+        if ($title === '') {
+            return 0;
+        }
+
+        $released = trim($data['released'] ?? '');
+        $released = $released !== '' ? $released : null;
+
+        $sql = "INSERT INTO movie (title, poster_url, description, released, duration_min, age_limit)
+                VALUES (:title, :poster, :descr, :released, :duration, :age)";
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([
+            ':title'    => $title,
+            ':poster'   => $data['poster_url'] ?? null,
+            ':descr'    => $data['description'] ?? null,
+            ':released' => $released,
+            ':duration' => (int)($data['duration_min'] ?? 0),
+            ':age'      => (int)($data['age_limit'] ?? 0),
+        ]);
+
+        return (int)$this->pdo->lastInsertId();
     }
 }

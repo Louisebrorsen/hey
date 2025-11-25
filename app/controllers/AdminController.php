@@ -1,9 +1,9 @@
 <?php
- class AdminController
+class AdminController
 {
+    private AuthService $auth;
     private MovieRepository $movieRepo;
     private ScreeningRepository $screeningRepo;
-    private AuthService $auth;
 
     public function __construct()
     {
@@ -21,34 +21,46 @@
         $this->screeningRepo = new ScreeningRepository($db);
     }
 
+    // Standard-tab: Film (opret ny)
     public function index(): array
     {
-        $tab = $_GET['tab'] ?? 'movies';
-        $data = [
-            'tab' => $tab,
-        ];
-
-        switch ($tab) {
-            case 'movies':
-                $data['movies'] = $this->movieRepo->getAll();
-                break;
-
-            case 'showings':
-                // $data['showings'] = $this->screeningRepo->getAll();
-                break;
-
-            case 'rooms':
-                // $data['rooms'] = $this->roomRepo->getAll();
-                break;
-
-            case 'company':
-                // $data['company'] = $this->companyRepo->getInfo();
-                break;
-        }
-
         return [
             'view' => __DIR__ . '/../views/admin/admin.php',
-            'data' => $data,
+            'data' => [
+                'tab'    => 'movie',
+            ],
+        ];
+    }
+
+    public function rooms(): array
+    {
+        return [
+            'view' => __DIR__ . '/../views/admin/admin.php',
+            'data' => [
+                'tab' => 'rooms',
+            ],
+        ];
+    }
+
+    public function showtimes(): array
+    {
+        return [
+            'view' => __DIR__ . '/../views/admin/admin.php',
+            'data' => [
+                'tab'       => 'showtimes',
+                'showtimes' => $this->screeningRepo->getAll(), // hvis du bruger det
+            ],
+        ];
+    }
+
+    public function allMovies(): array
+    {
+        return [
+            'view' => __DIR__ . '/../views/admin/admin.php',
+            'data' => [
+                'tab'    => 'allMovies',
+                'movies' => $this->movieRepo->getAll(),
+            ],
         ];
     }
 }

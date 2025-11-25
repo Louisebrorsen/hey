@@ -1,7 +1,7 @@
   <section id="admin-movies" style="margin-top:30px;">
     <!-- Opret ny film -->
     <h2>Opret ny film</h2>
-    <form method="post" enctype="multipart/form-data" action="?page=admin&action=create" style="display:grid; gap:12px; max-width:640px;">
+    <form method="post" enctype="multipart/form-data" action="?url=admin/movie/create" style="display:grid; gap:12px; max-width:640px;">
 
       <label>Titel<br>
         <input type="text" name="title" required style="width:100%; padding:10px; border-radius:10px; border:1px solid rgba(255,255,255,.2); background:rgba(0,0,0,.1); color:inherit;">

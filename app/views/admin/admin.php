@@ -1,6 +1,6 @@
 <?php
 
-$tab = $data['tab'] ?? 'movies';
+$tab = $data['tab'] ?? 'movie';
 $base = __DIR__ . '/';
 ?>
  
@@ -9,17 +9,17 @@ $base = __DIR__ . '/';
     <h1>Admin </h1>
 
     <nav class="tabs">
-      <a class="tablink <?= $tab === 'movies' ? 'is-active' : '' ?>" href="?page=admin&tab=movies">Film</a>
+  <a class="tablink <?= $tab === 'movie' ? 'is-active' : '' ?>" href="?url=admin">Film</a>
 
-      <a class="tablink <?= $tab === 'rooms' ? 'is-active' : '' ?>" href="?page=admin&tab=rooms">Sale & sæder</a>
+  <a class="tablink <?= $tab === 'rooms' ? 'is-active' : '' ?>" href="?url=admin/rooms">Sale & sæder</a>
 
-      <a class="tablink <?= $tab === 'showtimes' ? 'is-active' : '' ?>" href="?page=admin&tab=showtimes">Showtimes</a>
+  <a class="tablink <?= $tab === 'showtimes' ? 'is-active' : '' ?>" href="?url=admin/showtimes">Showtimes</a>
 
-      <a class="tablink <?= $tab === 'allMovies' ? 'is-active' : '' ?>" href="?page=admin&tab=allMovies">Alle film</a>
-    </nav>
+  <a class="tablink <?= $tab === 'allMovies' ? 'is-active' : '' ?>" href="?url=admin/allMovies">Alle film</a>
+</nav>
 
 
-    <?php if ($tab === 'movies'): ?>
+    <?php if ($tab === 'movie'): ?>
             <?php include $base . 'movieAdd.php'; ?>
 
         <?php elseif ($tab === 'rooms'): ?>

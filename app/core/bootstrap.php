@@ -11,6 +11,9 @@ require_once __DIR__ . '/../controllers/AdminController.php';
 require_once __DIR__ . '/../controllers/ContactController.php';
 require_once __DIR__ . '/../controllers/AuthController.php';
 require_once __DIR__ . '/../controllers/UserController.php';
+require_once __DIR__ . '/../controllers/AdminActionController.php';
+require_once __DIR__ . '/../controllers/AdminMovieController.php';
+
 
 // Models
 require_once __DIR__ . '/../models/Movie.php';
@@ -18,5 +21,7 @@ require_once __DIR__ . '/../models/Screening.php';
 require_once __DIR__ . '/../models/MovieRepository.php';
 require_once __DIR__ . '/../models/ScreeningRepository.php';
 require_once __DIR__ . '/../models/AuthService.php';
+require_once __DIR__ . '/../models/UserRepository.php';
+
 
 

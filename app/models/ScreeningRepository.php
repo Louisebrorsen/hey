@@ -26,4 +26,11 @@ class ScreeningRepository
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function getAll(): array
+{
+    $stmt = $this->pdo->prepare("SELECT * FROM screening ORDER BY screening_time ASC");
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
 }
