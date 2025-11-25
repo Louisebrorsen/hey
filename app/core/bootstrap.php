@@ -21,7 +21,6 @@ require_once __DIR__ . '/../models/Screening.php';
 require_once __DIR__ . '/../models/MovieRepository.php';
 require_once __DIR__ . '/../models/ScreeningRepository.php';
 require_once __DIR__ . '/../models/AuthService.php';
-require_once __DIR__ . '/../models/UserRepository.php';
 
 
 
