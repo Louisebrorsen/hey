@@ -1,6 +1,12 @@
 <?php
-
 session_start();
+// Content Security Policy header
+header("Content-Security-Policy: default-src 'self'; img-src 'self' data:; script-src 'self'; style-src 'self' 'unsafe-inline';");
+
+require_once __DIR__ . '/../app/core/bootstrap.php';
+
+$router = new Router();
+$router->dispatch();
 
 error_reporting(E_ALL);
 ini_set('display_errors', 1);

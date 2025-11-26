@@ -20,8 +20,8 @@
         <label>Udgivelsesdato<br>
           <input type="date" name="released" style="width:100%; padding:10px; border-radius:10px; border:1px solid rgba(255,255,255,.2); background:rgba(0,0,0,.1); color:inherit;">
         </label>
-        <label>Plakat (jpg/png/webp) – valgfri<br>
-          <input type="file" name="poster" accept="image/jpeg,image/png,image/webp">
+        <label>Plakat – valgfri<br>
+          <input type="file" name="poster" accept="image/jpeg,image/png,image/pjpeg,image/jpg,image/webp">
         </label>
       </div>
 
