@@ -46,20 +46,48 @@ if (!defined('PUBLIC_PATH')) {
 }
 
 function handle_poster_upload(string $title, ?array $file): ?string {
-  if (!$file || empty($file['name'])) return null;
-  $okTypes = ['image/jpeg' => 'jpg', 'image/png' => 'png', 'image/webp' => 'webp'];
-  $tmp  = $file['tmp_name'];
-  if (!is_uploaded_file($tmp)) return null;
-  $type = mime_content_type($tmp) ?: '';
-  if (!isset($okTypes[$type])) return null;
+    // Ingen fil valgt
+    if (!$file || empty($file['name'])) {
+        return null;
+    }
 
-  $ext = $okTypes[$type];
-  $dir = PUBLIC_PATH . '/uploads/posters';
-  if (!is_dir($dir)) { @mkdir($dir, 0775, true); }
+    $okTypes = [
+        'image/jpeg'  => 'jpg',
+        'image/jpg'   => 'jpg',
+        'image/pjpeg' => 'jpg',
+        'image/png'   => 'png',
+        'image/webp'  => 'webp',
+    ];
 
-  $safe = preg_replace('/[^a-z0-9_-]+/i', '-', strtolower($title));
-  $name = $safe . '-' . substr(sha1(uniqid('', true)), 0, 8) . '.' . $ext;
-  $dest = $dir . '/' . $name;
-  if (!move_uploaded_file($tmp, $dest)) return null;
-  return 'uploads/posters/' . $name; // relativ sti
+    $tmp = $file['tmp_name'] ?? '';
+    if (!is_uploaded_file($tmp)) {
+        return null;
+    }
+
+    // Prøv at finde rigtig mime-type, ellers brug $_FILES['type']
+    $type = mime_content_type($tmp) ?: ($file['type'] ?? '');
+    if (!isset($okTypes[$type])) {
+        return null;
+    }
+
+    $ext = $okTypes[$type];
+
+    // Mappe til plakater
+    $dir = PUBLIC_PATH . '/uploads/posters';
+    if (!is_dir($dir)) {
+        @mkdir($dir, 0775, true);
+    }
+
+    $safe = preg_replace('/[^a-z0-9_-]+/i', '-', strtolower($title));
+    $safe = trim($safe, '-') ?: 'poster';
+
+    $name = $safe . '-' . substr(sha1(uniqid('', true)), 0, 8) . '.' . $ext;
+    $dest = $dir . '/' . $name;
+
+    if (!move_uploaded_file($tmp, $dest)) {
+        return null;
+    }
+
+    // relativ sti til brug i <img src="">
+    return 'uploads/posters/' . $name;
 }
