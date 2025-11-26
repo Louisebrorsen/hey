@@ -26,4 +26,4 @@ $router->get('admin/showtimes', 'AdminController@showtimes');// Showtimes
 $router->get('admin/allMovies', 'AdminController@allMovies');// Alle film
 
 //admin handlinger
-$router->post('admin/movie/create', 'AdminActionsController@createMovie');
+$router->post('admin/create', 'AdminActionsController@movieCreate');

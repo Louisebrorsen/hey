@@ -48,7 +48,7 @@ class AdminController
             'view' => __DIR__ . '/../views/admin/admin.php',
             'data' => [
                 'tab'       => 'showtimes',
-                'showtimes' => $this->screeningRepo->getAll(), // hvis du bruger det
+                'showtimes' => $this->screeningRepo->getAll(), 
             ],
         ];
     }
