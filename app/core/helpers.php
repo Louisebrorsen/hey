@@ -34,7 +34,15 @@ function csrf_input() {
 }
 
 if (!defined('PUBLIC_PATH')) {
-  define('PUBLIC_PATH', __DIR__ . '/public');
+    $root = dirname(__DIR__, 2); // .../hey eller .../normanbrorsen.dk
+
+    if (is_dir($root . '/public')) {
+        // Lokalt (XAMPP-projektet)
+        define('PUBLIC_PATH', $root . '/public');
+    } else {
+        // Simply, hvor webroden hedder public_html
+        define('PUBLIC_PATH', $root . '/public_html');
+    }
 }
 
 function handle_poster_upload(string $title, ?array $file): ?string {
