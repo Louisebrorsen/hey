@@ -47,9 +47,6 @@ class AdminActionsController
 
         $posterRel = handle_poster_upload($title, $_FILES['poster'] ?? null);
 
-        var_dump($_FILES['poster'] ?? null, $posterRel, PUBLIC_PATH);
-exit;
-
         // Hvis upload fejler, skal poster_url IKKE være null (db-fejl)
         if ($posterRel === null) {
             $posterRel = ''; // tom streng godkendes af databasen
@@ -76,8 +73,8 @@ exit;
             $_SESSION['message'] = 'DB-fejl: ' . $e->getMessage();
         }
 
-        /* header('Location: ?url=admin/allMovies');
-        exit; */
+        header('Location: ?url=admin/allMovies');
+        exit;
     }
 
     public function movieEditForm(): array
