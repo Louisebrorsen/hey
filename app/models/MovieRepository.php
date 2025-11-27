@@ -133,4 +133,10 @@ class MovieRepository
             ':id'       => $id,
         ]);
     }
+
+    public function delete(int $id): bool
+{
+    $stmt = $this->pdo->prepare("DELETE FROM movie WHERE movieID = :id");
+    return $stmt->execute([':id' => $id]);
+}
 }

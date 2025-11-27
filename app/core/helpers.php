@@ -33,7 +33,11 @@ function csrf_input() {
     return '<input type="hidden" name="csrf_token" value="' . e(generateCSRFToken()) . '">';
 }
 
-define('PUBLIC_PATH', dirname(__DIR__, 2) . '/public_html');
+// Point PUBLIC_PATH to the application's `public` directory
+// __DIR__ is `app/core`, so dirname(__DIR__, 2) -> project root
+if (!defined('PUBLIC_PATH')) {
+    define('PUBLIC_PATH', dirname(__DIR__, 2) . '/public');
+}
 
 function handle_poster_upload(string $title, ?array $file): ?string {
     // Ingen fil valgt

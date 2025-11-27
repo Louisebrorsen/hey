@@ -23,10 +23,19 @@
 
     <div class="card__actions">
       <a class="btn btn--primary" href="?url=admin/movie/edit&id=<?= (int)$movie['movieID'] ?>">Rediger</a>
-      <a class="btn btn--ghost" href="<?= url('movieDetail', ['id'=>(int)$movie['movieID']]) ?>">Slet</a>
+      <form method="POST" action="?url=admin/movie/delete" onsubmit="return confirm('Vil du slette denne film?')">
+    <input type="hidden" name="id" value="<?= $movie['movieID'] ?>">
+    <button type="submit" class="btn btn--danger">Slet</button>
+</form>
     </div>
   </article>
 <?php endforeach; ?>
       </div>
 </section>
 </main>
+
+
+<form method="POST" action="?url=admin/movie/delete" onsubmit="return confirm('Vil du slette denne film?')">
+    <input type="hidden" name="id" value="<?= $movie['movieID'] ?>">
+    <button type="submit" class="btn btn--danger">Slet</button>
+</form>

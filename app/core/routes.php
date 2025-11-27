@@ -28,5 +28,7 @@ $router->get('admin/allMovies', 'AdminController@allMovies');// Alle film
 //admin handlinger
 $router->post('admin/create', 'AdminActionsController@movieCreate');
 
-$router->get('admin/movie/edit', 'AdminActionsController@movieEditForm');
-$router->post('admin/movie/update', 'AdminActionsController@movieUpdate');
+$router->get('admin/movie/edit', 'AdminMovieController@edit');
+$router->post('admin/movie/update', 'AdminMovieController@update');
+
+$router->post('admin/movie/delete', 'AdminMovieController@delete');
