@@ -1,4 +1,4 @@
-<main>
+<main class="admin-main">
   <section>
     <h2>Nu i biografen</h2>
      <div class="grid">
