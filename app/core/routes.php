@@ -25,10 +25,13 @@ $router->get('admin/rooms', 'AdminController@rooms');        // Sale & sæder
 $router->get('admin/showtimes', 'AdminController@showtimes');// Showtimes
 $router->get('admin/allMovies', 'AdminController@allMovies');// Alle film
 
-//admin handlinger
+//admin handlinger movie
 $router->post('admin/create', 'AdminActionsController@movieCreate');
 
 $router->get('admin/movie/edit', 'AdminMovieController@edit');
 $router->post('admin/movie/update', 'AdminMovieController@update');
 
 $router->post('admin/movie/delete', 'AdminMovieController@delete');
+
+//admin handlinger sale og sæder
+$router->post('admin/rooms/create', 'AdminRoomsController@create');

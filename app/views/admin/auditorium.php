@@ -3,7 +3,7 @@
     <p class="muted small">
       Her kan du senere oprette sale og sædekort. Vi kan lave et simpelt CRUD for sale og et grid-UI til sæder.
     </p>
-    <form method="post" action="?page=admin&action=create_room" style="display:grid;gap:12px;max-width:520px;">
+    <form method="post" action="?url=admin/rooms/create" style="display:grid;gap:12px;max-width:520px;">
       <label>Navn på sal<br><input type="text" name="room_name" required></label>
       <label>Kort kode (fx S1)<br><input type="text" name="room_code" maxlength="8" required></label>
       <label>Rækker × Sæder pr. række (valgfrit til senere sædekort)
