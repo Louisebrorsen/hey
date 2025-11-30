@@ -33,5 +33,7 @@ $router->post('admin/movie/update', 'AdminMovieController@update');
 
 $router->post('admin/movie/delete', 'AdminMovieController@delete');
 
-//admin handlinger sale og sæder
 $router->post('admin/rooms/create', 'AdminRoomsController@create');
+$router->get('admin/rooms/edit', 'AdminRoomsController@edit');
+$router->post('admin/rooms/update', 'AdminRoomsController@update');
+$router->post('admin/rooms/delete', 'AdminRoomsController@delete');

@@ -1,4 +1,5 @@
 <?php 
+/** @var array $data */
 $movie = $data['movie'] ?? null;
 
 if (!$movie) {

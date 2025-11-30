@@ -5,6 +5,8 @@ class AdminController
     private MovieRepository $movieRepo;
     private ScreeningRepository $screeningRepo;
 
+    private AuditoriumRepository $auditoriumRepo;
+
     public function __construct()
     {
         $db = Database::connect(); 
@@ -19,9 +21,10 @@ class AdminController
 
         $this->movieRepo     = new MovieRepository($db);
         $this->screeningRepo = new ScreeningRepository($db);
+        $this->auditoriumRepo = new AuditoriumRepository($db);
     }
 
-    // Standard-tab: Film (opret ny)
+    
     public function index(): array
     {
         return [
@@ -38,6 +41,7 @@ class AdminController
             'view' => __DIR__ . '/../views/admin/admin.php',
             'data' => [
                 'tab' => 'rooms',
+                'rooms' => $this->auditoriumRepo->getAll(),
             ],
         ];
     }
