@@ -49,4 +49,14 @@ class AuditoriumRepository
         $stmt = $this->pdo->prepare("DELETE FROM auditorium WHERE auditoriumID = :id");
         return $stmt->execute([':id' => $id]);
     }
+
+    public function find(int $id): ?array
+{
+    $sql = "SELECT * FROM auditorium WHERE auditoriumID = :id";
+    $stmt = $this->pdo->prepare($sql);
+    $stmt->execute([':id' => $id]);
+
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    return $row ?: null;
+}
 }

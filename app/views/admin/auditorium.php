@@ -6,8 +6,8 @@
 
   <!-- Opret ny sal -->
   <form method="post"
-        action="?url=admin/rooms/create"
-        style="display:grid;gap:12px;max-width:520px;">
+    action="?url=admin/rooms/create"
+    style="display:grid;gap:12px;max-width:520px;">
     <?php if (function_exists('csrf_input')): ?>
       <?= csrf_input(); ?>
     <?php endif; ?>
@@ -34,21 +34,25 @@
         <?php foreach ($rooms as $room): ?>
           <tr>
             <td><?= (int)$room['auditoriumID'] ?></td>
+
             <td><?= e($room['name']) ?></td>
             <td style="display:flex; gap:8px;">
               <a class="btn btn--ghost"
-                 href="?url=admin/rooms/edit&id=<?= (int)$room['auditoriumID'] ?>">
-                Rediger
-              </a>
+                href="?url=admin/rooms/edit&id=<?= $room['auditoriumID'] ?>">
+                Rediger</a>
               <form method="post"
-                    action="?url=admin/rooms/delete"
-                    onsubmit="return confirm('Vil du slette denne sal?')">
+                action="?url=admin/rooms/delete"
+                onsubmit="return confirm('Vil du slette denne sal?')">
                 <?php if (function_exists('csrf_input')): ?>
                   <?= csrf_input(); ?>
                 <?php endif; ?>
                 <input type="hidden" name="id" value="<?= (int)$room['auditoriumID'] ?>">
                 <button type="submit" class="btn btn--danger">Slet</button>
               </form>
+              <a class="btn btn--secondary"
+                href="?url=admin/rooms/view&id=<?= $room['auditoriumID'] ?>">
+                Vis
+              </a>
             </td>
           </tr>
         <?php endforeach; ?>

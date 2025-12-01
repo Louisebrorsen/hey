@@ -471,3 +471,32 @@
   }
 }
 
+.seats-grid {
+    margin-top: 20px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(50px, 1fr));
+    gap: 8px;
+}
+
+.seat-box {
+    background: #333;
+    border: 1px solid #555;
+    padding: 8px;
+    text-align: center;
+    border-radius: 4px;
+    font-size: 14px;
+    transition: 0.2s;
+}
+
+.seat-box:hover {
+    background: #444;
+}
+
+.seat {
+    background: #333;
+    padding: 6px 10px;
+    border-radius: 6px;
+    color: #fff;
+    font-size: 13px;
+}
+

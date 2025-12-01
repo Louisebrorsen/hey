@@ -37,3 +37,5 @@ $router->post('admin/rooms/create', 'AdminRoomsController@create');
 $router->get('admin/rooms/edit', 'AdminRoomsController@edit');
 $router->post('admin/rooms/update', 'AdminRoomsController@update');
 $router->post('admin/rooms/delete', 'AdminRoomsController@delete');
+$router->post('admin/rooms/generateSeats', 'AdminRoomsController@generateSeats');
+$router->get('admin/rooms/view', 'AdminRoomsController@view');
