@@ -36,7 +36,7 @@ function csrf_input() {
 // Point PUBLIC_PATH to the application's `public` directory
 // __DIR__ is `app/core`, so dirname(__DIR__, 2) -> project root
 if (!defined('PUBLIC_PATH')) {
-    define('PUBLIC_PATH', dirname(__DIR__, 2) . '/public');
+    define('PUBLIC_PATH', dirname(__DIR__, 2) . '/public_html');
 }
 
 function handle_poster_upload(string $title, ?array $file): ?string {
