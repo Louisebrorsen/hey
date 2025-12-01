@@ -500,3 +500,53 @@
     font-size: 13px;
 }
 
+.screen {
+    width: 100%;
+    max-width: 500px;
+    margin: 20px auto 10px;
+    text-align: center;
+    padding: 6px 0;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.2);
+    font-size: 13px;
+    opacity: 0.8;
+}
+
+.auditorium-seats {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.seat-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.seat-row-label {
+    width: 40px;
+    text-align: right;
+    font-size: 13px;
+    opacity: 0.7;
+}
+
+.seat-row-seats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(26px, 1fr));
+    gap: 4px;
+}
+
+.seat-box {
+    height: 26px;
+    min-width: 26px;
+    border-radius: 6px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+}
