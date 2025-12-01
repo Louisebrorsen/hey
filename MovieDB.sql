@@ -24,7 +24,6 @@ create table user (
   role varchar(20) not null default 'customer'
 );
 
-
 create table movie(
     movieID int not null primary key auto_increment,
     title varchar(100) not null,
@@ -57,7 +56,6 @@ create table screening(
     foreign key (movieID) references movie(movieID),
     foreign key (auditoriumID) references auditorium(auditoriumID)
 );
-
 
 create table seat(
     seatID int not null primary key auto_increment,

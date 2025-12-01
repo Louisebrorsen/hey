@@ -34,8 +34,3 @@
   </section>
 </main>
 
-
-<form method="POST" action="?url=admin/movie/delete" onsubmit="return confirm('Vil du slette denne film?')">
-  <input type="hidden" name="id" value="<?= $movie['movieID'] ?>">
-  <button type="submit" class="btn btn--danger">Slet</button>
-</form>
