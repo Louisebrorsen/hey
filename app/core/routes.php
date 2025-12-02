@@ -33,9 +33,13 @@ $router->post('admin/movie/update', 'AdminMovieController@update');
 
 $router->post('admin/movie/delete', 'AdminMovieController@delete');
 
+//Sale og sæder
 $router->post('admin/rooms/create', 'AdminRoomsController@create');
 $router->get('admin/rooms/edit', 'AdminRoomsController@edit');
 $router->post('admin/rooms/update', 'AdminRoomsController@update');
 $router->post('admin/rooms/delete', 'AdminRoomsController@delete');
 $router->post('admin/rooms/generateSeats', 'AdminRoomsController@generateSeats');
 $router->get('admin/rooms/view', 'AdminRoomsController@view');
+
+$router->get('admin/screenings', 'AdminScreeningController@index');
+$router->post('admin/screenings', 'AdminScreeningController@store');
