@@ -1,13 +1,16 @@
 <?php
-class ScreeningRepository {
+class ScreeningRepository
+{
     private PDO $db;
 
-    public function __construct(PDO $db) {
+    public function __construct(PDO $db)
+    {
         $this->db = $db;
     }
 
-    public function getAllScreeningsWithDetails(): array {
-    $sql = "
+    public function getAllScreeningsWithDetails(): array
+    {
+        $sql = "
         SELECT s.screeningID,
                s.screening_time,
                s.price,
@@ -18,22 +21,36 @@ class ScreeningRepository {
         JOIN auditorium a ON s.auditoriumID = a.auditoriumID
         ORDER BY s.screening_time ASC
     ";
-    $stmt = $this->db->query($sql);
-    return $stmt->fetchAll(PDO::FETCH_ASSOC);
-}
+        $stmt = $this->db->query($sql);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 
-    public function createScreening(int $movieID, int $auditoriumID, string $screening_time, float $price): bool {
+    public function createScreening(int $movieID, int $auditoriumID, string $screeningTime, float $price): bool
+    {
         $sql = "
-            INSERT INTO screening (movieID, auditoriumID, screening_time, price)
-            VALUES (:movieID, :auditoriumID, :screening_time, :price)
-        ";
-        $stmt = $this->db->prepare($sql);
-        return $stmt->execute([
-            ':movieID' => $movieID,
-            ':auditoriumID' => $auditoriumID,
-            ':screening_time' => $screening_time,
-            ':price' => $price
-        ]);
+        INSERT INTO screening (movieID, auditoriumID, screening_time, price)
+        VALUES (:movieID, :auditoriumID, :screening_time, :price)
+    ";
+
+        try {
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute([
+                ':movieID'        => $movieID,
+                ':auditoriumID'   => $auditoriumID,
+                ':screening_time' => $screeningTime,
+                ':price'          => $price,
+            ]);
+
+            return true; // oprettet
+        } catch (\PDOException $e) {
+            // 23000 = integrity constraint violation (fx UNIQUE constraint brud)
+            if ($e->getCode() === '23000') {
+                return false; // dobbeltbooking / unik-brud
+            }
+
+            // alt andet er en "rigtig" fejl → smid videre
+            throw $e;
+        }
     }
 
     public function getByMovie(int $movieID): array
@@ -56,22 +73,27 @@ class ScreeningRepository {
     }
 
     public function hasConflict(int $auditoriumID, string $screeningTime): bool
-{
-    $sql = "
+    {
+        $sql = "
         SELECT COUNT(*) 
         FROM screening
         WHERE auditoriumID = :auditoriumID
           AND screening_time = :screening_time
     ";
 
-    $stmt = $this->db->prepare($sql);
-    $stmt->execute([
-        ':auditoriumID'   => $auditoriumID,
-        ':screening_time' => $screeningTime,
-    ]);
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([
+            ':auditoriumID'   => $auditoriumID,
+            ':screening_time' => $screeningTime,
+        ]);
 
-    return (bool) $stmt->fetchColumn();
-}
+        return (bool) $stmt->fetchColumn();
+    }
 
-    
+    public function deleteScreening(int $id): bool
+    {
+        $sql = "DELETE FROM screening WHERE screeningID = :id";
+        $stmt = $this->db->prepare($sql);
+        return $stmt->execute([':id' => $id]);
+    }
 }

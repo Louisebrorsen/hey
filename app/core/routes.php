@@ -42,4 +42,5 @@ $router->post('admin/rooms/generateSeats', 'AdminRoomsController@generateSeats')
 $router->get('admin/rooms/view', 'AdminRoomsController@view');
 
 $router->get('admin/showtimes', 'AdminScreeningController@index');   
-$router->post('admin/showtimes', 'AdminScreeningController@store');  // Opret ny screening
+$router->post('admin/showtimes', 'AdminScreeningController@store');  
+$router->post('admin/showtimes/delete', 'AdminScreeningController@delete');

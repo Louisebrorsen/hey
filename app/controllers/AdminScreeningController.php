@@ -37,23 +37,32 @@ class AdminScreeningController
     public function store(): array
     {
         $movieID        = (int)($_POST['movieID'] ?? 0);
-    $auditoriumID   = (int)($_POST['auditoriumID'] ?? 0);
-    $screening_time = $_POST['screening_time'] ?? '';
-    $price          = (float)($_POST['price'] ?? 0);
+        $auditoriumID   = (int)($_POST['auditoriumID'] ?? 0);
+        $screening_time = $_POST['screening_time'] ?? '';
+        $price          = (float)($_POST['price'] ?? 0);
 
-    if (!empty($screening_time)) {
-        $screening_time = str_replace('T', ' ', $screening_time) . ':00';
-    }
+        $error = null;
 
-    if ($movieID && $auditoriumID && $screening_time && $price > 0) {
-        if (!$this->screeningRepo->hasConflict($auditoriumID, $screening_time)) {
-            $this->screeningRepo->createScreening($movieID, $auditoriumID, $screening_time, $price);
-        } else {
-            // Handle conflict, e.g., set an error message or log it
+        if (!empty($screening_time)) {
+            // fra 2025-12-24T19:30 → 2025-12-24 19:30:00
+            $screening_time = str_replace('T', ' ', $screening_time) . ':00';
         }
-    }
 
-        // Hent opdaterede data efter oprettelse
+        if ($movieID && $auditoriumID && $screening_time && $price > 0) {
+            $created = $this->screeningRepo->createScreening(
+                $movieID,
+                $auditoriumID,
+                $screening_time,
+                $price
+            );
+
+            if (!$created) {
+                // DB sagde nej pga UNIQUE constraint → dobbeltbooking
+                $error = 'Der findes allerede en forestilling i denne sal på dette tidspunkt.';
+            }
+        }
+
+        // Hent opdaterede data
         $screenings  = $this->screeningRepo->getAllScreeningsWithDetails();
         $nowPlaying  = $this->movieRepo->getNowPlaying();
         $comingSoon  = $this->movieRepo->getComingSoon();
@@ -67,6 +76,33 @@ class AdminScreeningController
                 'nowPlaying'  => $nowPlaying,
                 'comingSoon'  => $comingSoon,
                 'auditoriums' => $auditoriums,
+                'error'       => $error,
+            ],
+        ];
+    }
+    public function delete(): array
+    {
+        $id = (int)($_POST['id'] ?? 0);
+
+        if ($id > 0) {
+            $this->screeningRepo->deleteScreening($id);
+        }
+
+        // Hent opdaterede data
+        $screenings  = $this->screeningRepo->getAllScreeningsWithDetails();
+        $nowPlaying  = $this->movieRepo->getNowPlaying();
+        $comingSoon  = $this->movieRepo->getComingSoon();
+        $auditoriums = $this->auditoriumRepo->getAll();
+
+        return [
+            'view' => __DIR__ . '/../views/admin/admin.php',
+            'data' => [
+                'tab'         => 'showtimes',
+                'screenings'  => $screenings,
+                'nowPlaying'  => $nowPlaying,
+                'comingSoon'  => $comingSoon,
+                'auditoriums' => $auditoriums,
+                'error'       => null,
             ],
         ];
     }

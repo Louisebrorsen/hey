@@ -90,7 +90,7 @@
           <div class="row__format">
             DKK <?= htmlspecialchars($screening['price']) ?>
           </div>
-          <form method="post" action="?page=admin&action=delete_showtime">
+          <form method="post" action="?url=admin/showtimes/delete">
             <input type="hidden" name="id" value="<?= htmlspecialchars($screening['screeningID']) ?>">
             <button class="btn btn--primary" type="submit" style="background:#ff6b6b;color:#fff;">Slet</button>
           </form>
