@@ -1,4 +1,5 @@
 <?php
+
 class AdminScreeningController
 {
     private ScreeningRepository $screeningRepo;
@@ -7,6 +8,7 @@ class AdminScreeningController
 
     public function __construct()
     {
+        // Brug samme DB setup som resten af projektet
         $db = Database::connect();
 
         $this->screeningRepo  = new ScreeningRepository($db);
@@ -15,14 +17,13 @@ class AdminScreeningController
     }
 
     public function index(): array
-    { 
-     
+    {
         $screenings  = $this->screeningRepo->getAllScreeningsWithDetails();
         $movies      = $this->movieRepo->getAll();
         $auditoriums = $this->auditoriumRepo->getAll();
 
         return [
-            'view' => 'admin/admin',
+            'view' => __DIR__ . '/../views/admin/admin.php',
             'data' => [
                 'tab'         => 'showtimes',
                 'screenings'  => $screenings,
@@ -47,12 +48,13 @@ class AdminScreeningController
             $this->screeningRepo->createScreening($movieID, $auditoriumID, $screening_time, $price);
         }
 
+        // Hent opdaterede data efter oprettelse
         $screenings  = $this->screeningRepo->getAllScreeningsWithDetails();
         $movies      = $this->movieRepo->getAll();
         $auditoriums = $this->auditoriumRepo->getAll();
 
         return [
-            'view' => 'admin/admin',
+            'view' => __DIR__ . '/../views/admin/admin.php',
             'data' => [
                 'tab'         => 'showtimes',
                 'screenings'  => $screenings,
