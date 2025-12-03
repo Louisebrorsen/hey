@@ -36,5 +36,42 @@ class ScreeningRepository {
         ]);
     }
 
+    public function getByMovie(int $movieID): array
+    {
+        $sql = "
+            SELECT s.screeningID,
+                   s.screening_time,
+                   s.price,
+                   a.name AS auditorium_name
+            FROM screening s
+            JOIN auditorium a ON s.auditoriumID = a.auditoriumID
+            WHERE s.movieID = :movieID
+            ORDER BY s.screening_time ASC
+        ";
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([':movieID' => $movieID]);
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function hasConflict(int $auditoriumID, string $screeningTime): bool
+{
+    $sql = "
+        SELECT COUNT(*) 
+        FROM screening
+        WHERE auditoriumID = :auditoriumID
+          AND screening_time = :screening_time
+    ";
+
+    $stmt = $this->db->prepare($sql);
+    $stmt->execute([
+        ':auditoriumID'   => $auditoriumID,
+        ':screening_time' => $screeningTime,
+    ]);
+
+    return (bool) $stmt->fetchColumn();
+}
+
     
 }

@@ -8,7 +8,6 @@ class AdminScreeningController
 
     public function __construct()
     {
-        // Brug samme DB setup som resten af projektet
         $db = Database::connect();
 
         $this->screeningRepo  = new ScreeningRepository($db);
@@ -19,7 +18,8 @@ class AdminScreeningController
     public function index(): array
     {
         $screenings  = $this->screeningRepo->getAllScreeningsWithDetails();
-        $movies      = $this->movieRepo->getAll();
+        $nowPlaying  = $this->movieRepo->getNowPlaying();
+        $comingSoon  = $this->movieRepo->getComingSoon();
         $auditoriums = $this->auditoriumRepo->getAll();
 
         return [
@@ -27,7 +27,8 @@ class AdminScreeningController
             'data' => [
                 'tab'         => 'showtimes',
                 'screenings'  => $screenings,
-                'movies'      => $movies,
+                'nowPlaying'  => $nowPlaying,
+                'comingSoon'  => $comingSoon,
                 'auditoriums' => $auditoriums,
             ],
         ];
@@ -36,21 +37,26 @@ class AdminScreeningController
     public function store(): array
     {
         $movieID        = (int)($_POST['movieID'] ?? 0);
-        $auditoriumID   = (int)($_POST['auditoriumID'] ?? 0);
-        $screening_time = $_POST['screening_time'] ?? '';
-        $price          = (float)($_POST['price'] ?? 0);
+    $auditoriumID   = (int)($_POST['auditoriumID'] ?? 0);
+    $screening_time = $_POST['screening_time'] ?? '';
+    $price          = (float)($_POST['price'] ?? 0);
 
-        if (!empty($screening_time)) {
-            $screening_time = str_replace('T', ' ', $screening_time) . ':00';
-        }
+    if (!empty($screening_time)) {
+        $screening_time = str_replace('T', ' ', $screening_time) . ':00';
+    }
 
-        if ($movieID && $auditoriumID && $screening_time && $price > 0) {
+    if ($movieID && $auditoriumID && $screening_time && $price > 0) {
+        if (!$this->screeningRepo->hasConflict($auditoriumID, $screening_time)) {
             $this->screeningRepo->createScreening($movieID, $auditoriumID, $screening_time, $price);
+        } else {
+            // Handle conflict, e.g., set an error message or log it
         }
+    }
 
         // Hent opdaterede data efter oprettelse
         $screenings  = $this->screeningRepo->getAllScreeningsWithDetails();
-        $movies      = $this->movieRepo->getAll();
+        $nowPlaying  = $this->movieRepo->getNowPlaying();
+        $comingSoon  = $this->movieRepo->getComingSoon();
         $auditoriums = $this->auditoriumRepo->getAll();
 
         return [
@@ -58,7 +64,8 @@ class AdminScreeningController
             'data' => [
                 'tab'         => 'showtimes',
                 'screenings'  => $screenings,
-                'movies'      => $movies,
+                'nowPlaying'  => $nowPlaying,
+                'comingSoon'  => $comingSoon,
                 'auditoriums' => $auditoriums,
             ],
         ];
