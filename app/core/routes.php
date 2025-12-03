@@ -22,7 +22,7 @@ $router->get('profile', 'UserController@profile');
 // Admin tabs
 $router->get('admin', 'AdminController@index');              // Film (standard)
 $router->get('admin/rooms', 'AdminController@rooms');        // Sale & sæder
-$router->get('admin/showtimes', 'AdminController@showtimes');// Showtimes
+$router->get('admin/showtimes', 'AdminController@showtimes'); // Showtimes
 $router->get('admin/allMovies', 'AdminController@allMovies');// Alle film
 
 //admin handlinger movie
@@ -41,5 +41,5 @@ $router->post('admin/rooms/delete', 'AdminRoomsController@delete');
 $router->post('admin/rooms/generateSeats', 'AdminRoomsController@generateSeats');
 $router->get('admin/rooms/view', 'AdminRoomsController@view');
 
-$router->get('admin/screenings', 'AdminScreeningController@index');
-$router->post('admin/screenings', 'AdminScreeningController@store');
+$router->get('admin/showtimes', 'AdminScreeningController@index');   
+$router->post('admin/showtimes', 'AdminScreeningController@store');  // Opret ny screening

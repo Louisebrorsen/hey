@@ -23,6 +23,7 @@ require_once __DIR__ . '/../controllers/UserController.php';
 require_once __DIR__ . '/../controllers/AdminActionController.php';
 require_once __DIR__ . '/../controllers/AdminMovieController.php';
 require_once __DIR__ . '/../controllers/AdminRoomsController.php';
+require_once __DIR__ . '/../controllers/AdminScreeningController.php';
 
 
 

@@ -7,20 +7,20 @@ class ScreeningRepository {
     }
 
     public function getAllScreeningsWithDetails(): array {
-        $sql = "
-            SELECT s.screeningID,
-                   s.screening_time,
-                   s.price,
-                   m.title AS movie_title,
-                   a.name AS auditorium_name
-            FROM screening s
-            JOIN movie m ON s.movieID = m.movieID
-            JOIN auditorium a ON s.auditoriumID = a.auditoriumID
-            ORDER BY s.screening_time ASC
-        ";
-        $stmt = $this->db->query($sql);
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    }
+    $sql = "
+        SELECT s.screeningID,
+               s.screening_time,
+               s.price,
+               m.title AS movie_title,
+               a.name  AS auditorium_name
+        FROM screening s
+        JOIN movie m ON s.movieID = m.movieID
+        JOIN auditorium a ON s.auditoriumID = a.auditoriumID
+        ORDER BY s.screening_time ASC
+    ";
+    $stmt = $this->db->query($sql);
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
 
     public function createScreening(int $movieID, int $auditoriumID, string $screening_time, float $price): bool {
         $sql = "
@@ -35,4 +35,6 @@ class ScreeningRepository {
             ':price' => $price
         ]);
     }
+
+    
 }

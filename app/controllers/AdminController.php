@@ -9,7 +9,7 @@ class AdminController
 
     public function __construct()
     {
-        $db = Database::connect(); 
+        $db = Database::connect();
 
         $this->auth = new AuthService($db);
 
@@ -24,7 +24,7 @@ class AdminController
         $this->auditoriumRepo = new AuditoriumRepository($db);
     }
 
-    
+
     public function index(): array
     {
         return [
@@ -52,7 +52,7 @@ class AdminController
             'view' => __DIR__ . '/../views/admin/admin.php',
             'data' => [
                 'tab'       => 'showtimes',
-                'showtimes' => $this->screeningRepo->getAll(), 
+                'showtimes' => $this->screeningRepo->getAllScreeningsWithDetails(),
             ],
         ];
     }
