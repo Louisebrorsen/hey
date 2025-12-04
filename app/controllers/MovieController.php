@@ -14,7 +14,6 @@ class MovieController
 
     public function index(): array
     {
-        // Kun de metoder du faktisk har:
         $nowPlaying = $this->movieRepository->getNowPlaying();
         $comingSoon = $this->movieRepository->getComingSoon();
 

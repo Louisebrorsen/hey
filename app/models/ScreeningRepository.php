@@ -96,4 +96,44 @@ class ScreeningRepository
         $stmt = $this->db->prepare($sql);
         return $stmt->execute([':id' => $id]);
     }
+
+    public function getTodayScreenings(): array
+    {
+        $sql = "
+        SELECT 
+            s.screeningID,
+            s.screening_time,
+            s.price,
+            m.title AS movie_title,
+            a.name  AS auditorium_name
+        FROM screening s
+        JOIN movie m ON s.movieID = m.movieID
+        JOIN auditorium a ON s.auditoriumID = a.auditoriumID
+        WHERE DATE(s.screening_time) = CURDATE()
+        ORDER BY s.screening_time ASC
+        ";
+
+        $stmt = $this->db->query($sql);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getScreeningById(int $id): ?array
+    {
+        $sql = "
+        SELECT 
+            s.screeningID,
+            s.screening_time,
+            s.price,
+            m.title AS movie_title,
+            a.name  AS auditorium_name
+        FROM screening s
+        JOIN movie m ON s.movieID = m.movieID
+        JOIN auditorium a ON s.auditoriumID = a.auditoriumID
+        WHERE s.screeningID = :id
+        ";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([':id' => $id]);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $result ?: null;
+    }
 }

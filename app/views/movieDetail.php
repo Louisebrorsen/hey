@@ -60,54 +60,38 @@
 
     </section>
 
-    <section id="showtimes" class="movie-detail__showtimes">
+        <section id="showtimes" class="movie-detail__showtimes">
       <h2>Kommende forestillinger</h2>
 
-      <?php if (!empty($screenings)): ?>
-        <div class="showtimes-list">
-          <?php foreach ($screenings as $s): ?>
-            <article class="showtime-card">
-              <div class="showtime-card__main">
-                <div class="showtime-card__time">
-                  <?php
-                    $startsAt = isset($s['starts_at']) ? strtotime($s['starts_at']) : null;
-                  ?>
-                  <?php if ($startsAt): ?>
-                    <span class="showtime-card__date">
-                      <?= e(date('d.m.Y', $startsAt)) ?>
-                    </span>
-                    <span class="showtime-card__clock">
-                      <?= e(date('H:i', $startsAt)) ?>
-                    </span>
-                  <?php endif; ?>
+      <div class="list" role="list">
+        <?php if (!empty($screenings)): ?>
+          <?php foreach ($screenings as $screening): ?>
+            <article class="row" role="listitem">
+              <div>
+                <div class="title">
+                  <?= e($movie['title']) ?>
                 </div>
-                <div class="showtime-card__info">
-                  <?php if (!empty($s['room'])): ?>
-                    <div class="showtime-card__room">Sal <?= e($s['room']) ?></div>
-                  <?php endif; ?>
-                  <?php if (!empty($s['format'])): ?>
-                    <div class="showtime-card__format"><?= e($s['format']) ?></div>
-                  <?php endif; ?>
+                <div class="meta">
+                  Sal <?= e($screening['auditorium_name']) ?> ·
+                  <?= e(date('d.m.Y H:i', strtotime($screening['screening_time']))) ?>
                 </div>
               </div>
-              <div class="showtime-card__actions">
-                <?php if (isset($s['price'])): ?>
-                  <span class="showtime-card__price">
-                    <?= e(number_format($s['price'], 0)) ?> kr.
-                  </span>
-                <?php endif; ?>
-                <a class="btn btn--primary btn--small" href="#">
-                  Book billetter
-                </a>
+
+              <div class="row__format">
+                DKK <?= e($screening['price']) ?>
               </div>
+
+              <a class="btn btn--primary" href="#">
+                Vælg billetter
+              </a>
             </article>
           <?php endforeach; ?>
-        </div>
-      <?php else: ?>
-        <p class="movie-detail__no-showtimes">
-          Der er ingen planlagte forestillinger for denne film lige nu.
-        </p>
-      <?php endif; ?>
+        <?php else: ?>
+          <p class="movie-detail__no-showtimes">
+            Der er ingen planlagte forestillinger for denne film lige nu.
+          </p>
+        <?php endif; ?>
+      </div>
     </section>
 
   <?php endif; ?>

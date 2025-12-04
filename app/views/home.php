@@ -30,28 +30,28 @@
 
       <div class="grid">
         <?php foreach ($nowPlaying as $np): ?>
-        <article class="card">
-          <?php if (!empty($np['poster_url'])): ?>
-            <img class="card__media" src="<?= e($np['poster_url']) ?>" alt="Plakat for <?= e($np['title']) ?>">
-          <?php else: ?>
-            <div class="card__media" aria-hidden="true"></div>
-          <?php endif; ?>
+          <article class="card">
+            <?php if (!empty($np['poster_url'])): ?>
+              <img class="card__media" src="<?= e($np['poster_url']) ?>" alt="Plakat for <?= e($np['title']) ?>">
+            <?php else: ?>
+              <div class="card__media" aria-hidden="true"></div>
+            <?php endif; ?>
 
-          <div class="card__body">
-            <span class="badge">
-              <?= e($np['duration_min']) ?> min · <?= e($np['age_limit']) ?>+
-            </span>
-            <div class="title"><?= e($np['title']) ?></div>
-            <div class="meta">
-              <?= !empty($np['released']) ? e(date('d.m.Y', strtotime($np['released']))) : 'Ukendt premieredato' ?>
+            <div class="card__body">
+              <span class="badge">
+                <?= e($np['duration_min']) ?> min · <?= e($np['age_limit']) ?>+
+              </span>
+              <div class="title"><?= e($np['title']) ?></div>
+              <div class="meta">
+                <?= !empty($np['released']) ? e(date('d.m.Y', strtotime($np['released']))) : 'Ukendt premieredato' ?>
+              </div>
             </div>
-          </div>
 
-          <div class="card__actions">
-            <a class="btn btn--primary" href="#today">Billetter</a>
-            <a class="btn btn--ghost" href="<?= url('movieDetail', ['id'=>(int)$np['movieID']]) ?>">Detaljer</a>
-          </div>
-        </article>
+            <div class="card__actions">
+              <a class="btn btn--primary" href="#today">Billetter</a>
+              <a class="btn btn--ghost" href="<?= url('movieDetail', ['id' => (int)$np['movieID']]) ?>">Detaljer</a>
+            </div>
+          </article>
         <?php endforeach; ?>
       </div>
     </div>
@@ -69,7 +69,29 @@
       </div>
 
       <div class="list" role="list">
-        <!-- Rækker med dagens forestillinger kommer her senere -->
+        <?php if (!empty($todayScreenings)): ?>
+          <?php foreach ($todayScreenings as $screening): ?>
+            <article class="row" role="listitem">
+              <div>
+                <div class="title">
+                  <?= e($screening['movie_title']) ?>
+                </div>
+                <div class="meta">
+                  Sal <?= e($screening['auditorium_name']) ?> ·
+                  <?= e(date('H:i', strtotime($screening['screening_time']))) ?>
+                </div>
+              </div>
+              <div class="row__format">
+                DKK <?= e($screening['price']) ?>
+              </div>
+              <a class="btn btn--primary" href="#">
+                Vælg billetter
+              </a>
+            </article>
+          <?php endforeach; ?>
+        <?php else: ?>
+          <p>Der er ingen planlagte forestillinger i dag.</p>
+        <?php endif; ?>
       </div>
 
       <div class="cta">
@@ -92,34 +114,35 @@
           <h2 class="section__title">Kommende film</h2>
           <p class="section__sub">Forpremierer og næste måneds highlights</p>
         </div>
-<a class="btn btn--ghost" href="<?= url('movies') ?>#coming">
-  Se kommende film
-</a>      </div>
+        <a class="btn btn--ghost" href="<?= url('movies') ?>#coming">
+          Se kommende film
+        </a>
+      </div>
 
       <div class="grid">
         <?php foreach ($comingSoon as $cs): ?>
-        <article class="card">
-          <?php if (!empty($cs['poster_url'])): ?>
-            <img class="card__media" src="<?= e($cs['poster_url']) ?>" alt="Plakat for <?= e($cs['title']) ?>">
-          <?php else: ?>
-            <div class="card__media" aria-hidden="true"></div>
-          <?php endif; ?>
+          <article class="card">
+            <?php if (!empty($cs['poster_url'])): ?>
+              <img class="card__media" src="<?= e($cs['poster_url']) ?>" alt="Plakat for <?= e($cs['title']) ?>">
+            <?php else: ?>
+              <div class="card__media" aria-hidden="true"></div>
+            <?php endif; ?>
 
-          <div class="card__body">
-            <span class="badge">
-              <?= e($cs['duration_min']) ?> min · <?= e($cs['age_limit']) ?>+
-            </span>
-            <div class="title"><?= e($cs['title']) ?></div>
-            <div class="meta">
-              <?= !empty($cs['released']) ? e(date('d.m.Y', strtotime($cs['released']))) : 'Ukendt premieredato' ?>
+            <div class="card__body">
+              <span class="badge">
+                <?= e($cs['duration_min']) ?> min · <?= e($cs['age_limit']) ?>+
+              </span>
+              <div class="title"><?= e($cs['title']) ?></div>
+              <div class="meta">
+                <?= !empty($cs['released']) ? e(date('d.m.Y', strtotime($cs['released']))) : 'Ukendt premieredato' ?>
+              </div>
             </div>
-          </div>
 
-          <div class="card__actions">
-            <a class="btn btn--primary" href="#today">Billetter</a>
-            <a class="btn btn--ghost" href="<?= url('movieDetail', ['id'=>(int)$cs['movieID']]) ?>">Detaljer</a>
-          </div>
-        </article>
+            <div class="card__actions">
+              <a class="btn btn--primary" href="#today">Billetter</a>
+              <a class="btn btn--ghost" href="<?= url('movieDetail', ['id' => (int)$cs['movieID']]) ?>">Detaljer</a>
+            </div>
+          </article>
         <?php endforeach; ?>
       </div>
     </div>
@@ -138,16 +161,18 @@
         <div class="contact_success">
           <?= e($_SESSION['contact_success']) ?>
         </div>
-      <?php unset($_SESSION['contact_success']); endif; ?>
+      <?php unset($_SESSION['contact_success']);
+      endif; ?>
 
       <?php if (!empty($_SESSION['contact_error'])): ?>
         <div class="contact_error">
           <?= e($_SESSION['contact_error']) ?>
         </div>
-      <?php unset($_SESSION['contact_error']); endif; ?>
+      <?php unset($_SESSION['contact_error']);
+      endif; ?>
 
       <form action="<?= url('contact/send') ?>" method="POST" class="contact__form">
-         <?= csrf_input() ?>
+        <?= csrf_input() ?>
         <div class="form__group">
           <label for="name">Navn</label>
           <input type="text" id="name" name="name" placeholder="Dit fulde navn" required>
