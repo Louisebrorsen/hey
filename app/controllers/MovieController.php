@@ -1,10 +1,8 @@
 <?php
-require_once __DIR__ . '/../core/bootstrap.php';
 class MovieController
 {
     private MovieRepository $movieRepository;
     private ScreeningRepository $screeningRepository;
-    private AuditoriumRepository $auditoriumRepository;
 
     public function __construct()
     {
@@ -16,22 +14,19 @@ class MovieController
 
     public function index(): array
     {
-        $screenings   = $this->screeningRepository->getAllScreeningsWithDetails();
-        $nowPlaying   = $this->movieRepository->getNowPlaying();
-        $comingSoon   = $this->movieRepository->getComingSoon();
-        $auditoriums  = $this->auditoriumRepository->getAll();
+        // Kun de metoder du faktisk har:
+        $nowPlaying = $this->movieRepository->getNowPlaying();
+        $comingSoon = $this->movieRepository->getComingSoon();
 
         return [
-            'view' => __DIR__ . '/../views/admin/admin.php',
+            'view' => __DIR__ . '/../views/movies.php',
             'data' => [
-                'tab'         => 'showtimes',
-                'screenings'  => $screenings,
-                'nowPlaying'  => $nowPlaying,
-                'comingSoon'  => $comingSoon,
-                'auditoriums' => $auditoriums,
+                'nowPlaying' => $nowPlaying,
+                'comingSoon' => $comingSoon,
             ],
         ];
     }
+
     public function show(): array
     {
         $id = $_GET['id'] ?? null;

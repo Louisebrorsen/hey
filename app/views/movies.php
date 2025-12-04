@@ -1,8 +1,8 @@
 <main class="admin-main">
   <section>
     <h2>Nu i biografen</h2>
-     <div class="grid">
-        <?php foreach ($nowPlaying as $np): ?>
+    <div class="grid">
+      <?php foreach ($nowPlaying as $np): ?>
         <article class="card">
           <?php if (!empty($np['poster_url'])): ?>
             <img class="card__media" src="<?= e($np['poster_url']) ?>" alt="Plakat for <?= e($np['title']) ?>">
@@ -25,13 +25,14 @@
             <a class="btn btn--ghost" href="<?= url('movieDetail', ['id'=>(int)$np['movieID']]) ?>">Detaljer</a>
           </div>
         </article>
-        <?php endforeach; ?>
-      </div>
-</section>
-<section id="coming">
+      <?php endforeach; ?>
+    </div>
+  </section>
+
+  <section id="coming">
     <h2>Kommende</h2>
-   <div class="grid">
-        <?php foreach ($comingSoon as $cs): ?>
+    <div class="grid">
+      <?php foreach ($comingSoon as $cs): ?>
         <article class="card">
           <?php if (!empty($cs['poster_url'])): ?>
             <img class="card__media" src="<?= e($cs['poster_url']) ?>" alt="Plakat for <?= e($cs['title']) ?>">
@@ -54,7 +55,7 @@
             <a class="btn btn--ghost" href="<?= url('movieDetail', ['id'=>(int)$cs['movieID']]) ?>">Detaljer</a>
           </div>
         </article>
-        <?php endforeach; ?>
-      </div>
-</section>
+      <?php endforeach; ?>
+    </div>
+  </section>
 </main>
