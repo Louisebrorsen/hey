@@ -81,9 +81,10 @@
                 DKK <?= e($screening['price']) ?>
               </div>
 
-              <a class="btn btn--primary" href="#">
-                Vælg billetter
-              </a>
+              <a class="btn btn--primary"
+   href="<?= url('booking', ['screeningID' => (int)$screening['screeningID']]) ?>">
+  Vælg billetter
+</a>
             </article>
           <?php endforeach; ?>
         <?php else: ?>

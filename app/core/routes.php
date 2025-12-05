@@ -44,3 +44,7 @@ $router->get('admin/rooms/view', 'AdminRoomsController@view');
 $router->get('admin/showtimes', 'AdminScreeningController@index');   
 $router->post('admin/showtimes', 'AdminScreeningController@store');  
 $router->post('admin/showtimes/delete', 'AdminScreeningController@delete');
+
+// Booking routes
+$router->get('booking', 'BookingController@show');
+$router->post('booking', 'BookingController@bookSeats');

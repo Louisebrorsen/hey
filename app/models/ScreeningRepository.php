@@ -118,24 +118,26 @@ class ScreeningRepository
     }
 
     public function getScreeningById(int $id): ?array
-    {
-        $sql = "
+{
+    $sql = "
         SELECT 
             s.screeningID,
             s.screening_time,
             s.price,
+            s.movieID,
+            s.auditoriumID,
             m.title AS movie_title,
             a.name  AS auditorium_name
         FROM screening s
         JOIN movie m ON s.movieID = m.movieID
         JOIN auditorium a ON s.auditoriumID = a.auditoriumID
         WHERE s.screeningID = :id
-        ";
-        $stmt = $this->db->prepare($sql);
-        $stmt->execute([':id' => $id]);
-        $result = $stmt->fetch(PDO::FETCH_ASSOC);
-        return $result ?: null;
-    }
+    ";
+    $stmt = $this->db->prepare($sql);
+    $stmt->execute([':id' => $id]);
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    return $result ?: null;
+}
 
     public function getUpcomingScreeningsWithDetails(): array
 {

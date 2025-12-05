@@ -48,8 +48,10 @@
             </div>
 
             <div class="card__actions">
-              <a class="btn btn--primary" href="#today">Billetter</a>
-              <a class="btn btn--ghost" href="<?= url('movieDetail', ['id' => (int)$np['movieID']]) ?>">Detaljer</a>
+<a class="btn btn--primary"
+   href="<?= url('booking', ['screeningID' => (int)$screening['screeningID']]) ?>">
+  Vælg billetter
+</a>              <a class="btn btn--ghost" href="<?= url('movieDetail', ['id' => (int)$np['movieID']]) ?>">Detaljer</a>
             </div>
           </article>
         <?php endforeach; ?>
@@ -84,10 +86,10 @@
               <div class="row__format">
                 DKK <?= e($screening['price']) ?>
               </div>
-              <a class="btn btn--primary" href="#">
-                Vælg billetter
-              </a>
-            </article>
+<a class="btn btn--primary"
+   href="<?= url('booking', ['screeningID' => (int)$screening['screeningID']]) ?>">
+  Vælg billetter
+</a>            </article>
           <?php endforeach; ?>
         <?php else: ?>
           <p>Der er ingen planlagte forestillinger i dag.</p>
@@ -131,8 +133,10 @@
             </div>
 
             <div class="card__actions">
-              <a class="btn btn--primary" href="#today">Billetter</a>
-              <a class="btn btn--ghost" href="<?= url('movieDetail', ['id' => (int)$cs['movieID']]) ?>">Detaljer</a>
+<a class="btn btn--primary"
+   href="<?= url('booking', ['screeningID' => (int)$screening['screeningID']]) ?>">
+  Vælg billetter
+</a>              <a class="btn btn--ghost" href="<?= url('movieDetail', ['id' => (int)$cs['movieID']]) ?>">Detaljer</a>
             </div>
           </article>
         <?php endforeach; ?>
