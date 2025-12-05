@@ -100,4 +100,35 @@
   <?php else: ?>
     <p style="margin-top:8px;">Der er endnu ingen planlagte forestillinger. Opret den første forestilling i formularen ovenfor.</p>
   <?php endif; ?>
+
+
+  <h3 style="margin-top:40px;">Tidligere forestillinger</h3>
+  <?php if (!empty($pastScreenings)): ?>
+    <div class="list">
+      <div class="row" style="font-weight:bold;border-bottom:1px solid rgba(255,255,255,.2);padding-bottom:6px;margin-bottom:6px;">
+        <div>Film &amp; sal</div>
+        <div class="row__format">Pris</div>
+
+      </div>
+
+      <?php foreach ($pastScreenings as $screening): ?>
+        <div class="row">
+          <div>
+            <div class="title">
+              <?= htmlspecialchars($screening['movie_title']) ?>
+            </div>
+            <div class="meta">
+              Sal <?= htmlspecialchars($screening['auditorium_name']) ?> ·
+              <?= htmlspecialchars(date('d.m.Y H:i', strtotime($screening['screening_time']))) ?>
+            </div>
+          </div>
+          <div class="row__format">
+            DKK <?= htmlspecialchars($screening['price']) ?>
+          </div>
+        </div>
+      <?php endforeach; ?>
+    </div>
+  <?php else: ?>
+    <p style="margin-top:8px;">Der er ingen tidligere forestillinger.</p>
+  <?php endif; ?>
 </section>

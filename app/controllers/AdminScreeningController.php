@@ -17,10 +17,11 @@ class AdminScreeningController
 
     public function index(): array
     {
-        $screenings  = $this->screeningRepo->getAllScreeningsWithDetails();
         $nowPlaying  = $this->movieRepo->getNowPlaying();
         $comingSoon  = $this->movieRepo->getComingSoon();
         $auditoriums = $this->auditoriumRepo->getAll();
+        $screenings  = $this->screeningRepo->getUpcomingScreeningsWithDetails();
+        $pastScreenings = $this->screeningRepo->getPasttScreeningsWithDetails();
 
         return [
             'view' => __DIR__ . '/../views/admin/admin.php',
@@ -30,6 +31,7 @@ class AdminScreeningController
                 'nowPlaying'  => $nowPlaying,
                 'comingSoon'  => $comingSoon,
                 'auditoriums' => $auditoriums,
+                'pastScreenings' => $pastScreenings,
             ],
         ];
     }
@@ -63,10 +65,11 @@ class AdminScreeningController
         }
 
         // Hent opdaterede data
-        $screenings  = $this->screeningRepo->getAllScreeningsWithDetails();
         $nowPlaying  = $this->movieRepo->getNowPlaying();
         $comingSoon  = $this->movieRepo->getComingSoon();
         $auditoriums = $this->auditoriumRepo->getAll();
+        $screenings  = $this->screeningRepo->getUpcomingScreeningsWithDetails();
+        $pastScreenings = $this->screeningRepo->getPasttScreeningsWithDetails();
 
         return [
             'view' => __DIR__ . '/../views/admin/admin.php',
@@ -77,6 +80,7 @@ class AdminScreeningController
                 'comingSoon'  => $comingSoon,
                 'auditoriums' => $auditoriums,
                 'error'       => $error,
+                'pastScreenings' => $pastScreenings,
             ],
         ];
     }

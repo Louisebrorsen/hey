@@ -136,4 +136,44 @@ class ScreeningRepository
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
         return $result ?: null;
     }
+
+    public function getUpcomingScreeningsWithDetails(): array
+{
+    $sql = "
+        SELECT 
+            s.screeningID,
+            s.screening_time,
+            s.price,
+            m.title AS movie_title,
+            a.name  AS auditorium_name
+        FROM screening s
+        JOIN movie m ON s.movieID = m.movieID
+        JOIN auditorium a ON s.auditoriumID = a.auditoriumID
+        WHERE s.screening_time >= NOW()
+        ORDER BY s.screening_time ASC
+    ";
+
+    $stmt = $this->db->query($sql);
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+public function getPasttScreeningsWithDetails(): array
+{
+    $sql = "
+        SELECT 
+            s.screeningID,
+            s.screening_time,
+            s.price,
+            m.title AS movie_title,
+            a.name  AS auditorium_name
+        FROM screening s
+        JOIN movie m ON s.movieID = m.movieID
+        JOIN auditorium a ON s.auditoriumID = a.auditoriumID
+        WHERE s.screening_time < NOW()
+        ORDER BY s.screening_time DESC
+    ";
+
+    $stmt = $this->db->query($sql);
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
 }

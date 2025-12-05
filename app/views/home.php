@@ -94,15 +94,7 @@
         <?php endif; ?>
       </div>
 
-      <div class="cta">
-        <div>
-          <div class="title">Klar til at booke?</div>
-          <div class="muted small">
-            Vælg en forestilling ovenfor og fortsæt til sædevalg.
-          </div>
-        </div>
-        <a class="btn btn--primary" href="#">Gå til booking</a>
-      </div>
+      
     </div>
   </section>
 
