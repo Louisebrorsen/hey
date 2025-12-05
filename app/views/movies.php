@@ -21,10 +21,15 @@
           </div>
 
           <div class="card__actions">
-            <a class="btn btn--primary"
-              href="<?= url('booking', ['screeningID' => (int)$screening['screeningID']]) ?>">
-              Vælg billetter
-            </a> <a class="btn btn--ghost" href="<?= url('movieDetail', ['id' => (int)$np['movieID']]) ?>">Detaljer</a>
+            <?php if (!empty($np['next_screening'])): ?>
+              <a class="btn btn--primary"
+                href="<?= url('booking', [
+                        'screeningID' => (int)$np['next_screening']['screeningID']
+                      ]) ?>">
+                Vælg billetter
+              </a>
+            <?php endif; ?>
+            <a class="btn btn--ghost" href="<?= url('movieDetail', ['id' => (int)$np['movieID']]) ?>">Detaljer</a>
           </div>
         </article>
       <?php endforeach; ?>
@@ -53,8 +58,14 @@
           </div>
 
           <div class="card__actions">
-            <a class="btn btn--primary" href="#today">Billetter</a>
-            <a class="btn btn--ghost" href="<?= url('movieDetail', ['id' => (int)$cs['movieID']]) ?>">Detaljer</a>
+            <?php if (!empty($np['next_screening'])): ?>
+              <a class="btn btn--primary"
+                href="<?= url('booking', [
+                        'screeningID' => (int)$np['next_screening']['screeningID']
+                      ]) ?>">
+                Vælg billetter
+              </a>
+            <?php endif; ?> <a class="btn btn--ghost" href="<?= url('movieDetail', ['id' => (int)$cs['movieID']]) ?>">Detaljer</a>
           </div>
         </article>
       <?php endforeach; ?>

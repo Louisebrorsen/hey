@@ -1,4 +1,5 @@
 <?php
+
 /** @var array $movie */
 /** @var array $screenings */
 ?>
@@ -16,13 +17,13 @@
     <section class="movie-detail__layout">
 
       <div class="movie-detail__poster">
-       <?php if (!empty($movie['poster_url'])): ?>
-            <img class="card__media" src="<?= e($movie['poster_url']) ?>" alt="Plakat for <?= e($movie['title']) ?>">
-          <?php else: ?>
-            <div class="card__media" aria-hidden="true"></div>
-          <?php endif; ?>
+        <?php if (!empty($movie['poster_url'])): ?>
+          <img class="card__media" src="<?= e($movie['poster_url']) ?>" alt="Plakat for <?= e($movie['title']) ?>">
+        <?php else: ?>
+          <div class="card__media" aria-hidden="true"></div>
+        <?php endif; ?>
 
-        
+
       </div>
 
       <div class="movie-detail__content">
@@ -41,7 +42,7 @@
 
           <?php if (!empty($movie['released'])): ?>
             <span>
-              Premiere: 
+              Premiere:
               <?= e(date('d.m.Y', strtotime($movie['released']))) ?>
             </span>
           <?php endif; ?>
@@ -60,7 +61,7 @@
 
     </section>
 
-        <section id="showtimes" class="movie-detail__showtimes">
+    <section id="showtimes" class="movie-detail__showtimes">
       <h2>Kommende forestillinger</h2>
 
       <div class="list" role="list">
@@ -81,10 +82,14 @@
                 DKK <?= e($screening['price']) ?>
               </div>
 
-              <a class="btn btn--primary"
-   href="<?= url('booking', ['screeningID' => (int)$screening['screeningID']]) ?>">
-  Vælg billetter
-</a>
+              <<?php if (!empty($np['next_screening'])): ?>
+                <a class="btn btn--primary"
+                href="<?= url('booking', [
+                        'screeningID' => (int)$np['next_screening']['screeningID']
+                      ]) ?>">
+                Vælg billetter
+                </a>
+              <?php endif; ?>
             </article>
           <?php endforeach; ?>
         <?php else: ?>

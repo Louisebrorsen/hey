@@ -17,6 +17,18 @@ class MovieController
         $nowPlaying = $this->movieRepository->getNowPlaying();
         $comingSoon = $this->movieRepository->getComingSoon();
 
+        foreach ($nowPlaying as &$movie) {
+            $movie['next_screening'] = $this->screeningRepository
+            ->getNextScreeningForMovie((int)$movie['movieID']);
+        }
+        unset($movie);
+
+        foreach ($comingSoon as &$movie) {
+            $movie['next_screening'] = $this->screeningRepository
+            ->getNextScreeningForMovie((int)$movie['movieID']);
+        }
+        unset($movie);
+
         return [
             'view' => __DIR__ . '/../views/movies.php',
             'data' => [

@@ -118,8 +118,8 @@ class ScreeningRepository
     }
 
     public function getScreeningById(int $id): ?array
-{
-    $sql = "
+    {
+        $sql = "
         SELECT 
             s.screeningID,
             s.screening_time,
@@ -133,15 +133,15 @@ class ScreeningRepository
         JOIN auditorium a ON s.auditoriumID = a.auditoriumID
         WHERE s.screeningID = :id
     ";
-    $stmt = $this->db->prepare($sql);
-    $stmt->execute([':id' => $id]);
-    $result = $stmt->fetch(PDO::FETCH_ASSOC);
-    return $result ?: null;
-}
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([':id' => $id]);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $result ?: null;
+    }
 
     public function getUpcomingScreeningsWithDetails(): array
-{
-    $sql = "
+    {
+        $sql = "
         SELECT 
             s.screeningID,
             s.screening_time,
@@ -155,13 +155,13 @@ class ScreeningRepository
         ORDER BY s.screening_time ASC
     ";
 
-    $stmt = $this->db->query($sql);
-    return $stmt->fetchAll(PDO::FETCH_ASSOC);
-}
+        $stmt = $this->db->query($sql);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 
-public function getPasttScreeningsWithDetails(): array
-{
-    $sql = "
+    public function getPasttScreeningsWithDetails(): array
+    {
+        $sql = "
         SELECT 
             s.screeningID,
             s.screening_time,
@@ -175,7 +175,23 @@ public function getPasttScreeningsWithDetails(): array
         ORDER BY s.screening_time DESC
     ";
 
-    $stmt = $this->db->query($sql);
-    return $stmt->fetchAll(PDO::FETCH_ASSOC);
-}
+        $stmt = $this->db->query($sql);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getNextScreeningForMovie(int $movieID): ?array
+    {
+        $sql = "
+        SELECT screeeningID, screening_time
+        FORM screening
+        WHERE movieID = :movieID
+        AND screening_time >= NOW()
+        ORDER BY screening_time ASC
+        LIMIT 1
+    ";  
+    $stmt = $this->db->prepare($sql);
+    $stmt->execute([':movieID'=>$movieID]);
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    return $result ?: null;
+    }       
 }

@@ -48,10 +48,15 @@
             </div>
 
             <div class="card__actions">
-<a class="btn btn--primary"
-   href="<?= url('booking', ['screeningID' => (int)$screening['screeningID']]) ?>">
-  Vælg billetter
-</a>              <a class="btn btn--ghost" href="<?= url('movieDetail', ['id' => (int)$np['movieID']]) ?>">Detaljer</a>
+              <?php if (!empty($np['next_screening'])): ?>
+                <a class="btn btn--primary"
+                  href="<?= url('booking', [
+                          'screeningID' => (int)$np['next_screening']['screeningID']
+                        ]) ?>">
+                  Vælg billetter
+                </a>
+              <?php endif; ?>
+              <a class="btn btn--ghost" href="<?= url('movieDetail', ['id' => (int)$np['movieID']]) ?>">Detaljer</a>
             </div>
           </article>
         <?php endforeach; ?>
@@ -86,17 +91,18 @@
               <div class="row__format">
                 DKK <?= e($screening['price']) ?>
               </div>
-<a class="btn btn--primary"
-   href="<?= url('booking', ['screeningID' => (int)$screening['screeningID']]) ?>">
-  Vælg billetter
-</a>            </article>
+              <a class="btn btn--primary"
+                href="<?= url('booking', ['screeningID' => (int)$screening['screeningID']]) ?>">
+                Vælg billetter
+              </a>
+            </article>
           <?php endforeach; ?>
         <?php else: ?>
           <p>Der er ingen planlagte forestillinger i dag.</p>
         <?php endif; ?>
       </div>
 
-      
+
     </div>
   </section>
 
@@ -133,10 +139,16 @@
             </div>
 
             <div class="card__actions">
-<a class="btn btn--primary"
-   href="<?= url('booking', ['screeningID' => (int)$screening['screeningID']]) ?>">
-  Vælg billetter
-</a>              <a class="btn btn--ghost" href="<?= url('movieDetail', ['id' => (int)$cs['movieID']]) ?>">Detaljer</a>
+              <?php if (!empty($np['next_screening'])): ?>
+                <a class="btn btn--primary"
+                  href="<?= url('booking', [
+                          'screeningID' => (int)$np['next_screening']['screeningID']
+                        ]) ?>">
+                  Vælg billetter
+                </a>
+              <?php endif; ?>
+              <a class="btn btn--ghost" href="<?= url('movieDetail', ['id' => (int)$np['movieID']]) ?>">Detaljer</a>
+
             </div>
           </article>
         <?php endforeach; ?>
