@@ -139,16 +139,15 @@
             </div>
 
             <div class="card__actions">
-              <?php if (!empty($np['next_screening'])): ?>
+              <?php if (!empty($cs['next_screening'])): ?>
                 <a class="btn btn--primary"
                   href="<?= url('booking', [
-                          'screeningID' => (int)$np['next_screening']['screeningID']
+                          'screeningID' => (int)$cs['next_screening']['screeningID']
                         ]) ?>">
                   Vælg billetter
                 </a>
               <?php endif; ?>
-              <a class="btn btn--ghost" href="<?= url('movieDetail', ['id' => (int)$np['movieID']]) ?>">Detaljer</a>
-
+              <a class="btn btn--ghost" href="<?= url('movieDetail', ['id' => (int)$cs['movieID']]) ?>">Detaljer</a>
             </div>
           </article>
         <?php endforeach; ?>

@@ -182,16 +182,20 @@ class ScreeningRepository
     public function getNextScreeningForMovie(int $movieID): ?array
     {
         $sql = "
-        SELECT screeeningID, screening_time
-        FORM screening
-        WHERE movieID = :movieID
-        AND screening_time >= NOW()
-        ORDER BY screening_time ASC
-        LIMIT 1
-    ";  
-    $stmt = $this->db->prepare($sql);
-    $stmt->execute([':movieID'=>$movieID]);
-    $result = $stmt->fetch(PDO::FETCH_ASSOC);
-    return $result ?: null;
-    }       
+            SELECT 
+                s.screeningID,
+                s.screening_time
+            FROM screening s
+            WHERE s.movieID = :movieID
+              AND s.screening_time >= NOW()
+            ORDER BY s.screening_time ASC
+            LIMIT 1
+        ";
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([':movieID' => $movieID]);
+
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $result ?: null;
+    }
 }
