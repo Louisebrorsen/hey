@@ -37,9 +37,11 @@ create table movie(
 create table reservation(
     reservationID int not null primary key auto_increment,
     userID int not null,
+    screeningID int not null,
     reservation_date date not null,
     total_price decimal(10,2) not null,
-    foreign key (userID) references user(userID)
+    foreign key (userID) references user(userID),
+    foreign key (screeningID) references screening(screeningID)
 );
 
 create table auditorium(

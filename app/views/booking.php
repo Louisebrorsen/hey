@@ -1,57 +1,44 @@
-<?php
-/** @var array $screening */
-/** @var array $seats */
-/** @var array $reservedSeatIds */
-?>
+    <section id="showtimes" class="movie-detail__showtimes">
+      <h2>Kommende forestillinger</h2>
 
-<main class="booking container">
-  <h1>Vælg pladser</h1>
+      <div class="list" role="list">
+        <?php if (!empty($screenings) && is_array($screenings)): ?>
+          <?php foreach ($screenings as $screening): ?>
+            <?php
+              $auditoriumName = $screening['auditorium_name'] ?? '';
+              $timeRaw        = $screening['screening_time'] ?? null;
+              $price          = $screening['price'] ?? '';
+              $dateFormatted  = $timeRaw ? date('d.m.Y H:i', strtotime($timeRaw)) : '';
+            ?>
+            <article class="row" role="listitem">
+              <div>
+                <div class="title">
+                  <?= e($movie['title'] ?? '') ?>
+                </div>
+                <div class="meta">
+                  Sal <?= e($auditoriumName) ?>
+                  <?php if ($dateFormatted): ?>
+                    · <?= e($dateFormatted) ?>
+                  <?php endif; ?>
+                </div>
+              </div>
 
-  <section class="booking__info">
-    <h2><?= e($screening['movie_title']) ?></h2>
-    <p>
-      Sal <?= e($screening['auditorium_name']) ?><br>
-      <?= e(date('d.m.Y H:i', strtotime($screening['screening_time']))) ?><br>
-      Pris: DKK <?= e($screening['price']) ?>
-    </p>
-  </section>
+              <div class="row__format">
+                <?php if ($price !== ''): ?>
+                  DKK <?= e((string)$price) ?>
+                <?php endif; ?>
+              </div>
 
-  <form method="post" action="<?= url('booking') ?>" class="booking__form">
-    <input type="hidden" name="screeningID" value="<?= (int)$screening['screeningID'] ?>">
-
-    <div class="booking__seats">
-      <div class="screen">LÆRRED</div>
-
-      <?php
-      // Gruppér sæder pr. række baseret på rowNo
-      $rows = [];
-      foreach ($seats as $seat) {
-          $rows[$seat['rowNo']][] = $seat;
-      }
-      ?>
-
-      <?php foreach ($rows as $rowNo => $rowSeats): ?>
-        <div class="seat-row">
-          <span class="seat-row__label">Række <?= e($rowNo) ?></span>
-
-          <?php foreach ($rowSeats as $seat): ?>
-            <?php $isReserved = in_array($seat['seatID'], $reservedSeatIds, true); ?>
-            <label class="seat <?= $isReserved ? 'seat--reserved' : '' ?>">
-              <input
-                type="checkbox"
-                name="seats[]"
-                value="<?= (int)$seat['seatID'] ?>"
-                <?= $isReserved ? 'disabled' : '' ?>
-              >
-              <span><?= e($seat['seatNo']) ?></span>
-            </label>
+              <a class="btn btn--primary"
+                 href="<?= url('booking', ['screeningID' => (int)($screening['screeningID'] ?? 0)]) ?>">
+                Vælg billetter
+              </a>
+            </article>
           <?php endforeach; ?>
-        </div>
-      <?php endforeach; ?>
-    </div>
-
-    <div class="booking__actions">
-      <button class="btn btn--primary" type="submit">Bekræft valg</button>
-    </div>
-  </form>
-</main>
+        <?php else: ?>
+          <p class="movie-detail__no-showtimes">
+            Der er ingen planlagte forestillinger for denne film lige nu.
+          </p>
+        <?php endif; ?>
+      </div>
+    </section>
