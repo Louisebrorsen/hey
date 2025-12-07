@@ -550,3 +550,216 @@
     justify-content: center;
     font-size: 11px;
 }
+
+
+/* sædeer til booking */
+
+
+    .breadcrumb {
+        font-size: 0.9rem;
+        color: var(--muted);
+        margin: 0.5rem 0;
+    }
+    .breadcrumb a {
+        color: var(--primary);
+        text-decoration: none;
+    }
+    .breadcrumb a:hover {
+        text-decoration: underline;
+    }
+
+    main {
+        padding: 1rem 0 2rem;
+    }
+
+    h1, h2 {
+        margin-top: 0;
+    }
+
+    .movie-info {
+        padding: 1rem;
+        border-radius: 8px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        margin-bottom: 2rem;
+    }
+
+    .movie-title {
+        margin: 0 0 0.5rem 0;
+    }
+
+    .showtime-info {
+        color: var(--muted);
+        margin: 0.5rem 0;
+    }
+
+    .booking-form {
+        display: grid;
+        gap: 2rem;
+    }
+
+    fieldset {
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 1.5rem;
+        margin: 0;
+    }
+
+    legend {
+        padding: 0 0.5rem;
+        font-weight: bold;
+    }
+
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+    label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: bold;
+    }
+
+    select, input[type="number"] {
+        width: 100%;
+        padding: 0.8rem;
+        border: 1px solid var(--border);
+        border-radius: 4px;
+        font-size: 1rem;
+    }
+
+    .seat-map-container {
+        overflow-x: auto;
+    }
+
+    .screen {
+        background: var(--screen);
+        color: white;
+        text-align: center;
+        padding: 0.5rem;
+        margin: 0 auto 2rem;
+        width: 80%;
+        border-radius: 4px;
+    }
+
+    .seat-map {
+        display: grid;
+        grid-template-columns: repeat(10, 1fr);
+        gap: 0.5rem;
+        margin: 0 auto;
+        max-width: 600px;
+    }
+
+    .seat {
+        position: relative;
+    }
+
+    .seat input[type="checkbox"] {
+        position: absolute;
+        opacity: 0;
+    }
+
+    .seat label {
+        display: block;
+        background: white;
+        border: 2px solid var(--primary);
+        border-radius: 4px;
+        height: 2rem;
+        width: 2rem;
+        text-align: center;
+        line-height: 2rem;
+        cursor: pointer;
+        margin: 0;
+        font-size: 0.8rem;
+    }
+
+    .seat input[type="checkbox"]:checked + label {
+        background: var(--primary);
+        color: white;
+    }
+
+    .seat input[type="checkbox"]:disabled + label {
+        background: var(--muted);
+        border-color: var(--muted);
+        cursor: not-allowed;
+        opacity: 0.5;
+    }
+
+    .seat input[type="checkbox"]:focus + label {
+        outline: 3px solid var(--accent);
+        outline-offset: 2px;
+    }
+
+    .summary {
+        padding: 1.5rem;
+        border-radius: 8px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    .summary-item {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 0.5rem;
+    }
+
+    .total {
+        font-weight: bold;
+        border-top: 1px solid var(--border);
+        padding-top: 0.5rem;
+        margin-top: 0.5rem;
+    }
+
+    .btn2 {
+        display: inline-block;
+        padding: 1rem 2rem;
+        background: var(--primary);
+        color: white;
+        text-decoration: none;
+        border-radius: 4px;
+        font-weight: bold;
+        border: none;
+        font-size: 1rem;
+        cursor: pointer;
+        width: 100%;
+        transition: background 0.2s;
+    }
+    .btn2:hover, .btn:focus {
+        background: #0055aa;
+    }
+
+    .alert {
+        margin-bottom: 1rem;
+        padding: 0.75rem 1rem;
+        border-radius: 4px;
+        font-size: 0.9rem;
+    }
+    .alert--success {
+        background: #d1e7dd;
+        color: #0f5132;
+        border: 1px solid #badbcc;
+    }
+    .alert--error {
+        background: #f8d7da;
+        color: #842029;
+        border: 1px solid #f5c2c7;
+    }
+
+    @media (min-width: 768px) {
+        .booking-form {
+            grid-template-columns: 2fr 1fr;
+        }
+
+        .seat-map {
+            grid-template-columns: repeat(12, 1fr);
+        }
+    }
+ .seat-map {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: center;
+  }
+  .seat-row {
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    gap: 0.5rem;
+  }

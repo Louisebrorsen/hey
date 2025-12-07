@@ -42,11 +42,17 @@ class SeatRepository
         return (int)$this->pdo->lastInsertId();
     }
     public function getReservedSeatIdsByScreening(int $screeningID): array
-{
-    $sql = "SELECT seatID FROM seatReservation WHERE screeningID = :id";
-    $stmt = $this->pdo->prepare($sql);
-    $stmt->execute([':id' => $screeningID]);
+    {
+        $sql = "
+            SELECT sr.seatID
+            FROM seatReservation sr
+            JOIN reservation r ON sr.reservationID = r.reservationID
+            WHERE r.screeningID = :id
+        ";
 
-    return array_column($stmt->fetchAll(PDO::FETCH_ASSOC), 'seatID');
-}
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([':id' => $screeningID]);
+
+        return array_column($stmt->fetchAll(PDO::FETCH_ASSOC), 'seatID');
+    }
 }
