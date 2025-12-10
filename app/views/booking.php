@@ -80,52 +80,47 @@ $seniorPrice = (int) round($basePrice * 0.85); // fx 15% rabat
       </fieldset>
 
       <!-- Sæder -->
-      <fieldset>
-        <legend>Vælg pladser</legend>
-
-        <div class="screen">Skærm</div>
-
-     <div class="seat-map-container">
-  <div class="seat-map">
-    <?php if (!empty($seats)): ?>
       <?php
-      $currentRow = null;
-      foreach ($seats as $seat):
-        if ($currentRow !== $seat['rowNo']) {
-          if ($currentRow !== null) {
-            echo '</div>'; // luk forrige række
-          }
-          echo '<div class="seat-row">';
-          $currentRow = $seat['rowNo'];
-        }
+      // Gruppér sæder per row
+      $seatRows = [];
 
-        $labelText = $seat['seatNo'];
-        $inputId   = 'seat-' . $seat['rowNo'] . '-' . $seat['seatNo'];
-        $isReserved = in_array($seat['seatID'], $reservedSeatIds ?? [], true);
-        ?>
-        <div class="seat">
-          <input
-            type="checkbox"
-            id="<?= e($inputId) ?>"
-            name="seats[]"
-            value="<?= (int)$seat['seatID'] ?>"
-            <?= $isReserved ? 'disabled' : '' ?>>
-          <label for="<?= e($inputId) ?>">
-            <?= e($labelText) ?>
-          </label>
-        </div>
-      <?php
-      endforeach;
-      if ($currentRow !== null) {
-        echo '</div>'; // luk sidste række
+      foreach ($seats as $seat) {
+        $rowNumber = (int)$seat['rowNo'];
+        $seatRows[$rowNumber][] = $seat;
       }
+
+      ksort($seatRows); // sortér rækker i rækkefølge
       ?>
-    <?php else: ?>
-      <p>Der er ingen sæder registreret for denne sal.</p>
-    <?php endif; ?>
-  </div>
-</div>
-      </fieldset>
+
+      <div class="auditorium">
+        <div class="auditorium-screen">Skærm</div>
+
+        <?php foreach ($seatRows as $rowNumber => $rowSeats): ?>
+          <div class="auditorium-row">
+            <div class="auditorium-row-label">R<?= $rowNumber ?></div>
+
+            <div class="auditorium-row-seats">
+              <?php foreach ($rowSeats as $seat): ?>
+                <?php
+                $seatId = (int)$seat['seatID'];
+                $seatNo = (int)$seat['seatNo'];
+                $isReserved = in_array($seatId, $reservedSeatIds ?? []);
+                ?>
+
+                <div class="auditorium-seat">
+                  <input
+                    type="checkbox"
+                    id="seat-<?= $seatId ?>"
+                    name="seats[]"
+                    value="<?= $seatId ?>"
+                    <?= $isReserved ? 'disabled' : '' ?>>
+                  <label for="seat-<?= $seatId ?>"><?= $seatNo ?></label>
+                </div>
+              <?php endforeach; ?>
+            </div>
+          </div>
+        <?php endforeach; ?>
+      </div>
     </div>
 
     <!-- Ordreoversigt -->

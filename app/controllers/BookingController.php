@@ -50,28 +50,124 @@ class BookingController
         $children = isset($_POST['qty_child']) ? (int)$_POST['qty_child'] : 0;
         $seniors  = isset($_POST['qty_senior']) ? (int)$_POST['qty_senior'] : 0;
 
+        // find logged in user – tilpas til din sessionstruktur hvis nødvendigt
+        $userID = $_SESSION['user']['userID'] ?? ($_SESSION['userID'] ?? null);
+
         if (!$screeningID) {
             http_response_code(400);
-            die('Missing screening ID.');
+            $message = 'Der mangler en gyldig forestilling.';
+
+            return [
+                'view' => __DIR__ . '/../views/booking.php',
+                'data' => [
+                    'screening'       => null,
+                    'seats'           => [],
+                    'reservedSeatIds' => [],
+                    'message'         => $message,
+                    'adults'          => $adults,
+                    'children'        => $children,
+                    'seniors'         => $seniors,
+                ],
+            ];
         }
 
         $screening = $this->screeningRepository->getScreeningById($screeningID);
 
         if (!$screening) {
             http_response_code(404);
-            die('Screening not found.');
+            $message = 'Den valgte forestilling blev ikke fundet.';
+
+            return [
+                'view' => __DIR__ . '/../views/booking.php',
+                'data' => [
+                    'screening'       => null,
+                    'seats'           => [],
+                    'reservedSeatIds' => [],
+                    'message'         => $message,
+                    'adults'          => $adults,
+                    'children'        => $children,
+                    'seniors'         => $seniors,
+                ],
+            ];
         }
 
         $auditoriumID    = (int)$screening['auditoriumID'];
         $seats           = $this->seatRepository->getByAuditorium($auditoriumID);
         $reservedSeatIds = $this->seatRepository->getReservedSeatIdsByScreening($screeningID);
 
-        // Her ville du normalt gemme reservationen i databasen og opdatere reserverede sæder.
-        // I denne version nøjes vi med at vise en bekræftelsesbesked i UI'et.
-        if (empty($selectedSeats)) {
+        // normaliser valgte sæder til ints
+        $selectedSeatIds = array_map('intval', $selectedSeats);
+
+        // server-side validering
+        $totalTickets = $adults + $children + $seniors;
+
+        if ($totalTickets <= 0) {
+            $message = 'Du skal vælge mindst én billet.';
+        } elseif (empty($selectedSeatIds)) {
             $message = 'Du har ikke valgt nogen sæder. Vælg venligst mindst ét sæde.';
         } else {
-            $message = 'Din reservation er registreret (demo). Du har valgt sæder: ' . implode(', ', $selectedSeats);
+            // tjek for dobbeltbookede sæder
+            $conflicting = array_intersect($reservedSeatIds, $selectedSeatIds);
+
+            if (!empty($conflicting)) {
+                $message = 'Et eller flere af de valgte sæder er allerede reserveret. Vælg venligst andre pladser.';
+            } elseif (!$userID) {
+                $message = 'Du skal være logget ind for at reservere billetter.';
+            } else {
+                // beregn dynamiske priser baseret på screeningens pris
+                $basePrice   = isset($screening['price']) ? (int)$screening['price'] : 0;
+                $adultPrice  = $basePrice;
+                $childPrice  = (int) round($basePrice * 0.75);
+                $seniorPrice = (int) round($basePrice * 0.85);
+
+                $totalPrice =
+                    $adults   * $adultPrice +
+                    $children * $childPrice +
+                    $seniors  * $seniorPrice;
+
+                try {
+                    $pdo = Database::connect();
+                    $pdo->beginTransaction();
+
+                    // indsæt reservation
+                    $stmt = $pdo->prepare("
+                        INSERT INTO reservation (userID, screeningID, reservation_date, total_price)
+                        VALUES (:userID, :screeningID, NOW(), :total_price)
+                    ");
+                    $stmt->execute([
+                        ':userID'       => $userID,
+                        ':screeningID'  => $screeningID,
+                        ':total_price'  => $totalPrice,
+                    ]);
+
+                    $reservationID = (int)$pdo->lastInsertId();
+
+                    // indsæt seatReservation-rækker
+                    $seatStmt = $pdo->prepare("
+                        INSERT INTO seatReservation (reservationID, seatID)
+                        VALUES (:reservationID, :seatID)
+                    ");
+
+                    foreach ($selectedSeatIds as $seatID) {
+                        $seatStmt->execute([
+                            ':reservationID' => $reservationID,
+                            ':seatID'        => $seatID,
+                        ]);
+                    }
+
+                    $pdo->commit();
+
+                    // hent opdateret liste over reserverede sæder til visning
+                    $reservedSeatIds = $this->seatRepository->getReservedSeatIdsByScreening($screeningID);
+
+                    $message = 'Din reservation er gemt. Du har reserveret ' . count($selectedSeatIds) . ' sæde(r).';
+                } catch (\PDOException $e) {
+                    if (isset($pdo)) {
+                        $pdo->rollBack();
+                    }
+                    $message = 'Der opstod en fejl under gemning af reservationen. Prøv igen senere.';
+                }
+            }
         }
 
         return [
@@ -80,7 +176,7 @@ class BookingController
                 'screening'       => $screening,
                 'seats'           => $seats,
                 'reservedSeatIds' => $reservedSeatIds,
-                'message'         => $message,
+                'message'         => $message ?? null,
                 'adults'          => $adults,
                 'children'        => $children,
                 'seniors'         => $seniors,
