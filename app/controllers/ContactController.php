@@ -17,7 +17,7 @@ class ContactController
 
         if (!empty($fax)) {
             $db = Database::connect();
-            $stmt = $db->prepare("INSERT INTO contact_spam (name, email, subject, message) VALUES (:name, :email, :subject, :message)");
+            $stmt = $db->prepare("INSERT INTO spam_message (name, email, subject, message) VALUES (:name, :email, :subject, :message)");
             $stmt->execute([
                 'name'    => $name,
                 'email'   => $email,
