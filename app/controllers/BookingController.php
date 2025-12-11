@@ -50,6 +50,9 @@ class BookingController
         $children = isset($_POST['qty_child']) ? (int)$_POST['qty_child'] : 0;
         $seniors  = isset($_POST['qty_senior']) ? (int)$_POST['qty_senior'] : 0;
 
+        $reservationID = null;
+        $totalPrice    = 0;
+
         // find logged in user – tilpas til din sessionstruktur hvis nødvendigt
         $userID = $_SESSION['user']['userID'] ?? ($_SESSION['userID'] ?? null);
 
@@ -103,84 +106,161 @@ class BookingController
 
         if ($totalTickets <= 0) {
             $message = 'Du skal vælge mindst én billet.';
-        } elseif (empty($selectedSeatIds)) {
-            $message = 'Du har ikke valgt nogen sæder. Vælg venligst mindst ét sæde.';
-        } else {
-            // tjek for dobbeltbookede sæder
-            $conflicting = array_intersect($reservedSeatIds, $selectedSeatIds);
 
-            if (!empty($conflicting)) {
-                $message = 'Et eller flere af de valgte sæder er allerede reserveret. Vælg venligst andre pladser.';
-            } elseif (!$userID) {
-                $message = 'Du skal være logget ind for at reservere billetter.';
-            } else {
-                // beregn dynamiske priser baseret på screeningens pris
-                $basePrice   = isset($screening['price']) ? (int)$screening['price'] : 0;
-                $adultPrice  = $basePrice;
-                $childPrice  = (int) round($basePrice * 0.75);
-                $seniorPrice = (int) round($basePrice * 0.85);
-
-                $totalPrice =
-                    $adults   * $adultPrice +
-                    $children * $childPrice +
-                    $seniors  * $seniorPrice;
-
-                try {
-                    $pdo = Database::connect();
-                    $pdo->beginTransaction();
-
-                    // indsæt reservation
-                    $stmt = $pdo->prepare("
-                        INSERT INTO reservation (userID, screeningID, reservation_date, total_price)
-                        VALUES (:userID, :screeningID, NOW(), :total_price)
-                    ");
-                    $stmt->execute([
-                        ':userID'       => $userID,
-                        ':screeningID'  => $screeningID,
-                        ':total_price'  => $totalPrice,
-                    ]);
-
-                    $reservationID = (int)$pdo->lastInsertId();
-
-                    // indsæt seatReservation-rækker
-                    $seatStmt = $pdo->prepare("
-                        INSERT INTO seatReservation (reservationID, seatID)
-                        VALUES (:reservationID, :seatID)
-                    ");
-
-                    foreach ($selectedSeatIds as $seatID) {
-                        $seatStmt->execute([
-                            ':reservationID' => $reservationID,
-                            ':seatID'        => $seatID,
-                        ]);
-                    }
-
-                    $pdo->commit();
-
-                    // hent opdateret liste over reserverede sæder til visning
-                    $reservedSeatIds = $this->seatRepository->getReservedSeatIdsByScreening($screeningID);
-
-                    $message = 'Din reservation er gemt. Du har reserveret ' . count($selectedSeatIds) . ' sæde(r).';
-                } catch (\PDOException $e) {
-                    if (isset($pdo)) {
-                        $pdo->rollBack();
-                    }
-                    $message = 'Der opstod en fejl under gemning af reservationen. Prøv igen senere.';
-                }
-            }
+            return [
+                'view' => __DIR__ . '/../views/booking.php',
+                'data' => [
+                    'screening'       => $screening,
+                    'seats'           => $seats,
+                    'reservedSeatIds' => $reservedSeatIds,
+                    'message'         => $message,
+                    'adults'          => $adults,
+                    'children'        => $children,
+                    'seniors'         => $seniors,
+                ],
+            ];
         }
 
-        return [
-            'view' => __DIR__ . '/../views/booking.php',
-            'data' => [
-                'screening'       => $screening,
-                'seats'           => $seats,
-                'reservedSeatIds' => $reservedSeatIds,
-                'message'         => $message ?? null,
-                'adults'          => $adults,
-                'children'        => $children,
-                'seniors'         => $seniors,
-            ],
-        ];
+        if (empty($selectedSeatIds)) {
+            $message = 'Du har ikke valgt nogen sæder. Vælg venligst mindst ét sæde.';
+
+            return [
+                'view' => __DIR__ . '/../views/booking.php',
+                'data' => [
+                    'screening'       => $screening,
+                    'seats'           => $seats,
+                    'reservedSeatIds' => $reservedSeatIds,
+                    'message'         => $message,
+                    'adults'          => $adults,
+                    'children'        => $children,
+                    'seniors'         => $seniors,
+                ],
+            ];
+        }
+
+        // tjek for dobbeltbookede sæder
+        $conflicting = array_intersect($reservedSeatIds, $selectedSeatIds);
+
+        if (!empty($conflicting)) {
+            $message = 'Et eller flere af de valgte sæder er allerede reserveret. Vælg venligst andre pladser.';
+
+            return [
+                'view' => __DIR__ . '/../views/booking.php',
+                'data' => [
+                    'screening'       => $screening,
+                    'seats'           => $seats,
+                    'reservedSeatIds' => $reservedSeatIds,
+                    'message'         => $message,
+                    'adults'          => $adults,
+                    'children'        => $children,
+                    'seniors'         => $seniors,
+                ],
+            ];
+        }
+
+        if (!$userID) {
+            $message = 'Du skal være logget ind for at reservere billetter.';
+
+            return [
+                'view' => __DIR__ . '/../views/booking.php',
+                'data' => [
+                    'screening'       => $screening,
+                    'seats'           => $seats,
+                    'reservedSeatIds' => $reservedSeatIds,
+                    'message'         => $message,
+                    'adults'          => $adults,
+                    'children'        => $children,
+                    'seniors'         => $seniors,
+                ],
+            ];
+        }
+
+        // beregn dynamiske priser baseret på screeningens pris
+        $basePrice   = isset($screening['price']) ? (int)$screening['price'] : 0;
+        $adultPrice  = $basePrice;
+        $childPrice  = (int) round($basePrice * 0.75);
+        $seniorPrice = (int) round($basePrice * 0.85);
+
+        $totalPrice =
+            $adults   * $adultPrice +
+            $children * $childPrice +
+            $seniors  * $seniorPrice;
+
+        try {
+            $pdo = Database::connect();
+            $pdo->beginTransaction();
+
+            // indsæt reservation
+            $stmt = $pdo->prepare("
+                INSERT INTO reservation (userID, screeningID, reservation_date, total_price)
+                VALUES (:userID, :screeningID, NOW(), :total_price)
+            ");
+            $stmt->execute([
+                ':userID'       => $userID,
+                ':screeningID'  => $screeningID,
+                ':total_price'  => $totalPrice,
+            ]);
+
+            $reservationID = (int)$pdo->lastInsertId();
+
+            // indsæt seatReservation-rækker
+            $seatStmt = $pdo->prepare("
+                INSERT INTO seatReservation (reservationID, seatID)
+                VALUES (:reservationID, :seatID)
+            ");
+
+            foreach ($selectedSeatIds as $seatID) {
+                $seatStmt->execute([
+                    ':reservationID' => $reservationID,
+                    ':seatID'        => $seatID,
+                ]);
+            }
+
+            $pdo->commit();
+
+            // hent opdateret liste over reserverede sæder til visning
+            $reservedSeatIds = $this->seatRepository->getReservedSeatIdsByScreening($screeningID);
+
+            // byg ticket-summary til confirmation-view
+            $ticketSummary = [
+                'adults'   => $adults,
+                'children' => $children,
+                'seniors'  => $seniors,
+            ];
+
+            return [
+                'view' => __DIR__ . '/../views/bookingConfirmation.php',
+                'data' => [
+                    'screening'       => $screening,
+                    'seats'           => $seats,
+                    'reservedSeatIds' => $reservedSeatIds,
+                    'adults'          => $adults,
+                    'children'        => $children,
+                    'seniors'         => $seniors,
+                    'reservationID'   => $reservationID,
+                    'totalPrice'      => $totalPrice,
+                    'ticketSummary'   => $ticketSummary,
+                    'selectedSeats'   => $selectedSeatIds,
+                ],
+            ];
+        } catch (\PDOException $e) {
+            if (isset($pdo)) {
+                $pdo->rollBack();
+            }
+            $message = 'Der opstod en fejl under gemning af reservationen. Prøv igen senere.';
+
+            return [
+                'view' => __DIR__ . '/../views/booking.php',
+                'data' => [
+                    'screening'       => $screening,
+                    'seats'           => $seats,
+                    'reservedSeatIds' => $reservedSeatIds,
+                    'message'         => $message,
+                    'adults'          => $adults,
+                    'children'        => $children,
+                    'seniors'         => $seniors,
+                ],
+            ];
+        }
     }
 }

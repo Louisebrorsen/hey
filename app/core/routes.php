@@ -48,3 +48,6 @@ $router->post('admin/showtimes/delete', 'AdminScreeningController@delete');
 // Booking routes
 $router->get('booking', 'BookingController@show');
 $router->post('booking', 'BookingController@bookSeats');
+
+// bekræftelsesside efter booking
+$router->get('booking/confirmation', 'BookingController@confirmation');
