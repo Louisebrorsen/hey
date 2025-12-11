@@ -56,7 +56,7 @@ class ContactController
         }
 
         $db = Database::connect();
-        $stmt = $db->prepare("INSERT INTO contact_messages (name, email, subject, message) VALUES (:name, :email, :subject, :message)");
+        $stmt = $db->prepare("INSERT INTO contact_message (name, email, subject, message) VALUES (:name, :email, :subject, :message)");
         $stmt->execute([
             'name' => $name,
             'email' => $email,
