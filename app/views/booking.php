@@ -14,7 +14,10 @@ $adultPrice  = $basePrice;                 // fuld pris
 $childPrice  = (int) round($basePrice * 0.75); // fx 25% rabat
 $seniorPrice = (int) round($basePrice * 0.85); // fx 15% rabat
 ?>
-<main id="main-content">
+<main id="main-content"
+  data-adult-price="<?= $adultPrice ?>"
+  data-child-price="<?= $childPrice ?>"
+  data-senior-price="<?= $seniorPrice ?>">
   <?php if (!empty($message)): ?>
     <div class="alert alert--success">
       <?= e($message) ?>
@@ -93,6 +96,9 @@ $seniorPrice = (int) round($basePrice * 0.85); // fx 15% rabat
       ?>
 
       <div class="auditorium">
+        <div class="seat-selection-info">
+          <p id="seat-counter">Du har endnu ikke valgt nogen sæder.</p>
+        </div>
         <div class="auditorium-screen">Skærm</div>
 
         <?php foreach ($seatRows as $rowNumber => $rowSeats): ?>
@@ -161,38 +167,3 @@ $seniorPrice = (int) round($basePrice * 0.85); // fx 15% rabat
   </form>
 
 </main>
-<script>
-  document.addEventListener('DOMContentLoaded', function() {
-    const adultSelect = document.getElementById('qty_adult');
-    const childSelect = document.getElementById('qty_child');
-    const seniorSelect = document.getElementById('qty_senior');
-
-    const adultSummary = document.getElementById('summary-adults');
-    const childSummary = document.getElementById('summary-children');
-    const seniorSummary = document.getElementById('summary-seniors');
-    const totalSummary = document.getElementById('summary-total');
-
-    const ADULT_PRICE = <?= $adultPrice ?>;
-    const CHILD_PRICE = <?= $childPrice ?>;
-    const SENIOR_PRICE = <?= $seniorPrice ?>;
-
-    function recalc() {
-      const adults = parseInt(adultSelect.value) || 0;
-      const children = parseInt(childSelect.value) || 0;
-      const seniors = parseInt(seniorSelect.value) || 0;
-
-      const total = adults * ADULT_PRICE + children * CHILD_PRICE + seniors * SENIOR_PRICE;
-
-      adultSummary.textContent = `${adults} x ${ADULT_PRICE} kr.`;
-      childSummary.textContent = `${children} x ${CHILD_PRICE} kr.`;
-      seniorSummary.textContent = `${seniors} x ${SENIOR_PRICE} kr.`;
-      totalSummary.textContent = `${total} kr.`;
-    }
-
-    adultSelect.addEventListener('change', recalc);
-    childSelect.addEventListener('change', recalc);
-    seniorSelect.addEventListener('change', recalc);
-
-    recalc();
-  });
-</script>

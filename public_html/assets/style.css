@@ -824,11 +824,42 @@
 .auditorium-seat {
     width: 26px;
     height: 26px;
+}
+
+.auditorium-seat input {
+    display: none;
+}
+
+/* Standard: ledigt sæde = grå */
+.auditorium-seat label {
+    width: 26px;
+    height: 26px;
     border-radius: 6px;
-    background: rgba(255,255,255,0.07);
-    border: 1px solid rgba(255,255,255,0.2);
+    background: #6c757d;          /* grå = fri */
+    border: 1px solid #495057;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 11px;
+    color: #fff;
+    cursor: pointer;
+    transition: background 0.15s ease, transform 0.1s ease;
+}
+
+.auditorium-seat label:hover {
+    transform: translateY(-1px);
+}
+
+/* Valgt af bruger = grøn */
+.auditorium-seat input:checked:not(:disabled) + label {
+    background: #198754;          /* grøn */
+    border-color: #198754;
+}
+
+/* Reserveret på forhånd (disabled) = rød */
+.auditorium-seat input:disabled + label {
+    background: #dc3545;          /* rød */
+    border-color: #b02a37;
+    cursor: not-allowed;
+    opacity: 0.8;
 }

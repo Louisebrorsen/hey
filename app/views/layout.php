@@ -6,6 +6,7 @@
   <title>Cinema – Biograf</title>
   <meta name="description" content="Biografbeskrivelse" />
   <link rel="stylesheet" href="<?= asset('style.css') ?>">
+  <script src="<?=  asset('js/booking.js') ?>"></script>
 </head>
 <body>
  <?php require __DIR__ . '/partials/header.php'; ?>
