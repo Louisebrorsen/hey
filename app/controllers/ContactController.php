@@ -2,7 +2,8 @@
 
 class ContactController
 {
-    public function send (): void{
+    public function send(): void
+    {
 
         if ($_SERVER["REQUEST_METHOD"] !== "POST") {
             header('Location: /');
@@ -26,10 +27,10 @@ class ContactController
             ]);
 
             $_SESSION['contact_success'] = "Din besked er sendt. Tak for din henvendelse!";
-            header('Location: #contact');
+            header('Location: ?url=#contact');
             exit();
         }
-        
+
         $error = [];
 
         if (empty($name) || strlen($name) < 2) {
@@ -42,7 +43,7 @@ class ContactController
 
         if (empty($subject) || strlen($subject) < 5) {
             $error[] = "Emnet skal være mindst 5 tegn langt.";
-        }  
+        }
 
         if (empty($message) || strlen($message) < 10) {
             $error[] = "Beskeden skal være mindst 10 tegn langt.";
@@ -67,9 +68,5 @@ class ContactController
         $_SESSION['contact_success'] = "Din besked er sendt. Tak for din henvendelse!";
         header('Location: ?url=#contact');
         exit();
-
-        
     }
 }
-
-
