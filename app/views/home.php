@@ -72,7 +72,7 @@
           <h2 class="section__title">Dagens forestillinger</h2>
           <p class="section__sub">Vælg tidspunkt og reserver pladser</p>
         </div>
-        <a class="btn btn--ghost" href="#">Hele ugeplanen</a>
+       
       </div>
 
       <div class="list" role="list">

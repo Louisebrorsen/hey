@@ -67,19 +67,38 @@
       <div class="list" role="list">
         <?php if (!empty($screenings)): ?>
           <?php foreach ($screenings as $screening): ?>
+            <?php if (!is_array($screening)) continue; ?>
             <article class="row" role="listitem">
               <div>
                 <div class="title">
                   <?= e($movie['title']) ?>
                 </div>
                 <div class="meta">
-                  Sal <?= e($screening['auditorium_name']) ?> ·
-                  <?= e(date('d.m.Y H:i', strtotime($screening['screening_time']))) ?>
+                  <?php
+                  $auditoriumLabel = (is_array($screening) && isset($screening['auditorium_name']))
+                      ? $screening['auditorium_name']
+                      : null;
+                  ?>
+                  <?php if ($auditoriumLabel): ?>
+                    Sal <?= e($auditoriumLabel) ?> ·
+                  <?php endif; ?>
+                  <?php
+                  $screeningTime = $screening['screening_time'] ?? null;
+                  if ($screeningTime) {
+                      echo e(date('d.m.Y H:i', strtotime($screeningTime)));
+                  } else {
+                      echo 'Ukendt tidspunkt';
+                  }
+                  ?>
                 </div>
               </div>
 
               <div class="row__format">
-                DKK <?= e($screening['price']) ?>
+                <?php if (isset($screening['price']) && $screening['price'] !== null && $screening['price'] !== ''): ?>
+                  DKK <?= e((string)$screening['price']) ?>
+                <?php else: ?>
+                  <span class="row__price-missing">Pris ikke tilgængelig</span>
+                <?php endif; ?>
               </div>
 
               <a class="btn btn--primary"
