@@ -160,6 +160,30 @@
     </div>
   </section>
 
+  <section id="news">
+    <div class="container">
+      <div class="section__head">
+        <div>
+          <h2 class="section__title">Nyheder</h2>
+          <p class="section__sub">Forpremierer og næste måneds highlights</p>
+        </div>
+      </div>
+      <div class="list">
+        <?php foreach ($news as $item): ?>
+          <article class="news-item">
+            <h3 class="news-item__title"><?= e($item['title']) ?></h3>
+            <small class="news-item__date">
+              <?= !empty($item['published_date']) ? date('d.m.Y', strtotime($item['published_date'])) : '' ?>
+            </small>
+            <p class="news-item__content">
+              <?= nl2br(e($item['content'])) ?>
+            </p>
+          </article>
+        <?php endforeach; ?>
+      </div>
+    </div>
+  </section>
+
   <!-- KONTAKT -->
   <section id="contact">
     <div class="contact__container">

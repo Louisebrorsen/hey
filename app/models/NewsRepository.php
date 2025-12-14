@@ -8,14 +8,24 @@ class NewsRepository
         $this->pdo = $pdo;
     }
 
-    public function getAllNews(): array
-    {
-        $sql = "SELECT * FROM news ORDER BY published_date DESC";
-        $stmt = $this->pdo->prepare($sql);
-        $stmt->execute();
+    public function getAllNews(?int $limit = null): array
+{
+    $sql = "SELECT * FROM news ORDER BY published_date DESC";
 
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    if ($limit !== null) {
+        $sql .= " LIMIT :limit";
     }
+
+    $stmt = $this->pdo->prepare($sql);
+
+    if ($limit !== null) {
+        $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+    }
+
+    $stmt->execute();
+
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
 
     public function createNews(string $title, string $content): void
     {
