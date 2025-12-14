@@ -47,9 +47,8 @@ class AdminActionsController
 
         $posterRel = handle_poster_upload($title, $_FILES['poster'] ?? null);
 
-        // Hvis upload fejler, skal poster_url IKKE være null (db-fejl)
         if ($posterRel === null) {
-            $posterRel = ''; // tom streng godkendes af databasen
+            $posterRel = ''; 
         }
 
         $data = [
@@ -108,7 +107,6 @@ class AdminActionsController
         exit;
     }
 
-    // Evt. verify_csrf(); hvis du vil have det med nu
     $id = (int)($_POST['id'] ?? 0);
     if ($id <= 0) {
         $_SESSION['message'] = 'Ugyldigt film-ID.';
@@ -132,13 +130,11 @@ class AdminActionsController
         exit;
     }
 
-    // Start med den gamle poster
+    
     $posterRel = $movie['poster_url'] ?? '';
 
-    // Tjek om der er uploadet en ny
     $newPoster = handle_poster_upload($title, $_FILES['poster'] ?? null);
     if ($newPoster) {
-        // valgfrit: slet gammel fil fra disk
         if (!empty($posterRel) && is_file(PUBLIC_PATH . '/' . $posterRel)) {
             @unlink(PUBLIC_PATH . '/' . $posterRel);
         }
@@ -170,11 +166,75 @@ class AdminActionsController
     exit;
 }
 
+    public function cinemaInfoUpdate(): void
+    {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            header('Location: ?url=admin/cinemaInfo');
+            exit;
+        }
 
+        $cinema_name   = trim($_POST['cinema_name'] ?? '');
+        $description   = trim($_POST['description'] ?? '');
+        $opening_hours = trim($_POST['opening_hours'] ?? '');
+        $address       = trim($_POST['address'] ?? '');
+        $phone         = trim($_POST['phone'] ?? '');
+        $email         = trim($_POST['email'] ?? '');
 
+        if ($cinema_name === '' || $description === '') {
+            $_SESSION['message'] = 'Biografens navn og beskrivelse skal udfyldes.';
+            header('Location: ?url=admin/cinemaInfo');
+            exit;
+        }
 
-    
-    // public function updateMovie(): void { ... }
-    // public function createShowtime(): void { ... }
-    // osv.
+        $db = Database::connect();
+
+        // Find eksisterende række (vi bruger 1-række model)
+        $stmt = $db->query("SELECT id FROM site_settings ORDER BY id ASC LIMIT 1");
+        $row = $stmt ? $stmt->fetch(PDO::FETCH_ASSOC) : null;
+        $existingId = $row['id'] ?? null;
+
+        try {
+            if ($existingId) {
+                $sql = "UPDATE site_settings
+                        SET cinema_name = :cinema_name,
+                            description = :description,
+                            opening_hours = :opening_hours,
+                            address = :address,
+                            phone = :phone,
+                            email = :email
+                        WHERE id = :id";
+
+                $q = $db->prepare($sql);
+                $q->execute([
+                    ':cinema_name'   => $cinema_name,
+                    ':description'   => $description,
+                    ':opening_hours' => $opening_hours,
+                    ':address'       => $address,
+                    ':phone'         => $phone,
+                    ':email'         => $email,
+                    ':id'            => (int)$existingId,
+                ]);
+            } else {
+                $sql = "INSERT INTO site_settings (cinema_name, description, opening_hours, address, phone, email)
+                        VALUES (:cinema_name, :description, :opening_hours, :address, :phone, :email)";
+
+                $q = $db->prepare($sql);
+                $q->execute([
+                    ':cinema_name'   => $cinema_name,
+                    ':description'   => $description,
+                    ':opening_hours' => $opening_hours,
+                    ':address'       => $address,
+                    ':phone'         => $phone,
+                    ':email'         => $email,
+                ]);
+            }
+
+            $_SESSION['message'] = 'Biograf-informationer blev gemt.';
+        } catch (Throwable $e) {
+            $_SESSION['message'] = 'DB-fejl: ' . $e->getMessage();
+        }
+
+        header('Location: ?url=admin/cinemaInfo');
+        exit;
+    }
 }

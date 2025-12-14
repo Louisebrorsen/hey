@@ -1,14 +1,33 @@
+<?php
+// Footer bruger biograf-info fra site_settings.
+// Forventet: controller/layout kan sende $settings ind.
+// Fallback: hent første række direkte fra DB hvis $settings ikke findes.
+if (!isset($settings) || !is_array($settings)) {
+  try {
+    $db = Database::connect();
+    $stmt = $db->query("SELECT * FROM site_settings ORDER BY id ASC LIMIT 1");
+    $settings = $stmt ? ($stmt->fetch(PDO::FETCH_ASSOC) ?: []) : [];
+  } catch (Throwable $e) {
+    $settings = [];
+  }
+}
+
+$cinemaName   = $settings['cinema_name'] ?? 'Cinema';
+$description  = $settings['description'] ?? 'Din lokale biograf. Moderne sale, god lyd og kolde sodavand. Book online eller i kiosken.';
+$address      = $settings['address'] ?? 'Torvegade 1\n6760 Ribe';
+$phone        = $settings['phone'] ?? '+45 12 34 56 78';
+$email        = $settings['email'] ?? 'hello@cinema.dk';
+?>
 <footer id="about">
   <div class="container fgrid">
 
     <div>
       <div class="brand" style="margin-bottom:10px;">
         <span class="brand__logo" aria-hidden="true"></span>
-        <strong>Cinema</strong>
+        <strong><?= e($cinemaName) ?></strong>
       </div>
       <p class="muted">
-        Din lokale biograf. Moderne sale, god lyd og kolde sodavand.
-        Book online eller i kiosken.
+        <?= nl2br(e($description)) ?>
       </p>
     </div>
 
@@ -25,10 +44,9 @@
     <div id="contact">
       <strong>Kontakt</strong>
       <p class="small muted" style="margin-top:10px;">
-        Torvegade 1<br />
-        6760 Ribe<br />
-        +45 12 34 56 78<br />
-        hello@cinema.dk
+        <?= nl2br(e($address)) ?><br />
+        <?= e($phone) ?><br />
+        <?= e($email) ?>
       </p>
     </div>
 

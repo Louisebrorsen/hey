@@ -19,6 +19,12 @@ $base = __DIR__ . '/';
 
       <a class="tablink <?= $tab === 'allMovies' ? 'is-active' : '' ?>" 
          href="?url=admin/allMovies">Alle film</a>
+
+      <a class="tablink <?= $tab === 'cinemaInfo' ? 'is-active' : '' ?>" 
+      href="?url=admin/cinemaInfo">biograf informationer</a>
+
+      <a class="tablink <?= $tab === 'cinemaNews' ? 'is-active' : '' ?>" 
+      href="?url=admin/cinemaNews">Nyheder</a>
     </nav>
 
     <?php
@@ -37,6 +43,14 @@ $base = __DIR__ . '/';
 
         case 'allMovies':
           include $base . 'moviesList.php';
+          break;
+
+        case 'cinemaInfo':
+          include $base . 'cinemaInfo.php';
+          break;
+
+        case 'cinemaNews':
+          include $base . 'cinemaNews.php';
           break;
 
         default:

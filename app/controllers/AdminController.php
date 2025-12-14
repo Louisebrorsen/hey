@@ -67,4 +67,29 @@ class AdminController
             ],
         ];
     }
+
+    public function cinemaInfo(): array
+    {
+        // Hent eksisterende biograf-info (1 række) så formularen kan udfyldes med aktuelle værdier
+        $db = Database::connect();
+        $stmt = $db->query("SELECT * FROM site_settings ORDER BY id ASC LIMIT 1");
+        $settings = $stmt ? ($stmt->fetch(PDO::FETCH_ASSOC) ?: []) : [];
+
+        return [
+            'view' => __DIR__ . '/../views/admin/admin.php',
+            'data' => [
+                'tab'      => 'cinemaInfo',
+                'settings' => $settings,
+            ],
+        ];
+    }
+    public function cinemaNews(): array
+    {
+        return [
+            'view' => __DIR__ . '/../views/admin/admin.php',
+            'data' => [
+                'tab'    => 'cinemaNews',
+            ],
+        ];
+    }
 }
