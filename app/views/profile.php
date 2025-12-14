@@ -103,7 +103,6 @@ $bookingStats = $data['bookingStats'] ?? ['upcoming' => 0, 'past' => 0];
             </div>
           </div>
         </article>
-        
       </div>
     </section>
   </div>
