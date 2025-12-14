@@ -1,3 +1,8 @@
+<?php
+
+/** @var array $movie */
+/** @var array $screenings */
+?>
 <main>
   <!-- HERO -->
   <section class="hero">
@@ -28,39 +33,39 @@
         <a class="btn btn--ghost" href="<?= url('movies') ?>">Alle film</a>
       </div>
 
-      <div class="grid">
-        <?php foreach ($nowPlaying as $np): ?>
-          <article class="card">
-            <?php if (!empty($np['poster_url'])): ?>
-              <img class="card__media" src="<?= e($np['poster_url']) ?>" alt="Plakat for <?= e($np['title']) ?>">
-            <?php else: ?>
-              <div class="card__media" aria-hidden="true"></div>
+       <div class="grid">
+      <?php foreach ($nowPlaying as $np): ?>
+        <article class="card">
+          <?php if (!empty($np['poster_url'])): ?>
+            <img class="card__media" src="<?= e($np['poster_url']) ?>" alt="Plakat for <?= e($np['title']) ?>">
+          <?php else: ?>
+            <div class="card__media" aria-hidden="true"></div>
+          <?php endif; ?>
+
+          <div class="card__body">
+            <span class="badge">
+              <?= e($np['duration_min']) ?> min · <?= e($np['age_limit']) ?>+
+            </span>
+            <div class="title"><?= e($np['title']) ?></div>
+            <div class="meta">
+              <?= !empty($np['released']) ? e(date('d.m.Y', strtotime($np['released']))) : 'Ukendt premieredato' ?>
+            </div>
+          </div>
+
+          <div class="card__actions">
+            <?php if (!empty($np['next_screening'])): ?>
+              <a class="btn btn--primary"
+                href="<?= url('booking', [
+                        'screeningID' => (int)$np['next_screening']['screeningID']
+                      ]) ?>">
+                Vælg billetter
+              </a>
             <?php endif; ?>
-
-            <div class="card__body">
-              <span class="badge">
-                <?= e($np['duration_min']) ?> min · <?= e($np['age_limit']) ?>+
-              </span>
-              <div class="title"><?= e($np['title']) ?></div>
-              <div class="meta">
-                <?= !empty($np['released']) ? e(date('d.m.Y', strtotime($np['released']))) : 'Ukendt premieredato' ?>
-              </div>
-            </div>
-
-            <div class="card__actions">
-              <?php if (!empty($np['next_screening'])): ?>
-                <a class="btn btn--primary"
-                  href="<?= url('booking', [
-                          'screeningID' => (int)$np['next_screening']['screeningID']
-                        ]) ?>">
-                  Vælg billetter
-                </a>
-              <?php endif; ?>
-              <a class="btn btn--ghost" href="<?= url('movieDetail', ['id' => (int)$np['movieID']]) ?>">Detaljer</a>
-            </div>
-          </article>
-        <?php endforeach; ?>
-      </div>
+            <a class="btn btn--ghost" href="<?= url('movieDetail', ['id' => (int)$np['movieID']]) ?>">Detaljer</a>
+          </div>
+        </article>
+      <?php endforeach; ?>
+    </div>
     </div>
   </section>
 

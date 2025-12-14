@@ -94,8 +94,8 @@
         </p>
 
         <div>
-            <a href="/public_html/index.php?url=profile" class="btn2">Gå til min profil</a>
-            <a href="/public_html/index.php" class="btn-link">Til forsiden</a>
+            <a href="<?= url('profile') ?>" class="btn2">Gå til min profil</a>
+            <a href="<?= url('home') ?>" class="btn-link">Til forsiden</a>
         </div>
     </div>
 </section>

@@ -182,20 +182,103 @@ class ScreeningRepository
     public function getNextScreeningForMovie(int $movieID): ?array
     {
         $sql = "
-            SELECT 
-                s.screeningID,
-                s.screening_time
-            FROM screening s
-            WHERE s.movieID = :movieID
-              AND s.screening_time >= NOW()
-            ORDER BY s.screening_time ASC
-            LIMIT 1
-        ";
+        SELECT 
+            s.screeningID,
+            s.screening_time,
+            s.price,
+            a.name AS auditorium_name
+        FROM screening s
+        JOIN auditorium a ON s.auditoriumID = a.auditoriumID
+        WHERE s.movieID = :movieID
+          AND s.screening_time >= NOW()
+        ORDER BY s.screening_time ASC
+        LIMIT 1
+    ";
 
         $stmt = $this->db->prepare($sql);
         $stmt->execute([':movieID' => $movieID]);
 
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
         return $result ?: null;
+    }
+
+    public function getScreeningByUser(int $userID): array
+    {
+        $sql = "
+        SELECT 
+            s.screeningID,
+            s.screening_time,
+            s.price,
+            m.title AS movie_title,
+            a.name  AS auditorium_name
+        FROM screening s
+        JOIN movie m ON s.movieID = m.movieID
+        JOIN auditorium a ON s.auditoriumID = a.auditoriumID
+        JOIN reservation r ON s.screeningID = r.screeningID
+        WHERE r.userID = :userID
+        ORDER BY s.screening_time ASC
+    ";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([':userID' => $userID]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * Henter de seneste reservationer for en bruger (til profilside).
+     * Returnerer både reservation-data og screening/movie/auditorium detaljer.
+     */
+    public function getRecentBookingsByUser(int $userID, int $limit = 5): array
+    {
+        $limit = max(1, min(20, $limit)); // simple guard
+
+        $sql = "
+        SELECT
+            r.reservationID,
+            r.reservation_date,
+            r.total_price,
+            s.screeningID,
+            s.screening_time,
+            s.price AS screening_price,
+            m.title AS movie_title,
+            m.poster_url AS movie_poster_url,
+            a.name  AS auditorium_name,
+            CASE
+                WHEN s.screening_time >= NOW() THEN 'Kommende'
+                ELSE 'Afholdt'
+            END AS status
+        FROM reservation r
+        JOIN screening s   ON r.screeningID = s.screeningID
+        JOIN movie m       ON s.movieID = m.movieID
+        JOIN auditorium a  ON s.auditoriumID = a.auditoriumID
+        WHERE r.userID = :userID
+        ORDER BY r.reservation_date DESC
+        LIMIT $limit
+        ";
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([':userID' => $userID]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    
+    public function getBookingStatsByUser(int $userID): array
+    {
+        $sql = "
+        SELECT
+            SUM(CASE WHEN s.screening_time >= NOW() THEN 1 ELSE 0 END) AS upcoming,
+            SUM(CASE WHEN s.screening_time <  NOW() THEN 1 ELSE 0 END) AS past
+        FROM reservation r
+        JOIN screening s ON r.screeningID = s.screeningID
+        WHERE r.userID = :userID
+        ";
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([':userID' => $userID]);
+        $row = $stmt->fetch(PDO::FETCH_ASSOC) ?: [];
+
+        return [
+            'upcoming' => (int)($row['upcoming'] ?? 0),
+            'past'     => (int)($row['past'] ?? 0),
+        ];
     }
 }

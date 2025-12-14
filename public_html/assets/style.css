@@ -884,6 +884,109 @@
   border-bottom-color: #ffffff;
 }
 
+/* === Profile: booking cards === */
+/*
+  Goal: keep posters small and consistent so the text doesn't look "afraid" of the image.
+  Your markup has changed a bit over time, so we target a few likely containers.
+*/
+
+/* The booking row/card layout */
+.profile .list .row,
+.profile .booking-card,
+.profile .recent-booking {
+  display: grid;
+  grid-template-columns: 72px 1fr auto;
+  gap: 16px;
+  align-items: center;
+  padding: 14px 16px;
+  border-radius: 14px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.06);
+}
+
+/* Poster wrapper (if you have one) */
+.profile .poster,
+.profile .poster-wrap,
+.profile .booking-poster {
+  width: 72px;
+  flex: 0 0 72px;
+}
+
+/* Poster image – robust selector so it stays small even if classes differ */
+.profile .list .row img,
+.profile .booking-card img,
+.profile .recent-booking img {
+  width: 72px;
+  height: 108px;
+  max-width: 72px;
+  max-height: 108px;
+  object-fit: cover;
+  border-radius: 10px;
+  box-shadow: 0 10px 22px rgba(0,0,0,.28);
+}
+
+/* Text block */
+.profile .list .row .title,
+.profile .booking-card .title,
+.profile .recent-booking .title {
+  font-weight: 700;
+  font-size: 15px;
+  margin-bottom: 6px;
+  line-height: 1.25;
+}
+
+.profile .list .row .meta,
+.profile .booking-card .meta,
+.profile .recent-booking .meta {
+  font-size: 13px;
+  color: rgba(255,255,255,.72);
+}
+
+/* Price column */
+.profile .row__format,
+.profile .booking-card .price,
+.profile .recent-booking .price {
+  font-weight: 700;
+  white-space: nowrap;
+  margin-left: 12px;
+}
+
+/* Status pill */
+.profile .meta span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.10);
+  padding: 4px 10px;
+  border-radius: 999px;
+}
+
+/* Responsive: stack price below on small screens */
+@media (max-width: 640px) {
+  .profile .list .row,
+  .profile .booking-card,
+  .profile .recent-booking {
+    grid-template-columns: 60px 1fr;
+  }
+
+  .profile .list .row img,
+  .profile .booking-card img,
+  .profile .recent-booking img {
+    width: 60px;
+    height: 90px;
+    max-width: 60px;
+    max-height: 90px;
+  }
+
+  .profile .row__format,
+  .profile .booking-card .price,
+  .profile .recent-booking .price {
+    margin-left: 0;
+    grid-column: 2;
+  }
+}
+
 @media (min-width: 768px) {
   .booking-confirmation {
     padding: 36px 40px 42px;

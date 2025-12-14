@@ -2,6 +2,14 @@
 
 /** @var array $movie */
 /** @var array $screenings */
+// Normalisér $screenings så viewet altid arbejder med en liste af screenings.
+// Nogle controllers kan komme til at sende én screening som assoc array (fx fra getScreeningById / getNextScreeningForMovie).
+if (!is_array($screenings)) {
+  $screenings = [];
+} elseif (isset($screenings['screeningID'])) {
+  // Én screening som assoc array → gør den til en liste
+  $screenings = [$screenings];
+}
 ?>
 
 <main class="movie-detail container">
@@ -15,14 +23,12 @@
   <?php else: ?>
 
     <section class="movie-detail__layout">
-
       <div class="movie-detail__poster">
         <?php if (!empty($movie['poster_url'])): ?>
           <img class="card__media" src="<?= e($movie['poster_url']) ?>" alt="Plakat for <?= e($movie['title']) ?>">
         <?php else: ?>
           <div class="card__media" aria-hidden="true"></div>
         <?php endif; ?>
-
 
       </div>
 
@@ -67,7 +73,7 @@
       <div class="list" role="list">
         <?php if (!empty($screenings)): ?>
           <?php foreach ($screenings as $screening): ?>
-            <?php if (!is_array($screening)) continue; ?>
+            <?php if (!is_array($screening) || empty($screening['screeningID'])) continue; ?>
             <article class="row" role="listitem">
               <div>
                 <div class="title">
@@ -106,6 +112,7 @@
                 Vælg billetter
               </a>
             </article>
+          
           <?php endforeach; ?>
         <?php else: ?>
           <p class="movie-detail__no-showtimes">
