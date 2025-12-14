@@ -63,3 +63,6 @@ $router->get('booking/confirmation', 'BookingController@confirmation');
 
 // news side
 $router->get('news', 'NewsController@index');
+
+//invoice
+$router->get('admin/invoice', 'AdminInvoiceController@show');
