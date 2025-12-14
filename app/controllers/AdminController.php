@@ -84,12 +84,17 @@ class AdminController
         ];
     }
     public function cinemaNews(): array
-    {
-        return [
-            'view' => __DIR__ . '/../views/admin/admin.php',
-            'data' => [
-                'tab'    => 'cinemaNews',
-            ],
-        ];
-    }
+{
+    $db = Database::connect();
+    $newsRepo = new NewsRepository($db);
+    $news = $newsRepo->getAllNews();
+
+    return [
+        'view' => __DIR__ . '/../views/admin/admin.php',
+        'data' => [
+            'tab'  => 'cinemaNews',
+            'news' => $news,
+        ],
+    ];
+}
 }

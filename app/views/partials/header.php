@@ -10,6 +10,7 @@
       <a href="<?= url('') ?>#today">Dagens forestillinger</a>
       <a href="<?= url('') ?>#coming">Kommende film</a>
       <a href="<?= url('') ?>#contact">Kontakt</a>
+      <a href="<?= url('news') ?>">Nyheder</a>
       <?php if (isset($_SESSION['user'])): ?>
         <a href="?url=profile">Min profil</a>
         <a href="?url=logout">Log ud</a>

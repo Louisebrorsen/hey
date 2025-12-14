@@ -51,9 +51,8 @@ $router->post('admin/showtimes/delete', 'AdminScreeningController@delete');
 $router->post('admin/cinemaInfo/update', 'AdminActionsController@cinemaInfoUpdate');
 
 //biograf nyheder
-$router->post('admin/cinemaNews/create', 'AdminCinemaNewsController@create');
-$router->post('admin/cinemaNews/delete', 'AdminCinemaNewsController@delete');
-
+$router->post('admin/cinemaNews/create', 'AdminNewsController@create');
+$router->post('admin/cinemaNews/delete', 'AdminNewsController@delete');
 
 // Booking routes
 $router->get('booking', 'BookingController@show');
@@ -61,3 +60,6 @@ $router->post('booking', 'BookingController@bookSeats');
 
 // bekræftelsesside efter booking
 $router->get('booking/confirmation', 'BookingController@confirmation');
+
+// news side
+$router->get('news', 'NewsController@index');
