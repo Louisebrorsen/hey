@@ -85,3 +85,21 @@ function handle_poster_upload(string $title, ?array $file): ?string {
     // relativ sti til brug i <img src="">
     return 'uploads/posters/' . $name;
 }
+
+function renderBookingAction(?int $screeningID, $isSoldOut): string
+{
+    // Hvis der ikke findes en screening (fx ingen tider), så vis ingenting
+    if (empty($screeningID)) {
+        return '';
+    }
+
+    $soldOut = !empty($isSoldOut) && (int)$isSoldOut === 1;
+
+    if ($soldOut) {
+        return '<span class="badge soldout">Udsolgt</span>';
+    }
+
+    $href = url('booking', ['screeningID' => (int)$screeningID]);
+
+    return '<a class="btn btn--primary" href="' . e($href) . '">Vælg billetter</a>';
+}

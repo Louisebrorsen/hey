@@ -5,7 +5,7 @@
 ?>
 <main>
   <!-- HERO -->
-  
+
   <section class="hero">
     <div class="container hero__wrap">
       <div>
@@ -34,43 +34,35 @@
         <a class="btn btn--ghost" href="<?= url('movies') ?>">Alle film</a>
       </div>
 
-       <div class="grid">
-      <?php foreach ($nowPlaying as $np): ?>
-        <article class="card">
-          <?php if (!empty($np['poster_url'])): ?>
-            <img class="card__media" src="<?= e($np['poster_url']) ?>" alt="Plakat for <?= e($np['title']) ?>">
-          <?php else: ?>
-            <div class="card__media" aria-hidden="true"></div>
-          <?php endif; ?>
-
-          <div class="card__body">
-            <span class="badge">
-              <?= e($np['duration_min']) ?> min · <?= e($np['age_limit']) ?>+
-            </span>
-            <div class="title"><?= e($np['title']) ?></div>
-            <div class="meta">
-              <?= !empty($np['released']) ? e(date('d.m.Y', strtotime($np['released']))) : 'Ukendt premieredato' ?>
-            </div>
-          </div>
-
-          <div class="card__actions">
-            <?php if (!empty($np['next_screening'])): ?>
-              <?php if (!empty($np['next_screening']['is_sold_out'])): ?>
-                <span class="badge soldout">Udsolgt</span>
-              <?php else: ?>
-                <a class="btn btn--primary"
-                  href="<?= url('booking', [
-                          'screeningID' => (int)$np['next_screening']['screeningID']
-                        ]) ?>">
-                  Vælg billetter
-                </a>
-              <?php endif; ?>
+      <div class="grid">
+        <?php foreach ($nowPlaying as $np): ?>
+          <article class="card">
+            <?php if (!empty($np['poster_url'])): ?>
+              <img class="card__media" src="<?= e($np['poster_url']) ?>" alt="Plakat for <?= e($np['title']) ?>">
+            <?php else: ?>
+              <div class="card__media" aria-hidden="true"></div>
             <?php endif; ?>
-            <a class="btn btn--ghost" href="<?= url('movieDetail', ['id' => (int)$np['movieID']]) ?>">Detaljer</a>
-          </div>
-        </article>
-      <?php endforeach; ?>
-    </div>
+
+            <div class="card__body">
+              <span class="badge">
+                <?= e($np['duration_min']) ?> min · <?= e($np['age_limit']) ?>+
+              </span>
+              <div class="title"><?= e($np['title']) ?></div>
+              <div class="meta">
+                <?= !empty($np['released']) ? e(date('d.m.Y', strtotime($np['released']))) : 'Ukendt premieredato' ?>
+              </div>
+            </div>
+
+            <div class="card__actions">
+              <?= renderBookingAction(
+                $np['next_screening']['screeningID'] ?? null,
+                $np['next_screening']['is_sold_out'] ?? 0
+              ) ?>
+              <a class="btn btn--ghost" href="<?= url('movieDetail', ['id' => (int)$np['movieID']]) ?>">Detaljer</a>
+            </div>
+          </article>
+        <?php endforeach; ?>
+      </div>
     </div>
   </section>
 
@@ -82,7 +74,7 @@
           <h2 class="section__title">Dagens forestillinger</h2>
           <p class="section__sub">Vælg tidspunkt og reserver pladser</p>
         </div>
-       
+
       </div>
 
       <div class="list" role="list">
@@ -101,14 +93,10 @@
               <div class="row__format">
                 DKK <?= e($screening['price']) ?>
               </div>
-              <?php if (!empty($screening['is_sold_out'])): ?>
-                <span class="badge soldout">Udsolgt</span>
-              <?php else: ?>
-                <a class="btn btn--primary"
-                  href="<?= url('booking', ['screeningID' => (int)$screening['screeningID']]) ?>">
-                  Vælg billetter
-                </a>
-              <?php endif; ?>
+              <?= renderBookingAction(
+                (int)$screening['screeningID'],
+                $screening['is_sold_out'] ?? 0
+              ) ?>
             </article>
           <?php endforeach; ?>
         <?php else: ?>
@@ -153,14 +141,10 @@
             </div>
 
             <div class="card__actions">
-              <?php if (!empty($cs['next_screening'])): ?>
-                <a class="btn btn--primary"
-                  href="<?= url('booking', [
-                          'screeningID' => (int)$cs['next_screening']['screeningID']
-                        ]) ?>">
-                  Vælg billetter
-                </a>
-              <?php endif; ?>
+              <?= renderBookingAction(
+                $cs['next_screening']['screeningID'] ?? null,
+                $cs['next_screening']['is_sold_out'] ?? 0
+              ) ?>
               <a class="btn btn--ghost" href="<?= url('movieDetail', ['id' => (int)$cs['movieID']]) ?>">Detaljer</a>
             </div>
           </article>
@@ -178,17 +162,21 @@
         </div>
       </div>
       <div class="list">
-        <?php foreach ($news as $item): ?>
-          <article class="news-item">
-            <h3 class="news-item__title"><?= e($item['title']) ?></h3>
-            <small class="news-item__date">
-              <?= !empty($item['published_date']) ? date('d.m.Y', strtotime($item['published_date'])) : '' ?>
-            </small>
-            <p class="news-item__content">
-              <?= nl2br(e($item['content'])) ?>
-            </p>
-          </article>
-        <?php endforeach; ?>
+        <?php if (!empty($news)): ?>
+          <?php foreach ($news as $item): ?>
+            <article class="news-item">
+              <h3 class="news-item__title"><?= e($item['title']) ?></h3>
+              <small class="news-item__date">
+                <?= !empty($item['published_date']) ? date('d.m.Y', strtotime($item['published_date'])) : '' ?>
+              </small>
+              <p class="news-item__content">
+                <?= nl2br(e($item['content'])) ?>
+              </p>
+            </article>
+          <?php endforeach; ?>
+        <?php else: ?>
+          <p>Der er endnu ingen nyheder.</p>
+        <?php endif; ?>
       </div>
     </div>
   </section>
