@@ -5,6 +5,14 @@
 ?>
 <main>
   <!-- HERO -->
+  <?php 
+  echo '<pre>';
+  var_dump([
+    'todayScreenings_count' => isset($todayScreenings) && is_array($todayScreenings) ? count($todayScreenings) : 'NOT SET/NOT ARRAY',
+    'first_todayScreening'  => $todayScreenings[0] ?? null,
+  ]);
+  echo '</pre>';
+   ?>
   <section class="hero">
     <div class="container hero__wrap">
       <div>

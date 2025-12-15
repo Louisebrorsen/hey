@@ -95,7 +95,7 @@
 
         <div>
             <a href="<?= url('profile') ?>" class="btn2">Gå til min profil</a>
-            <a href="<?= url('home') ?>" class="btn-link">Til forsiden</a>
+            <a href="<?= url('') ?>" class="btn-link">Til forsiden</a>
         </div>
     </div>
 </section>

@@ -14,6 +14,7 @@ class ScreeningRepository
         SELECT s.screeningID,
                s.screening_time,
                s.price,
+               s.is_sold_out,
                m.title AS movie_title,
                a.name  AS auditorium_name
         FROM screening s
@@ -59,6 +60,7 @@ class ScreeningRepository
             SELECT s.screeningID,
                    s.screening_time,
                    s.price,
+                   s.is_sold_out,
                    a.name AS auditorium_name
             FROM screening s
             JOIN auditorium a ON s.auditoriumID = a.auditoriumID
@@ -104,6 +106,7 @@ class ScreeningRepository
             s.screeningID,
             s.screening_time,
             s.price,
+            s.is_sold_out,
             m.title AS movie_title,
             a.name  AS auditorium_name
         FROM screening s
@@ -124,6 +127,7 @@ class ScreeningRepository
             s.screeningID,
             s.screening_time,
             s.price,
+            s.is_sold_out,
             s.movieID,
             s.auditoriumID,
             m.title AS movie_title,
@@ -146,6 +150,7 @@ class ScreeningRepository
             s.screeningID,
             s.screening_time,
             s.price,
+            s.is_sold_out,
             m.title AS movie_title,
             a.name  AS auditorium_name
         FROM screening s
@@ -166,6 +171,7 @@ class ScreeningRepository
             s.screeningID,
             s.screening_time,
             s.price,
+            s.is_sold_out,
             m.title AS movie_title,
             a.name  AS auditorium_name
         FROM screening s
@@ -186,6 +192,7 @@ class ScreeningRepository
             s.screeningID,
             s.screening_time,
             s.price,
+            s.is_sold_out,
             a.name AS auditorium_name
         FROM screening s
         JOIN auditorium a ON s.auditoriumID = a.auditoriumID
@@ -209,6 +216,7 @@ class ScreeningRepository
             s.screeningID,
             s.screening_time,
             s.price,
+            s.is_sold_out,
             m.title AS movie_title,
             a.name  AS auditorium_name
         FROM screening s
