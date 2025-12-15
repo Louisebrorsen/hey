@@ -107,10 +107,10 @@ if (!is_array($screenings)) {
                 <?php endif; ?>
               </div>
 
-              <a class="btn btn--primary"
-                 href="<?= url('booking', ['screeningID' => (int)$screening['screeningID']]) ?>">
-                Vælg billetter
-              </a>
+              <?= renderBookingAction(
+                (int)$screening['screeningID'],
+                $screening['is_sold_out'] ?? 0
+              ) ?>
             </article>
           
           <?php endforeach; ?>

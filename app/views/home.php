@@ -54,10 +54,6 @@
             </div>
 
             <div class="card__actions">
-              <?= renderBookingAction(
-                $np['next_screening']['screeningID'] ?? null,
-                $np['next_screening']['is_sold_out'] ?? 0
-              ) ?>
               <a class="btn btn--ghost" href="<?= url('movieDetail', ['id' => (int)$np['movieID']]) ?>">Detaljer</a>
             </div>
           </article>
@@ -141,10 +137,6 @@
             </div>
 
             <div class="card__actions">
-              <?= renderBookingAction(
-                $cs['next_screening']['screeningID'] ?? null,
-                $cs['next_screening']['is_sold_out'] ?? 0
-              ) ?>
               <a class="btn btn--ghost" href="<?= url('movieDetail', ['id' => (int)$cs['movieID']]) ?>">Detaljer</a>
             </div>
           </article>
