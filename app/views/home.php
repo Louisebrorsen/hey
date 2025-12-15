@@ -69,6 +69,9 @@
                 Vælg billetter
               </a>
             <?php endif; ?>
+            <?php if (!empty($screening['is_sold_out'])): ?>
+  <span class="badge soldout">Udsolgt</span>
+<?php endif; ?>
             <a class="btn btn--ghost" href="<?= url('movieDetail', ['id' => (int)$np['movieID']]) ?>">Detaljer</a>
           </div>
         </article>
