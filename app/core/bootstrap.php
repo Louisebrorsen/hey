@@ -13,6 +13,7 @@ require_once __DIR__ . '/../models/AuthService.php';
 require_once __DIR__ . '/../models/AuditoriumRepository.php';
 require_once __DIR__ . '/../models/SeatRepository.php';
 require_once __DIR__ . '/../models/NewsRepository.php';
+require_once __DIR__ . '/../models/InvoiceRepository.php';
 
 // Controllers
 require_once __DIR__ . '/../controllers/HomeController.php';
@@ -28,3 +29,4 @@ require_once __DIR__ . '/../controllers/AdminScreeningController.php';
 require_once __DIR__ . '/../controllers/BookingController.php';
 require_once __DIR__ . '/../controllers/AdminNewsController.php';
 require_once __DIR__ . '/../controllers/NewsController.php';
+require_once __DIR__ . '/../controllers/AdminInvoiceController.php';

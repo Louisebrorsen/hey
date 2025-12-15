@@ -1,5 +1,6 @@
 <?php
-$tab  = $data['tab'] ?? 'movie';
+// Tab kan komme enten fra controllerens $data eller direkte fra querystring (?tab=...)
+$tab  = $_GET['tab'] ?? ($data['tab'] ?? 'movie');
 $base = __DIR__ . '/';
 ?>
 
@@ -8,23 +9,13 @@ $base = __DIR__ . '/';
     <h1>Admin</h1>
 
     <nav class="tabs">
-      <a class="tablink <?= $tab === 'movie' ? 'is-active' : '' ?>" 
-         href="?url=admin">Film</a>
-
-      <a class="tablink <?= $tab === 'rooms' ? 'is-active' : '' ?>" 
-         href="?url=admin/rooms">Sale & sæder</a>
-
-      <a class="tablink <?= $tab === 'showtimes' ? 'is-active' : '' ?>" 
-         href="?url=admin/showtimes">Showtimes</a>
-
-      <a class="tablink <?= $tab === 'allMovies' ? 'is-active' : '' ?>" 
-         href="?url=admin/allMovies">Alle film</a>
-
-      <a class="tablink <?= $tab === 'cinemaInfo' ? 'is-active' : '' ?>" 
-      href="?url=admin/cinemaInfo">biograf informationer</a>
-
-      <a class="tablink <?= $tab === 'cinemaNews' ? 'is-active' : '' ?>" 
-      href="?url=admin/cinemaNews">Nyheder</a>
+      <a class="tablink <?= $tab === 'movie' ? 'is-active' : '' ?>" href="?url=admin">Film</a>
+      <a class="tablink <?= $tab === 'rooms' ? 'is-active' : '' ?>" href="?url=admin/rooms">Sale & sæder</a>
+      <a class="tablink <?= $tab === 'showtimes' ? 'is-active' : '' ?>" href="?url=admin/showtimes">Showtimes</a>
+      <a class="tablink <?= $tab === 'allMovies' ? 'is-active' : '' ?>" href="?url=admin/allMovies">Alle film</a>
+      <a class="tablink <?= $tab === 'cinemaInfo' ? 'is-active' : '' ?>" href="?url=admin/cinemaInfo">Biograf informationer</a>
+      <a class="tablink <?= $tab === 'cinemaNews' ? 'is-active' : '' ?>" href="?url=admin/cinemaNews">Nyheder</a>
+      <a class="tablink <?= $tab === 'invoice' ? 'is-active' : '' ?>" href="?url=admin&tab=invoice">Faktura</a>
     </nav>
 
     <?php
@@ -53,10 +44,10 @@ $base = __DIR__ . '/';
           include $base . 'cinemaNews.php';
           break;
 
-        default:
-          echo "<p>Ukendt tab.</p>";
+        case 'invoice':
+          include $base . 'cinemaInvoice.php';
+          break;
       }
     ?>
-
   </div>
 </main>
