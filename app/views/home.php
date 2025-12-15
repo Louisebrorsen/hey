@@ -5,14 +5,7 @@
 ?>
 <main>
   <!-- HERO -->
-  <?php 
-  echo '<pre>';
-  var_dump([
-    'todayScreenings_count' => isset($todayScreenings) && is_array($todayScreenings) ? count($todayScreenings) : 'NOT SET/NOT ARRAY',
-    'first_todayScreening'  => $todayScreenings[0] ?? null,
-  ]);
-  echo '</pre>';
-   ?>
+  
   <section class="hero">
     <div class="container hero__wrap">
       <div>
@@ -62,16 +55,17 @@
 
           <div class="card__actions">
             <?php if (!empty($np['next_screening'])): ?>
-              <a class="btn btn--primary"
-                href="<?= url('booking', [
-                        'screeningID' => (int)$np['next_screening']['screeningID']
-                      ]) ?>">
-                Vælg billetter
-              </a>
+              <?php if (!empty($np['next_screening']['is_sold_out'])): ?>
+                <span class="badge soldout">Udsolgt</span>
+              <?php else: ?>
+                <a class="btn btn--primary"
+                  href="<?= url('booking', [
+                          'screeningID' => (int)$np['next_screening']['screeningID']
+                        ]) ?>">
+                  Vælg billetter
+                </a>
+              <?php endif; ?>
             <?php endif; ?>
-            <?php if (!empty($screening['is_sold_out'])): ?>
-  <span class="badge soldout">Udsolgt</span>
-<?php endif; ?>
             <a class="btn btn--ghost" href="<?= url('movieDetail', ['id' => (int)$np['movieID']]) ?>">Detaljer</a>
           </div>
         </article>
@@ -107,10 +101,14 @@
               <div class="row__format">
                 DKK <?= e($screening['price']) ?>
               </div>
-              <a class="btn btn--primary"
-                href="<?= url('booking', ['screeningID' => (int)$screening['screeningID']]) ?>">
-                Vælg billetter
-              </a>
+              <?php if (!empty($screening['is_sold_out'])): ?>
+                <span class="badge soldout">Udsolgt</span>
+              <?php else: ?>
+                <a class="btn btn--primary"
+                  href="<?= url('booking', ['screeningID' => (int)$screening['screeningID']]) ?>">
+                  Vælg billetter
+                </a>
+              <?php endif; ?>
             </article>
           <?php endforeach; ?>
         <?php else: ?>
