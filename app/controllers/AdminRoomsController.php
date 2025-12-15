@@ -4,12 +4,14 @@ class AdminRoomsController
 {
     private AuditoriumRepository $auditoriumRepo;
     private SeatRepository $seatRepo;
+    private ScreeningRepository $screeningRepo;
 
     public function __construct()
     {
         $pdo = Database::connect();
         $this->auditoriumRepo = new AuditoriumRepository($pdo);
         $this->seatRepo       = new SeatRepository($pdo);
+        $this->screeningRepo  = new ScreeningRepository($pdo);
     }
 
     /** Opret sal (kaldes fra form i auditorium.php) */
@@ -105,14 +107,41 @@ class AdminRoomsController
             exit;
         }
 
-        // Hvis du vil være ekstra flink: slet også sæder
-        $this->seatRepo->deleteByAuditorium($id);
+        $pdo = Database::connect();
+        $pdo->beginTransaction();
 
-        $this->auditoriumRepo->delete($id);
-        $_SESSION['message'] = 'Salen blev slettet.';
+        try {
+            // 1) Slet bookede sæder (seatReservation) der hører til sæder i salen
+            if (method_exists($this->seatRepo, 'deleteSeatReservationsByAuditorium')) {
+                $this->seatRepo->deleteSeatReservationsByAuditorium($id);
+            }
 
-        header('Location: ?url=admin/rooms');
-        exit;
+            // 2) Slet reservationer der hører til screenings i salen
+            if (method_exists($this->screeningRepo, 'deleteReservationsByAuditorium')) {
+                $this->screeningRepo->deleteReservationsByAuditorium($id);
+            }
+
+            // 3) Slet sæder i salen
+            $this->seatRepo->deleteByAuditorium($id);
+
+            // 4) Slet screenings i salen
+            if (method_exists($this->screeningRepo, 'deleteByAuditorium')) {
+                $this->screeningRepo->deleteByAuditorium($id);
+            }
+
+            // 5) Slet selve salen
+            $this->auditoriumRepo->delete($id);
+
+            $pdo->commit();
+
+            $_SESSION['message'] = 'Salen blev slettet (inkl. tilknyttede data).';
+            header('Location: ?url=admin/rooms');
+            exit;
+
+        } catch (Throwable $e) {
+            $pdo->rollBack();
+            throw $e;
+        }
     }
 
     /** Generér sæder til en sal (rækker x sæder pr række) */

@@ -55,4 +55,23 @@ class SeatRepository
 
         return array_column($stmt->fetchAll(PDO::FETCH_ASSOC), 'seatID');
     }
+
+    public function deleteSeatReservationsByAuditorium(int $auditoriumID): void
+    {
+        $sql = "
+            DELETE sr
+            FROM seatReservation sr
+            JOIN seat s ON s.seatID = sr.seatID
+            WHERE s.auditoriumID = :aud
+        ";
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([':aud' => $auditoriumID]);
+    }
+
+    public function deleteSeatsByAuditorium(int $auditoriumID): void
+    {
+        // Alias for readability when used in the admin delete-chain
+        $this->deleteByAuditorium($auditoriumID);
+    }
 }
