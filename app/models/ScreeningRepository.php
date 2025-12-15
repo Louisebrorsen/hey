@@ -65,6 +65,7 @@ class ScreeningRepository
             FROM screening s
             JOIN auditorium a ON s.auditoriumID = a.auditoriumID
             WHERE s.movieID = :movieID
+            AND s.screening_time >= NOW()
             ORDER BY s.screening_time ASC
         ";
 

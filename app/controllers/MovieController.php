@@ -47,8 +47,8 @@ class MovieController
             die('Missing movie ID.');
         }
 
-        $movie      = $this->movieRepository->getById((int)$id);   // hent selve filmen
-        $screenings = $this->screeningRepository->getNextScreeningForMovie((int)$id); // hent alle showtimes
+        $movie      = $this->movieRepository->getById((int)$id);  
+        $screenings = $this->screeningRepository->getByMovie((int)$id);
 
         return [
             'view' => __DIR__ . '/../views/movieDetail.php',
