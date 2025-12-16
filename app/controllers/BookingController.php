@@ -49,12 +49,58 @@ class BookingController
         $adults   = isset($_POST['qty_adult']) ? (int)$_POST['qty_adult'] : 0;
         $children = isset($_POST['qty_child']) ? (int)$_POST['qty_child'] : 0;
         $seniors  = isset($_POST['qty_senior']) ? (int)$_POST['qty_senior'] : 0;
+        $screening       = null;
+        $seats           = [];
+        $reservedSeatIds = [];
 
         $reservationID = null;
         $totalPrice    = 0;
 
-        // find logged in user – tilpas til din sessionstruktur hvis nødvendigt
-        $userID = $_SESSION['user']['userID'] ?? ($_SESSION['userID'] ?? null);
+        // Find logged-in user ID (session kan variere afhængigt af dit login-flow)
+        $userID = (int) (
+            $_SESSION['user']['userID'] ??
+            $_SESSION['user']['id'] ??
+            $_SESSION['userID'] ??
+            0
+        );
+
+        if ($userID <= 0) {
+            $message = 'Du skal være logget ind for at reservere billetter.';
+
+            return [
+                'view' => __DIR__ . '/../views/booking.php',
+                'data' => [
+                    'screening'       => $screening,
+                    'seats'           => $seats,
+                    'reservedSeatIds' => $reservedSeatIds,
+                    'message'         => $message,
+                    'adults'          => $adults,
+                    'children'        => $children,
+                    'seniors'         => $seniors,
+                ],
+            ];
+        }
+
+        // Ekstra sikkerhed: sørg for at brugeren faktisk findes i databasen (ellers fejler FK)
+        $pdoCheck = Database::connect();
+        $checkStmt = $pdoCheck->prepare('SELECT userID FROM user WHERE userID = :uid LIMIT 1');
+        $checkStmt->execute([':uid' => $userID]);
+        if (!$checkStmt->fetchColumn()) {
+            $message = 'Din bruger blev ikke fundet i databasen. Prøv at logge ind igen.';
+
+            return [
+                'view' => __DIR__ . '/../views/booking.php',
+                'data' => [
+                    'screening'       => $screening,
+                    'seats'           => $seats,
+                    'reservedSeatIds' => $reservedSeatIds,
+                    'message'         => $message,
+                    'adults'          => $adults,
+                    'children'        => $children,
+                    'seniors'         => $seniors,
+                ],
+            ];
+        }
 
         if (!$screeningID) {
             http_response_code(400);
@@ -143,23 +189,6 @@ class BookingController
 
         if (!empty($conflicting)) {
             $message = 'Et eller flere af de valgte sæder er allerede reserveret. Vælg venligst andre pladser.';
-
-            return [
-                'view' => __DIR__ . '/../views/booking.php',
-                'data' => [
-                    'screening'       => $screening,
-                    'seats'           => $seats,
-                    'reservedSeatIds' => $reservedSeatIds,
-                    'message'         => $message,
-                    'adults'          => $adults,
-                    'children'        => $children,
-                    'seniors'         => $seniors,
-                ],
-            ];
-        }
-
-        if (!$userID) {
-            $message = 'Du skal være logget ind for at reservere billetter.';
 
             return [
                 'view' => __DIR__ . '/../views/booking.php',
