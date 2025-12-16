@@ -247,7 +247,10 @@ class BookingController
             if (isset($pdo)) {
                 $pdo->rollBack();
             }
-            $message = 'Der opstod en fejl under gemning af reservationen. Prøv igen senere.';
+
+            // DEBUG (midlertidigt): vis den præcise database-fejl, så vi kan fikse den hurtigt.
+            // Når det virker: skift tilbage til en generisk besked.
+            $message = 'Der opstod en fejl under gemning af reservationen: ' . $e->getMessage();
 
             return [
                 'view' => __DIR__ . '/../views/booking.php',
