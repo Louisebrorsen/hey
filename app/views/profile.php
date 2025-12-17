@@ -61,7 +61,7 @@ $bookingStats = $data['bookingStats'] ?? ['upcoming' => 0, 'past' => 0];
               </div>
             <?php endif; ?>
             <div style="margin-top:12px;">
-              <a class="btn btn--primary" href="<?= url('?page=home#today') ?>">Find forestillinger</a>
+              <a class="btn btn--primary" href="<?= url('') ?>#today">Find forestillinger</a>
             </div>
           </div>
         </article>
