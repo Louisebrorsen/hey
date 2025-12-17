@@ -1,7 +1,4 @@
 <?php
-// Footer bruger biograf-info fra site_settings.
-// Forventet: controller/layout kan sende $settings ind.
-// Fallback: hent første række direkte fra DB hvis $settings ikke findes.
 if (!isset($settings) || !is_array($settings)) {
   try {
     $db = Database::connect();

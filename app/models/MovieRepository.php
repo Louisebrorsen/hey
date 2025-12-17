@@ -64,10 +64,8 @@ class MovieRepository
         $released    = $releasedRaw !== '' ? $releasedRaw : null;
 
         if ($title === '') {
-            // midlertidig debug
-            var_dump('TITLE TOM I REPO', $data);
-            exit;
-            // return 0;  // når vi er færdige med debug kan du skifte tilbage til den
+            
+            return 0; 
         }
 
         $sql = "INSERT INTO movie (title, poster_url, description, released, duration_min, age_limit)

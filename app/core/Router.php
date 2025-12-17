@@ -45,7 +45,6 @@ class Router
             die("Method '$methodName' not found in controller '$controllerName'.");
         }
 
-        // VIGTIGT: Controller-metoden SKAL returnere ['view' => ..., 'data' => [...]]
         $result = $controller->$methodName();
 
         if (!is_array($result)) {

@@ -10,13 +10,11 @@ foreach (($invoice['seats'] ?? []) as $seat) {
   $rowNo  = $seat['rowNo']  ?? null;
   $seatNo = $seat['seatNo'] ?? null;
 
-  // Vis som fx: R1 - 4
   if ($rowNo !== null && $seatNo !== null) {
     $seatLabels[] = 'R' . (int)$rowNo . ' - ' . (int)$seatNo;
     continue;
   }
 
-  // Fallback hvis data kommer i anden form
   if (!empty($seat['label'])) {
     $seatLabels[] = (string)$seat['label'];
   }
@@ -28,7 +26,6 @@ $adults   = (int)($invoice['adults'] ?? $invoice['qty_adult'] ?? $invoice['adult
 $children = (int)($invoice['children'] ?? $invoice['qty_child'] ?? $invoice['child_qty'] ?? $invoice['child_tickets'] ?? $invoice['childTickets'] ?? 0);
 $seniors  = (int)($invoice['seniors'] ?? $invoice['qty_senior'] ?? $invoice['senior_qty'] ?? $invoice['senior_tickets'] ?? $invoice['seniorTickets'] ?? 0);
 
-// Hvis DB ikke gemmer billet-typerne endnu, så brug antal valgte sæder som fallback
 if ($adults + $children + $seniors === 0) {
   $adults = (int)($invoice['ticket_count'] ?? $totalSeatsSelected);
 }

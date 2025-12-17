@@ -11,7 +11,6 @@ function url(string $route, array $params = []): string
 
 function asset(string $path): string
 {
-   //gør assets mappen tilgængelig både lokalt og på simply
     return 'assets/' . ltrim($path, '/');
 }
 
@@ -33,14 +32,11 @@ function csrf_input() {
     return '<input type="hidden" name="csrf_token" value="' . e(generateCSRFToken()) . '">';
 }
 
-// Point PUBLIC_PATH to the application's `public` directory
-// __DIR__ is `app/core`, so dirname(__DIR__, 2) -> project root
 if (!defined('PUBLIC_PATH')) {
     define('PUBLIC_PATH', dirname(__DIR__, 2) . '/public_html');
 }
 
 function handle_poster_upload(string $title, ?array $file): ?string {
-    // Ingen fil valgt
     if (!$file || empty($file['name'])) {
         return null;
     }
@@ -58,7 +54,6 @@ function handle_poster_upload(string $title, ?array $file): ?string {
         return null;
     }
 
-    // Prøv at finde rigtig mime-type, ellers brug $_FILES['type']
     $type = mime_content_type($tmp) ?: ($file['type'] ?? '');
     if (!isset($okTypes[$type])) {
         return null;
@@ -66,7 +61,6 @@ function handle_poster_upload(string $title, ?array $file): ?string {
 
     $ext = $okTypes[$type];
 
-    // Mappe til plakater
     $dir = PUBLIC_PATH . '/uploads/posters';
     if (!is_dir($dir)) {
         @mkdir($dir, 0775, true);
@@ -82,13 +76,11 @@ function handle_poster_upload(string $title, ?array $file): ?string {
         return null;
     }
 
-    // relativ sti til brug i <img src="">
     return 'uploads/posters/' . $name;
 }
 
 function renderBookingAction(?int $screeningID, $isSoldOut): string
 {
-    // Hvis der ikke findes en screening (fx ingen tider), så vis ingenting
     if (empty($screeningID)) {
         return '';
     }

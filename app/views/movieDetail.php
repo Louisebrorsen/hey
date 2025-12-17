@@ -2,12 +2,9 @@
 
 /** @var array $movie */
 /** @var array $screenings */
-// Normalisér $screenings så viewet altid arbejder med en liste af screenings.
-// Nogle controllers kan komme til at sende én screening som assoc array (fx fra getScreeningById / getNextScreeningForMovie).
 if (!is_array($screenings)) {
   $screenings = [];
 } elseif (isset($screenings['screeningID'])) {
-  // Én screening som assoc array → gør den til en liste
   $screenings = [$screenings];
 }
 ?>

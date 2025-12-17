@@ -9,14 +9,8 @@ class InvoiceRepository
         $this->pdo = $pdo;
     }
 
-    /**
-     * Henter faktura/kvitterings-data for en reservation.
-     * Returnerer én samlet array med header-data + seats som liste.
-     */
     public function getInvoiceByReservationId(int $reservationID): ?array
     {
-        // 1) Header-data (reservation + screening + movie + auditorium)
-        // Vi vælger r.* så vi ikke crasher, hvis kolonnenavne varierer (fx qty_adult vs adults)
         $sql = "
             SELECT
                 r.*,
@@ -40,17 +34,14 @@ class InvoiceRepository
             return null;
         }
 
-        // Normaliser feltnavne så viewet altid kan bruge de samme keys
         $invoice['adults']  = (int)($invoice['adults'] ?? $invoice['qty_adult'] ?? $invoice['adult_tickets'] ?? 0);
         $invoice['children'] = (int)($invoice['children'] ?? $invoice['qty_child'] ?? $invoice['child_tickets'] ?? 0);
         $invoice['seniors'] = (int)($invoice['seniors'] ?? $invoice['qty_senior'] ?? $invoice['senior_tickets'] ?? 0);
 
         $invoice['total_price'] = (float)($invoice['total_price'] ?? $invoice['totalPrice'] ?? $invoice['total'] ?? $invoice['amount'] ?? 0);
 
-        // reservation_date kan hedde forskelligt – fallback til created_at eller NOW
         $invoice['reservation_date'] = $invoice['reservation_date'] ?? $invoice['created_at'] ?? $invoice['reservationDate'] ?? date('Y-m-d H:i:s');
 
-        // Normaliser screening start-tid (kolonnenavn varierer typisk mellem projekter)
         $invoice['start_time'] = $invoice['start_time']
             ?? $invoice['screening_time']
             ?? $invoice['screeningTime']
@@ -62,7 +53,6 @@ class InvoiceRepository
             ?? $invoice['screeningDateTime']
             ?? null;
 
-        // Normaliser sal-nummer/navn (kolonnenavn varierer: auditoriumNo, number, hall_no, roomNo, name, osv.)
         $invoice['auditoriumNo'] = $invoice['auditoriumNo']
             ?? $invoice['auditorium_no']
             ?? $invoice['auditorium_number']
@@ -74,7 +64,6 @@ class InvoiceRepository
             ?? $invoice['name']
             ?? null;
 
-        // 2) Sæder til reservationen
         $seatSql = "
             SELECT se.rowNo, se.seatNo
             FROM seatReservation sr

@@ -1,5 +1,4 @@
 <?php
-// Tab kan komme enten fra controllerens $data eller direkte fra querystring (?tab=...)
 $tab  = $_GET['tab'] ?? ($data['tab'] ?? 'movie');
 $base = __DIR__ . '/';
 ?>

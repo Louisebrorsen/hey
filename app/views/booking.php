@@ -9,10 +9,9 @@
 /** @var int|null $seniors */
 
 $basePrice   = isset($screening['price']) ? (int)$screening['price'] : 0;
-// Du kan justere de her multiplikatorer, hvis du vil have andre rabatter
-$adultPrice  = $basePrice;                 // fuld pris
-$childPrice  = (int) round($basePrice * 0.75); // fx 25% rabat
-$seniorPrice = (int) round($basePrice * 0.85); // fx 15% rabat
+$adultPrice  = $basePrice;                 
+$childPrice  = (int) round($basePrice * 0.75); 
+$seniorPrice = (int) round($basePrice * 0.85); 
 ?>
 <main id="main-content"
   data-adult-price="<?= $adultPrice ?>"
@@ -84,7 +83,6 @@ $seniorPrice = (int) round($basePrice * 0.85); // fx 15% rabat
 
       <!-- Sæder -->
       <?php
-      // Gruppér sæder per row
       $seatRows = [];
 
       foreach ($seats as $seat) {
@@ -92,7 +90,7 @@ $seniorPrice = (int) round($basePrice * 0.85); // fx 15% rabat
         $seatRows[$rowNumber][] = $seat;
       }
 
-      ksort($seatRows); // sortér rækker i rækkefølge
+      ksort($seatRows); 
       ?>
 
       <div class="auditorium-layout">

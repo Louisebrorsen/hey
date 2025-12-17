@@ -9,7 +9,6 @@ class SeatRepository
         $this->pdo = $pdo;
     }
 
-    /** Hent alle sæder til en specificeret sal */
     public function getByAuditorium(int $auditoriumID): array
     {
         $sql = "SELECT * FROM seat WHERE auditoriumID = :id ORDER BY rowNo, seatNo";
@@ -18,7 +17,6 @@ class SeatRepository
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    /** Slet ALLE sæder i en sal (bruges når man regenererer) */
     public function deleteByAuditorium(int $auditoriumID): void
     {
         $sql = "DELETE FROM seat WHERE auditoriumID = :id";
@@ -26,7 +24,6 @@ class SeatRepository
         $stmt->execute([':id' => $auditoriumID]);
     }
 
-    /** Opret et enkelt sæde */
     public function create(int $auditoriumID, int $row, int $seatNumber): int
     {
         $sql = "INSERT INTO seat (auditoriumID, rowNo, seatNo)
@@ -71,7 +68,6 @@ class SeatRepository
 
     public function deleteSeatsByAuditorium(int $auditoriumID): void
     {
-        // Alias for readability when used in the admin delete-chain
         $this->deleteByAuditorium($auditoriumID);
     }
 }

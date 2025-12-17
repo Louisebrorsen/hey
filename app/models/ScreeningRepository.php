@@ -46,7 +46,6 @@ class ScreeningRepository
 
             return true;
         } catch (\PDOException $e) {
-            // 23000 = integrity constraint violation (fx UNIQUE constraint brud)
             if ($e->getCode() === '23000') {
                 return false;
             }
@@ -291,6 +290,8 @@ class ScreeningRepository
             'past'     => (int)($row['past'] ?? 0),
         ];
     }
+
+    
 
 
     public function deleteReservationsByAuditorium(int $auditoriumID): void

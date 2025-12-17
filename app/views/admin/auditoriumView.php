@@ -14,8 +14,6 @@ if (!empty($rowCounts)) {
 }
 ?>
 
-
-
 <main class="admin-main container" style="padding:40px 20px;">
   <div class="admin-content">
     <h1> <?= e($room['name'] ?? '') ?></h1>
@@ -30,7 +28,6 @@ if (!empty($rowCounts)) {
 
 <?php
 
-// Gruppér sæder per række (rowNo)
 $seatRows = [];
 
 foreach ($seats as $seat) {
