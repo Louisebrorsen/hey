@@ -6,7 +6,7 @@ class MovieController
 
     public function __construct()
     {
-        $db = Database::connect(); // din Database singleton
+        $db = Database::connect(); 
 
         $this->movieRepository     = new MovieRepository($db);
         $this->screeningRepository = new ScreeningRepository($db);

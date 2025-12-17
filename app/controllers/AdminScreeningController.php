@@ -46,7 +46,6 @@ class AdminScreeningController
         $error = null;
 
         if (!empty($screening_time)) {
-            // fra 2025-12-24T19:30 → 2025-12-24 19:30:00
             $screening_time = str_replace('T', ' ', $screening_time) . ':00';
         }
 
@@ -59,7 +58,6 @@ class AdminScreeningController
             );
 
             if (!$created) {
-                // DB sagde nej pga UNIQUE constraint → dobbeltbooking
                 $error = 'Der findes allerede en forestilling i denne sal på dette tidspunkt.';
             }
         }
@@ -92,7 +90,6 @@ class AdminScreeningController
             $this->screeningRepo->deleteScreening($id);
         }
 
-        // Hent opdaterede data
         $screenings  = $this->screeningRepo->getAllScreeningsWithDetails();
         $nowPlaying  = $this->movieRepo->getNowPlaying();
         $comingSoon  = $this->movieRepo->getComingSoon();

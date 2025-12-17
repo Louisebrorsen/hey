@@ -26,7 +26,6 @@ class UserController
 
         $userID = (int)($user['userID'] ?? $user['id'] ?? 0);
 
-        // Seneste 5 bookinger + simple statistik
         $bookings = $userID ? $this->screeningRepository->getRecentBookingsByUser($userID, 5) : [];
         $bookingStats = $userID ? $this->screeningRepository->getBookingStatsByUser($userID) : ['upcoming' => 0, 'past' => 0];
 

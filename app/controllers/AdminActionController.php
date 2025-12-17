@@ -188,7 +188,6 @@ class AdminActionsController
 
         $db = Database::connect();
 
-        // Find eksisterende række (vi bruger 1-række model)
         $stmt = $db->query("SELECT id FROM site_settings ORDER BY id ASC LIMIT 1");
         $row = $stmt ? $stmt->fetch(PDO::FETCH_ASSOC) : null;
         $existingId = $row['id'] ?? null;

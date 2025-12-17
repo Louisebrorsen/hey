@@ -14,8 +14,7 @@ class AdminRoomsController
         $this->screeningRepo  = new ScreeningRepository($pdo);
     }
 
-    /** Opret sal (kaldes fra form i auditorium.php) */
-    public function create()
+        public function create()
     {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             header('Location: ?url=admin/rooms');
@@ -30,7 +29,7 @@ class AdminRoomsController
             exit;
         }
 
-        // Opret ny sal
+       
         $this->auditoriumRepo->create($name);
 
         $_SESSION['message'] = 'Sal oprettet.';
@@ -38,7 +37,6 @@ class AdminRoomsController
         exit;
     }
 
-    /** Vis rediger-form for en sal */
     public function edit(): array
     {
         $id = (int)($_GET['id'] ?? 0);
@@ -55,19 +53,15 @@ class AdminRoomsController
             exit;
         }
 
-        // Hvis du på et tidspunkt vil vise sæder her:
-        // $seats = $this->seatRepo->getByAuditorium($id);
-
         return [
             'view' => __DIR__ . '/../views/admin/auditoriumEdit.php',
             'data' => [
-                'room' => $room,
-                // 'seats' => $seats ?? []
+                'room' => $room,  
             ],
         ];
     }
 
-    /** Gem ændringer til sal */
+  
     public function update()
     {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -91,7 +85,6 @@ class AdminRoomsController
         exit;
     }
 
-    /** Slet sal */
     public function delete()
     {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -111,25 +104,20 @@ class AdminRoomsController
         $pdo->beginTransaction();
 
         try {
-            // 1) Slet bookede sæder (seatReservation) der hører til sæder i salen
             if (method_exists($this->seatRepo, 'deleteSeatReservationsByAuditorium')) {
                 $this->seatRepo->deleteSeatReservationsByAuditorium($id);
             }
 
-            // 2) Slet reservationer der hører til screenings i salen
             if (method_exists($this->screeningRepo, 'deleteReservationsByAuditorium')) {
                 $this->screeningRepo->deleteReservationsByAuditorium($id);
             }
 
-            // 3) Slet sæder i salen
             $this->seatRepo->deleteByAuditorium($id);
 
-            // 4) Slet screenings i salen
             if (method_exists($this->screeningRepo, 'deleteByAuditorium')) {
                 $this->screeningRepo->deleteByAuditorium($id);
             }
 
-            // 5) Slet selve salen
             $this->auditoriumRepo->delete($id);
 
             $pdo->commit();

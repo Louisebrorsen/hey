@@ -219,7 +219,6 @@ class BookingController
             $pdo = Database::connect();
             $pdo->beginTransaction();
 
-            // indsæt reservation
             $stmt = $pdo->prepare("
                 INSERT INTO reservation (userID, screeningID, reservation_date, total_price)
                 VALUES (:userID, :screeningID, NOW(), :total_price)
@@ -232,7 +231,6 @@ class BookingController
 
             $reservationID = (int)$pdo->lastInsertId();
 
-            // indsæt seatReservation-rækker
             $seatStmt = $pdo->prepare("
                 INSERT INTO seatReservation (reservationID, seatID)
                 VALUES (:reservationID, :seatID)
@@ -247,10 +245,8 @@ class BookingController
 
             $pdo->commit();
 
-            // hent opdateret liste over reserverede sæder til visning
             $reservedSeatIds = $this->seatRepository->getReservedSeatIdsByScreening($screeningID);
 
-            // byg ticket-summary til confirmation-view
             $ticketSummary = [
                 'adults'   => $adults,
                 'children' => $children,
@@ -277,8 +273,6 @@ class BookingController
                 $pdo->rollBack();
             }
 
-            // DEBUG (midlertidigt): vis den præcise database-fejl, så vi kan fikse den hurtigt.
-            // Når det virker: skift tilbage til en generisk besked.
             $message = 'Der opstod en fejl under gemning af reservationen: ' . $e->getMessage();
 
             return [

@@ -64,7 +64,7 @@ class AdminMovieController
             header('Location: ?url=admin/movie/edit&id=' . $id);
             exit;
         }
-        // Keep existing poster always (edit does not change poster)
+        
         $posterRel = $movie['poster_url'];
         $data = [
             'title'        => $title,

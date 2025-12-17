@@ -12,7 +12,6 @@ class NewsController
 
     public function index(): array
     {
-        // Hent alle nyheder (eller kun publicerede, afhængigt af din repo)
         $news = $this->newsRepo->getAllNews();
 
         return [

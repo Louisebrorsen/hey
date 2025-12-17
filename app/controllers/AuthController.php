@@ -76,7 +76,6 @@ class AuthController
 
     public function register(): array
     {
-        // Forudfyld member-array med POST-data (eller tomme værdier første gang)
         $member = [
             'firstName' => trim($_POST['firstName'] ?? ''),
             'lastName'  => trim($_POST['lastName'] ?? ''),
@@ -89,7 +88,6 @@ class AuthController
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-            // CSRF-tjek (samme som i login)
             if (!hash_equals($_SESSION['csrf_token'] ?? '', $_POST['csrf_token'] ?? '')) {
                 $_SESSION['flash_error'] = "Ugyldig formular, prøv igen.";
                 header("Location: ?url=register");
@@ -99,7 +97,6 @@ class AuthController
             $password = $_POST['password'] ?? '';
             $confirm  = $_POST['confirm'] ?? '';
 
-            // Simpel validering
             if ($member['firstName'] === '') {
                 $errors['firstName'] = 'Fornavn er påkrævet';
             }
@@ -119,7 +116,6 @@ class AuthController
             if (!$errors) {
                 $pdo = Database::connect();
 
-                // Tjek om email allerede findes
                 $stmt = $pdo->prepare("SELECT userID FROM user WHERE email = :email");
                 $stmt->execute(['email' => $member['email']]);
                 if ($stmt->fetch()) {
@@ -139,7 +135,6 @@ class AuthController
                         'gender'    => $member['gender'] ?: null,
                     ]);
 
-                    // Log brugeren ind og redirect efter succesfuld oprettelse
                     $this->auth->login($member['email'], $password);
                     header('Location: ?url=');
                     exit;
@@ -147,7 +142,6 @@ class AuthController
             }
         }
 
-        // Hvis der er fejl eller det er første visning af formularen
         return [
             'view' => __DIR__ . '/../views/register.php',
             'data' => [

@@ -13,7 +13,7 @@ class AdminController
 
         $this->auth = new AuthService($db);
 
-        // Admin protection
+       
         if (!$this->auth->isAdmin()) {
             header("Location: ?url=login");
             exit;
@@ -70,7 +70,7 @@ class AdminController
 
     public function cinemaInfo(): array
     {
-        // Hent eksisterende biograf-info (1 række) så formularen kan udfyldes med aktuelle værdier
+       
         $db = Database::connect();
         $stmt = $db->query("SELECT * FROM site_settings ORDER BY id ASC LIMIT 1");
         $settings = $stmt ? ($stmt->fetch(PDO::FETCH_ASSOC) ?: []) : [];
